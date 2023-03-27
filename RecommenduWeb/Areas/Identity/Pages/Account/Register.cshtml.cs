@@ -18,22 +18,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using RecommenduWeb.Models;
 
 namespace RecommenduWeb.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<Usuario> _signInManager;
+        private readonly UserManager<Usuario> _userManager;
+        private readonly IUserStore<Usuario> _userStore;
+        private readonly IUserEmailStore<Usuario> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<Usuario> userManager,
+            IUserStore<Usuario> userStore,
+            SignInManager<Usuario> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -71,6 +72,25 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
         public class InputModel
         {
             /// <summary>
+            /// Nome Completo
+            /// </summary>
+            [Required]
+            [StringLength(100, ErrorMessage = "O usuário deve ter entre {2} a {1} caracteres.", MinimumLength = 10)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Nome Completo")]
+            public string NomeCompleto { get; set; }
+
+            /// <summary>
+            /// Username
+            /// </summary>
+            //[Required (ErrorMessage = "{0} requerido;")]
+            [Required]
+            [StringLength(20, ErrorMessage = "O usuário deve ter entre {2} a {1} caracteres.", MinimumLength = 6)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Usuário")]
+            public string UserName { get; set; }
+
+            /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
@@ -84,9 +104,9 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(50, ErrorMessage = "A senha deve ter entre {2} a {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Senha")]
             public string Password { get; set; }
 
             /// <summary>
@@ -94,9 +114,27 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Confirmar Senha")]
+            [Compare("Password", ErrorMessage = "A senha verificada não combina.")]
             public string ConfirmPassword { get; set; }
+
+            // Cidade
+            // Buscar api ou criar dropdown hardcode
+            [Required]
+            [StringLength(100, ErrorMessage = "A cidade deve ter entre {2} a {1} caracteres.", MinimumLength = 4)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Cidade")]
+            public string Cidade { get; set; }
+
+            // EstadoS
+            // Buscar api ou criar dropdown hardcode
+            [Required]
+            [StringLength(100, ErrorMessage = "O estado deve ter entre {2} a {1} caracteres.", MinimumLength = 4)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Estado")]
+            public string Estado { get; set; }
+
+
         }
 
 
@@ -112,9 +150,10 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                var user = new Usuario { NomeCompleto = Input.NomeCompleto, UserName = Input.UserName, Email = Input.Email, Cidade = Input.Cidade, Estado = Input.Estado };
+                //var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -168,13 +207,13 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<Usuario> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<Usuario>)_userStore;
         }
     }
 }
