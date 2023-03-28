@@ -8,6 +8,9 @@
 <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
+    <p style="color: magenta">Verificar se devemos mesclar a pagina de senha com essa de email, se for o caso, vc terá q juntar as marcaçoes dessa pagina com a outra.<br />
+        Voce pode criar um novo arquivo .cshtml inves de modificar os existentes e só alterar no menu para chamar esse arquivo.<br />
+        Olhar no inicio do codigo a "viewdata['activepage']" que marca no menu qual a pagina atual.</p>
     <div class="col-md-6">
         <form id="email-form" method="post">
             <div asp-validation-summary="All" class="text-danger" role="alert"></div>

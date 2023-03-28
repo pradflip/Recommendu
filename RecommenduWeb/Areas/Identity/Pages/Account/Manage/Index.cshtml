@@ -11,6 +11,8 @@
     <div class="col-md-6">
         <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <p style="color: magenta">Listar foto, dados do usuario (nome, user, numero se tiver, cidade e estado)
+                com os campos desabilitados e um botao para editar esses dados (no lugar do botao salvar ali embaixo) </p>
             <div class="form-floating mb-3">
                 <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
                 <label asp-for="Username" class="form-label"></label>
