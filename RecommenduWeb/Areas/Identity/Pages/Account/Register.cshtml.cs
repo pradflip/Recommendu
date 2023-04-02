@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -16,9 +17,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using RecommenduWeb.Models;
+using RecommenduWeb.Services;
 
 namespace RecommenduWeb.Areas.Identity.Pages.Account
 {
@@ -30,13 +33,15 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<Usuario> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly LocalidadeService _localidadeService;
 
         public RegisterModel(
             UserManager<Usuario> userManager,
             IUserStore<Usuario> userStore,
             SignInManager<Usuario> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            LocalidadeService localidadeService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,7 +49,11 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _localidadeService = localidadeService;
         }
+
+        // DropDownList
+        public SelectList EstadoDropDownList { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -118,22 +127,18 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "A senha verificada não combina.")]
             public string ConfirmPassword { get; set; }
 
+            // Estado
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Estado")]
+            public string Estado { get; set; }
+
             // Cidade
-            // Buscar api ou criar dropdown hardcode
             [Required]
             [StringLength(100, ErrorMessage = "A cidade deve ter entre {2} a {1} caracteres.", MinimumLength = 4)]
             [DataType(DataType.Text)]
             [Display(Name = "Cidade")]
             public string Cidade { get; set; }
-
-            // EstadoS
-            // Buscar api ou criar dropdown hardcode
-            [Required]
-            [StringLength(100, ErrorMessage = "O estado deve ter entre {2} a {1} caracteres.", MinimumLength = 4)]
-            [DataType(DataType.Text)]
-            [Display(Name = "Estado")]
-            public string Estado { get; set; }
-
 
         }
 
@@ -142,10 +147,29 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            // Alimenta viewdata com a lista de estados para o metodo GET
+            // ViewData precisa ter o mesmo nome da propriedade
+            ViewData["Input.Estado"] = await GetEstadoAsync();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            // Alimenta viewdata com a lista de estados para o metodo POST
+            // ViewData precisa ter o mesmo nome da propriedade
+            var estados = await GetEstadoAsync();
+            ViewData["Input.Estado"] = estados;
+
+            // Valida se um estado foi selecionado
+            if (Input.Estado == "0")
+            {
+                ModelState.AddModelError(string.Empty, "Selecione o Estado.");
+                return Page();
+            }
+
+            // Atualiza o Input.Estado buscando a sigla do estado de acordo com o ID recebido do proprio Input.Estado
+            Input.Estado = estados.Where(p => p.Value == Input.Estado).First().Text;
+
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -214,6 +238,37 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<Usuario>)_userStore;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetEstadoAsync()
+        {
+            DataTable dt = new DataTable();
+            
+            // Consulta o serviço que realiza um request na API do IBGE e retorna um DataTable
+            dt = await _localidadeService.ListaEstadoAsync();
+
+            // Adiciona cada linha (DataRow) em uma lista
+            var dtItem = new List<DataRow>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                dtItem.Add(dr);
+            }
+
+            // Cria a lista do DropDown com um valor padrão
+            List<SelectListItem> listaEstados = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Selecione...", Value = "0" }
+            };
+
+            // Pega cada item da lista extraída do DataTable e adiciona na lista do DropDown
+            int count = 0;
+            foreach (DataRow dr in dtItem)
+            {
+                listaEstados.Add(new SelectListItem { Text = dtItem[count].ItemArray[0].ToString(), Value = count + 1.ToString() });
+                count++;
+            }
+
+            return listaEstados;
         }
     }
 }

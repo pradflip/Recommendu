@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Collections;
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
@@ -29,23 +30,23 @@
             </div>
             <div class="form-floating mb-3">
                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
+                <label asp-for="Input.Password">Senha</label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                <label asp-for="Input.ConfirmPassword">Confirmar Senha</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                @Html.DropDownListFor(model => model.Input.Estado, ViewData["listaEstados"] as SelectList, new {@class="form-control"})
+                <label asp-for="Input.Estado">Estado</label>
+                <span asp-validation-for="Input.Estado" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
                 <input asp-for="Input.Cidade" class="form-control" autocomplete="cidade" aria-required="true" placeholder="Nome da cidade" />
                 <label asp-for="Input.Cidade">Cidade</label>
                 <span asp-validation-for="Input.Cidade" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Estado" class="form-control" autocomplete="estado" aria-required="true" placeholder="Nome do estado" />
-                <label asp-for="Input.Estado">Estado</label>
-                <span asp-validation-for="Input.Estado" class="text-danger"></span>
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
