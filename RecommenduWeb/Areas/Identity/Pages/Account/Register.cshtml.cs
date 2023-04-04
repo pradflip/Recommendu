@@ -52,9 +52,6 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             _localidadeService = localidadeService;
         }
 
-        // DropDownList
-        public SelectList EstadoDropDownList { get; set; }
-
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -264,7 +261,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             int count = 0;
             foreach (DataRow dr in dtItem)
             {
-                listaEstados.Add(new SelectListItem { Text = dtItem[count].ItemArray[0].ToString(), Value = count + 1.ToString() });
+                listaEstados.Add(new SelectListItem { Text = dtItem[count].ItemArray[0].ToString(), Value = (count + 1).ToString() });
                 count++;
             }
 

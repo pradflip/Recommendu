@@ -14,12 +14,12 @@
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.NomeCompleto" class="form-control" autocomplete="nome-completo" aria-required="true" placeholder="Informe seu nome" />
+                <input asp-for="Input.NomeCompleto" class="form-control" autocomplete="name" aria-required="true" placeholder="Informe seu nome" />
                 <label asp-for="Input.NomeCompleto">Nome Completo</label>
                 <span asp-validation-for="Input.NomeCompleto" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.UserName" class="form-control" autocomplete="usuario" aria-required="true" placeholder="Nome de usuário" />
+                <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="Nome de usuário" />
                 <label asp-for="Input.UserName">Usuário</label>
                 <span asp-validation-for="Input.UserName" class="text-danger"></span>
             </div>
@@ -39,12 +39,12 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                @Html.DropDownListFor(model => model.Input.Estado, ViewData["listaEstados"] as SelectList, new {@class="form-control"})
+                @Html.DropDownListFor(model => model.Input.Estado, ViewData["listaEstados"] as SelectList, new {@class="form-control", @id="ddlEstado", @onChange="teste()"})
                 <label asp-for="Input.Estado">Estado</label>
                 <span asp-validation-for="Input.Estado" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.Cidade" class="form-control" autocomplete="cidade" aria-required="true" placeholder="Nome da cidade" />
+                <input asp-for="Input.Cidade" class="form-control" id="ddlCidade" disabled="true" aria-required="true" placeholder="Nome da cidade" />
                 <label asp-for="Input.Cidade">Cidade</label>
                 <span asp-validation-for="Input.Cidade" class="text-danger"></span>
             </div>
@@ -85,4 +85,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script scr="~/js/site.js"></script>
 }
