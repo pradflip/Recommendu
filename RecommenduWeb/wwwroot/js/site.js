@@ -5,8 +5,8 @@
 
 function teste() {
     // pega o valor do campo selecionado
-    var estado = document.getElementById('ddlEstado').value
-    if (estado.toString() === "0") {
+    var idEstado = document.getElementById('ddlEstado').value
+    if (idEstado.toString() === "0") {
         document.getElementById("ddlCidade").disabled = true;
     }
     else {
@@ -14,7 +14,7 @@ function teste() {
     }
 
     // pega o texto do valor selecionado
-    estado = document.getElementById("ddlEstado").options[document.getElementById('ddlEstado').selectedIndex].text;
+    var txtEstado = document.getElementById("ddlEstado").options[document.getElementById('ddlEstado').selectedIndex].text;
 
-    alert(estado);
+    alert("Id: " + idEstado + ", Sigla: " + txtEstado);
 }

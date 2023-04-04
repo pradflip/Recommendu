@@ -261,7 +261,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             int count = 0;
             foreach (DataRow dr in dtItem)
             {
-                listaEstados.Add(new SelectListItem { Text = dtItem[count].ItemArray[0].ToString(), Value = (count + 1).ToString() });
+                listaEstados.Add(new SelectListItem { Text = dtItem[count].ItemArray[1].ToString(), Value = dtItem[count].ItemArray[0].ToString() });
                 count++;
             }
 
