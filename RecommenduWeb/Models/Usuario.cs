@@ -9,5 +9,6 @@ namespace RecommenduWeb.Models
         public string Estado { get; set;}
         public string? ImgPerfil { get; set; }
         public int Reputacao { get; set; } = 0;
+        public ICollection<Postagem> Postagens { get; set; } = new List<Postagem>();
     }
 }

@@ -10,5 +10,10 @@ namespace RecommenduWeb.Data
             : base(options)
         {
         }
+
+        public DbSet<PostagemProduto> postagemProduto { get; set; }
+        public DbSet<PostagemServico> postagemServico { get; set; }
+        public DbSet<ComentarioPostagem> comentarioPostagem { get; set; }
+        public DbSet<ImagemPostagem> imagemPostagem { get;set; }
     }
 }
