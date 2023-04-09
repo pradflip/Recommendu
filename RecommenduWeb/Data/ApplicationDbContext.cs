@@ -14,6 +14,6 @@ namespace RecommenduWeb.Data
         public DbSet<PostagemProduto> postagemProduto { get; set; }
         public DbSet<PostagemServico> postagemServico { get; set; }
         public DbSet<ComentarioPostagem> comentarioPostagem { get; set; }
-        public DbSet<ImagemPostagem> imagemPostagem { get;set; }
+        public DbSet<Postagem> Postagem { get; set; } = default!;
     }
 }

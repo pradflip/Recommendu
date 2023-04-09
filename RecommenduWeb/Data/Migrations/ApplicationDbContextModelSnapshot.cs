@@ -184,28 +184,6 @@ namespace RecommenduWeb.Data.Migrations
                     b.ToTable("comentarioPostagem");
                 });
 
-            modelBuilder.Entity("RecommenduWeb.Models.ImagemPostagem", b =>
-                {
-                    b.Property<int>("ImgId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImgId"));
-
-                    b.Property<string>("Imagem")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PostagemId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ImgId");
-
-                    b.HasIndex("PostagemId");
-
-                    b.ToTable("imagemPostagem");
-                });
-
             modelBuilder.Entity("RecommenduWeb.Models.Postagem", b =>
                 {
                     b.Property<int>("PostagemId")
@@ -232,12 +210,15 @@ namespace RecommenduWeb.Data.Migrations
                     b.Property<DateTime>("DtPostagem")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImgPostagem")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PublicoAlvo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UsuarioId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PostagemId");
@@ -278,7 +259,7 @@ namespace RecommenduWeb.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImgPerfil")
+                    b.Property<string>("ImagemPerfil")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -433,24 +414,11 @@ namespace RecommenduWeb.Data.Migrations
                     b.Navigation("Postagem");
                 });
 
-            modelBuilder.Entity("RecommenduWeb.Models.ImagemPostagem", b =>
-                {
-                    b.HasOne("RecommenduWeb.Models.Postagem", "Postagem")
-                        .WithMany("imagensPostagem")
-                        .HasForeignKey("PostagemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Postagem");
-                });
-
             modelBuilder.Entity("RecommenduWeb.Models.Postagem", b =>
                 {
                     b.HasOne("RecommenduWeb.Models.Usuario", "Usuario")
                         .WithMany("Postagens")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
 
                     b.Navigation("Usuario");
                 });
@@ -458,8 +426,6 @@ namespace RecommenduWeb.Data.Migrations
             modelBuilder.Entity("RecommenduWeb.Models.Postagem", b =>
                 {
                     b.Navigation("ComentariosPostagem");
-
-                    b.Navigation("imagensPostagem");
                 });
 
             modelBuilder.Entity("RecommenduWeb.Models.Usuario", b =>

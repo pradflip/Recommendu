@@ -17,6 +17,7 @@ builder.Services.AddDefaultIdentity<Usuario>(options => options.SignIn.RequireCo
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<LocalidadeService>();
+builder.Services.AddScoped<PostService>();
 
 var app = builder.Build();
 
