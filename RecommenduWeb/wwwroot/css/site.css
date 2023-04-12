@@ -21,3 +21,49 @@ body {
     margin-bottom: 60px;
     background-color: #F4F3F3;
 }
+
+.cor-destaque {
+    font-weight: bolder;
+    color: #db924f;
+}
+
+.img-logo {
+    max-width: 200px;
+    max-height: 50px;
+    width: auto;
+    height: auto;
+    margin-left: 2rem;
+}
+
+.circles-0 {
+    position: relative;
+    background-color: #d4863e;
+    width: 300px;
+    height: 300px;
+    left: 9em;
+    top: 3em;
+    z-index: -2;
+    opacity: 0.8;
+}
+
+.circles-1 {
+    position: relative;
+    background-color: #db924f;
+    width: 240px;
+    height: 240px;
+    left: 6em;
+    top: -6em;
+    z-index: -3;
+    opacity: 0.8;
+}
+
+.circles-2 {
+    position: relative;
+    background-color: #f1ad6f;
+    width: 225px;
+    height: 225px;
+    left: 12em;
+    top: -14em;
+    z-index: -1;
+    opacity: 0.8;
+}

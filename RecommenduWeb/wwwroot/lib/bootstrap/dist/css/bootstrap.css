@@ -44,7 +44,7 @@
   --bs-danger-rgb: 220, 53, 69;
   --bs-light-rgb: 248, 249, 250;
   --bs-dark-rgb: 33, 37, 41;
-  --bs-white-rgb: 255, 255, 255;
+  --bs-white-rgb: 244, 243, 244;
   --bs-black-rgb: 0, 0, 0;
   --bs-body-rgb: 33, 37, 41;
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -71,16 +71,20 @@
 }
 
 body {
-  margin: 0;
-  font-family: var(--bs-body-font-family);
-  font-size: var(--bs-body-font-size);
-  font-weight: var(--bs-body-font-weight);
-  line-height: var(--bs-body-line-height);
-  color: var(--bs-body-color);
-  text-align: var(--bs-body-text-align);
-  background-color: var(--bs-body-bg);
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    margin: 0;
+    font-family: var(--bs-body-font-family);
+    font-size: var(--bs-body-font-size);
+    font-weight: var(--bs-body-font-weight);
+    line-height: var(--bs-body-line-height);
+    color: var(--bs-body-color);
+    text-align: var(--bs-body-text-align);
+    background-color: var(--bs-body-bg);
+    background-image: url(https://i.im.ge/2023/04/09/IHY3Ep.Background.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-size: cover;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 hr {
@@ -139,11 +143,21 @@ h4, .h4 {
 }
 
 h5, .h5 {
-  font-size: 1.25rem;
+  font-size: calc(1.25rem + 0.15vw);
+}
+@media (min-width: 1200px) {
+    h5, .h5 {
+        font-size: 1.25rem;
+    }
 }
 
 h6, .h6 {
-  font-size: 1rem;
+    font-size: calc(1rem + 0.7vw);
+}
+@media (min-width: 1200px) {
+    h6, .h6 {
+        font-size: 1rem;
+    }
 }
 
 p {
@@ -198,8 +212,7 @@ blockquote {
   margin: 0 0 1rem;
 }
 
-b,
-strong {
+b,strong {
   font-weight: bolder;
 }
 
@@ -548,6 +561,18 @@ progress {
   }
 }
 
+.display-7 {
+    font-size: calc(1.325rem + 0.9vw);
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+@media (min-width: 1200px) {
+    .display-7 {
+        font-size: 2.0rem;
+    }
+}
+
 .list-unstyled {
   padding-left: 0;
   list-style: none;
@@ -591,6 +616,7 @@ progress {
 .img-fluid {
   max-width: 100%;
   height: auto;
+  margin-left: 5%;
 }
 
 .img-thumbnail {
@@ -2964,24 +2990,26 @@ textarea.form-control-lg {
 
 .btn-primary {
   color: #fff;
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: #db924f;
+  border-color: none;
+  border-radius: 20px;
+  width: 160px;
 }
 .btn-primary:hover {
   color: #fff;
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
+  background-color: #e1a974;
+  border-color: none;
 }
 .btn-check:focus + .btn-primary, .btn-primary:focus {
   color: #fff;
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
+  background-color: #d46500;
+  border-color: none;
   box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
 }
 .btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #0a58ca;
-  border-color: #0a53be;
+  background-color: #d46500;
+  border-color: none;
 }
 .btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus, .show > .btn-primary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
@@ -7256,6 +7284,10 @@ textarea.form-control-lg {
   margin-top: 3rem !important;
 }
 
+.mt-6 {
+  margin-top: 6rem !important;
+}
+
 .mt-auto {
   margin-top: auto !important;
 }
@@ -7873,7 +7905,7 @@ textarea.form-control-lg {
 }
 
 .rounded-pill {
-  border-radius: 50rem !important;
+    border-radius: 50rem !important;
 }
 
 .rounded-top {
@@ -8245,6 +8277,10 @@ textarea.form-control-lg {
     margin-top: 3rem !important;
     margin-bottom: 3rem !important;
   }
+  .my-sm-6 {
+    margin-top: 6rem !important;
+    margin-bottom: 6rem !important;
+  }
 
   .my-sm-auto {
     margin-top: auto !important;
@@ -8273,6 +8309,10 @@ textarea.form-control-lg {
 
   .mt-sm-5 {
     margin-top: 3rem !important;
+  }
+
+  .mt-sm-6 {
+    margin-top: 6rem !important;
   }
 
   .mt-sm-auto {
