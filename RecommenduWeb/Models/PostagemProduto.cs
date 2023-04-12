@@ -1,11 +1,14 @@
-﻿namespace RecommenduWeb.Models
+﻿using Microsoft.Build.Framework;
+
+namespace RecommenduWeb.Models
 {
     public class PostagemProduto : Postagem
     {
+        [Required]
         public string Modelo { get; set; }
-        public string Fabricante { get; set; }
-        public string LinkProduto { get; set;}
-        public DateTime TempoUso { get; set; }
+        public string? Fabricante { get; set; }
+        public string? LinkProduto { get; set;}
+        public DateTime? TempoUso { get; set; }
 
         public PostagemProduto() { }
 

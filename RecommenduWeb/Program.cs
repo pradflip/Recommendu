@@ -18,6 +18,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<LocalidadeService>();
 builder.Services.AddScoped<PostService>();
+builder.Services.AddScoped<UsuarioService>();
 
 var app = builder.Build();
 

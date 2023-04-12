@@ -1,17 +1,15 @@
-﻿@inject RecommenduWeb.Services.PostService PostService
-@model IEnumerable<RecommenduWeb.Models.Postagem>
-
+﻿@model IEnumerable<RecommenduWeb.Models.Postagem>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Meu Perfil";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-<h2 style="color: red">Slide 7</h2>
+<div>
+    <img src="~/Resources/ProfileImages/@ViewData["Foto"]" class="rounded-circle" width="200" height="200" asp-append-version="true" />
+</div>
+<h1>Olá, @ViewData["Usuario"]</h1>
+<h2>Sua reputação: @ViewData["Reputacao"]</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>

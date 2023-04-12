@@ -22,6 +22,8 @@ namespace RecommenduWeb.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.HasSequence("PostagemSequence");
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -188,9 +190,10 @@ namespace RecommenduWeb.Data.Migrations
                 {
                     b.Property<int>("PostagemId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("NEXT VALUE FOR [PostagemSequence]");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostagemId"));
+                    SqlServerPropertyBuilderExtensions.UseSequence(b.Property<int>("PostagemId"));
 
                     b.Property<string>("Categoria")
                         .IsRequired()
@@ -200,10 +203,6 @@ namespace RecommenduWeb.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -225,11 +224,9 @@ namespace RecommenduWeb.Data.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Postagem");
+                    b.ToTable((string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Postagem");
-
-                    b.UseTphMappingStrategy();
+                    b.UseTpcMappingStrategy();
                 });
 
             modelBuilder.Entity("RecommenduWeb.Models.Usuario", b =>
@@ -320,21 +317,19 @@ namespace RecommenduWeb.Data.Migrations
                     b.HasBaseType("RecommenduWeb.Models.Postagem");
 
                     b.Property<string>("Fabricante")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LinkProduto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Modelo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("TempoUso")
+                    b.Property<DateTime?>("TempoUso")
                         .HasColumnType("datetime2");
 
-                    b.HasDiscriminator().HasValue("PostagemProduto");
+                    b.ToTable("PostagemProduto");
                 });
 
             modelBuilder.Entity("RecommenduWeb.Models.PostagemServico", b =>
@@ -342,14 +337,16 @@ namespace RecommenduWeb.Data.Migrations
                     b.HasBaseType("RecommenduWeb.Models.Postagem");
 
                     b.Property<string>("Contato")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Endereco")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomeServico")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue("PostagemServico");
+                    b.ToTable("PostagemServico");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

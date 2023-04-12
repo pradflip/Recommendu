@@ -11,6 +11,9 @@ namespace RecommenduWeb.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateSequence(
+                name: "PostagemSequence");
+
             migrationBuilder.AddColumn<string>(
                 name: "NomeCompleto",
                 table: "AspNetUsers",
@@ -46,37 +49,6 @@ namespace RecommenduWeb.Data.Migrations
                 defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "Postagem",
-                columns: table => new
-                {
-                    PostagemId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PublicoAlvo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgPostagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DtPostagem = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Curtidas = table.Column<int>(type: "int", nullable: false),
-                    Modelo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Fabricante = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LinkProduto = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TempoUso = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Endereco = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Contato = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Postagem", x => x.PostagemId);
-                    table.ForeignKey(
-                        name: "FK_Postagem_AspNetUsers_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "comentarioPostagem",
                 columns: table => new
                 {
@@ -89,12 +61,59 @@ namespace RecommenduWeb.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_comentarioPostagem", x => x.ComentId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostagemProduto",
+                columns: table => new
+                {
+                    PostagemId = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [PostagemSequence]"),
+                    Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PublicoAlvo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgPostagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DtPostagem = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Curtidas = table.Column<int>(type: "int", nullable: false),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Modelo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fabricante = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LinkProduto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TempoUso = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostagemProduto", x => x.PostagemId);
                     table.ForeignKey(
-                        name: "FK_comentarioPostagem_Postagem_PostagemId",
-                        column: x => x.PostagemId,
-                        principalTable: "Postagem",
-                        principalColumn: "PostagemId",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_PostagemProduto_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostagemServico",
+                columns: table => new
+                {
+                    PostagemId = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [PostagemSequence]"),
+                    Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PublicoAlvo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgPostagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DtPostagem = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Curtidas = table.Column<int>(type: "int", nullable: false),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NomeServico = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Endereco = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Contato = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostagemServico", x => x.PostagemId);
+                    table.ForeignKey(
+                        name: "FK_PostagemServico_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -103,8 +122,13 @@ namespace RecommenduWeb.Data.Migrations
                 column: "PostagemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Postagem_UsuarioId",
-                table: "Postagem",
+                name: "IX_PostagemProduto_UsuarioId",
+                table: "PostagemProduto",
+                column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostagemServico_UsuarioId",
+                table: "PostagemServico",
                 column: "UsuarioId");
         }
 
@@ -115,7 +139,10 @@ namespace RecommenduWeb.Data.Migrations
                 name: "comentarioPostagem");
 
             migrationBuilder.DropTable(
-                name: "Postagem");
+                name: "PostagemProduto");
+
+            migrationBuilder.DropTable(
+                name: "PostagemServico");
 
             migrationBuilder.DropColumn(
                 name: "Cidade",
@@ -136,6 +163,9 @@ namespace RecommenduWeb.Data.Migrations
             migrationBuilder.DropColumn(
                 name: "Reputacao",
                 table: "AspNetUsers");
+
+            migrationBuilder.DropSequence(
+                name: "PostagemSequence");
         }
     }
 }

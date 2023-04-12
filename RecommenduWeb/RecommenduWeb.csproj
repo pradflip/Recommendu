@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Resources\Images\" />
+    <Folder Include="wwwroot\Resources\PostImages\" />
   </ItemGroup>
 
 </Project>
