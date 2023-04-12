@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using RecommenduWeb.Data;
 using RecommenduWeb.Models;
 using RecommenduWeb.Models.ViewModels;
@@ -9,10 +10,33 @@ namespace RecommenduWeb.Services
     public class PostService
     {
         private readonly ApplicationDbContext _context;
+        private readonly UsuarioService _usuarioService;
 
-        public PostService(ApplicationDbContext context)
+        public PostService(ApplicationDbContext context, UsuarioService usuarioService)
         {
             _context = context;
+            _usuarioService = usuarioService;
+        }
+
+        public async Task<List<Postagem>> TodasPostagensAsync()
+        {
+            return await _context.Postagem.Include(p => p.Usuario).ToListAsync();
+        }
+
+        public async Task<Postagem> PostagemPorPostagemIdAsync(int postId)
+        {
+            Postagem postagem = null;
+            var post = await _context.Postagem.Include(p => p.Usuario).Where(p => p.PostagemId == postId).ToListAsync();
+            foreach (var item in post)
+            {
+                postagem = item;
+            }
+            return postagem;
+        }
+
+        public async Task<List<Postagem>> PostagemPorUsuarioIdAsync(string userId)
+        {
+            return await _context.Postagem.Where(u => u.Usuario.Id == userId).ToListAsync();
         }
 
         public async Task PublicarAsync(PostagemViewModel vm, Usuario user, string webRoot)
@@ -47,6 +71,7 @@ namespace RecommenduWeb.Services
                         ImgPostagem = stringArquivo,
                         DtPostagem = DateTime.Now,
                         Usuario = user,
+                        NomeServico = vm.NomeServico,
                         Endereco = vm.Endereco,
                         Contato = vm.Contato
                     };
@@ -74,6 +99,27 @@ namespace RecommenduWeb.Services
                 }
             }
             return nomeImagem;
+        }
+
+        public async Task AtualizarCurtidasAsync(int postId, int acao)
+        {
+            var post = await PostagemPorPostagemIdAsync(postId);
+            if (acao == 0)
+            {
+                post.Curtidas--;
+                await _usuarioService.AtualizaReputacaoAsync(post.Usuario.Id, 0);
+            }
+            else if (acao == 1)
+            {
+                post.Curtidas++;
+                await _usuarioService.AtualizaReputacaoAsync(post.Usuario.Id, 1);
+            }
+            else
+            {
+                throw new Exception("Erro ao atualizar curtidas");
+            }
+            _context.Postagem.Update(post);
+            await _context.SaveChangesAsync();
         }
     }
 }

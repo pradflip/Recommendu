@@ -18,3 +18,23 @@ function teste() {
 
     alert("Id: " + idEstado + ", Sigla: " + txtEstado);
 }
+
+function CarregaForm() {
+    var categoria = document.getElementById('slcCategoria').value.toString();
+    
+    if (categoria === "1") {
+        document.getElementById("formProduto").hidden = false;
+        document.getElementById("formServico").hidden = true;
+        document.getElementById("btnSubmit").disabled = false;
+    }
+    else if (categoria === "2") {
+        document.getElementById("formProduto").hidden = true;
+        document.getElementById("formServico").hidden = false;
+        document.getElementById("btnSubmit").disabled = false;
+    }
+    else {
+        document.getElementById("formProduto").hidden = true;
+        document.getElementById("formServico").hidden = true;
+        document.getElementById("btnSubmit").disabled = true;
+    }
+}

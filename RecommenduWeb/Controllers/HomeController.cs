@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using RecommenduWeb.Models;
 using System.Diagnostics;
 
@@ -7,15 +8,25 @@ namespace RecommenduWeb.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly SignInManager<Usuario> _signInManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, SignInManager<Usuario> signInManager)
         {
             _logger = logger;
+            _signInManager = signInManager;
         }
 
         public IActionResult Index()
         {
-            return View();
+            if (_signInManager.IsSignedIn(User))
+            {
+                //var id = _signInManager.UserManager.GetUserId(User);
+                return Redirect("~/Usuarios");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public IActionResult Privacy()

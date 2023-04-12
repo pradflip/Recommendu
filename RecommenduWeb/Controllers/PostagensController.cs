@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +14,7 @@ using RecommenduWeb.Services;
 
 namespace RecommenduWeb.Controllers
 {
+    [Authorize]
     public class PostagensController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -31,9 +33,12 @@ namespace RecommenduWeb.Controllers
         // GET: Postagens
         public async Task<IActionResult> Index()
         {
-              return _context.Postagem != null ? 
-                          View(await _context.Postagem.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Postagem'  is null.");
+            //var user = await _userManager.GetUserAsync(User);
+            var listaPost = await _postService.TodasPostagensAsync();
+
+            return _context.Postagem != null ?
+                        View(listaPost) :
+                        Problem("Entity set 'ApplicationDbContext.Postagem'  is null.");
         }
 
         // GET: Postagens/Details/5
@@ -65,13 +70,12 @@ namespace RecommenduWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ImgPostagem,Categoria,Descricao,PublicoAlvo")] PostagemViewModel vm)
+        public async Task<IActionResult> Create([Bind("Categoria,Descricao,PublicoAlvo,ImgPostagem,Modelo,Fabricante,LinkProduto,TempoUso,NomeServico,Endereco,Contato")] PostagemViewModel vm)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(HttpContext.User);
-                var webRoot = _environment.WebRootPath + @"\Resources\Images";
-
+                var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
                 await _postService.PublicarAsync(vm, user, webRoot);
 
                 return RedirectToAction(nameof(Index));
@@ -162,14 +166,24 @@ namespace RecommenduWeb.Controllers
             {
                 _context.Postagem.Remove(postagem);
             }
-            
+
             await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Curtir(int id)
+        {
+            var post = await _postService.PostagemPorPostagemIdAsync(id);
+            if (post != null)
+            {
+                await _postService.AtualizarCurtidasAsync(post.PostagemId, 1);
+            }
             return RedirectToAction(nameof(Index));
         }
 
         private bool PostagemExists(int id)
         {
-          return (_context.Postagem?.Any(e => e.PostagemId == id)).GetValueOrDefault();
+            return (_context.Postagem?.Any(e => e.PostagemId == id)).GetValueOrDefault();
         }
     }
 }

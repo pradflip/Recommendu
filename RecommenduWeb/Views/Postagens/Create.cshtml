@@ -14,14 +14,9 @@
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-control">
-                <label asp-for="ImgPostagem" class="control-label"></label>
-                <input asp-for="ImgPostagem" class="form-control" />
-                <span asp-validation-for="ImgPostagem" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Categoria" id="lblCategoria" class="control-label"></label>
-                <select asp-for="Categoria" id="slcCategoria" class="form-control">
+                <select asp-for="Categoria" id="slcCategoria" class="form-control" onchange="CarregaForm()">
                     <option value="0" style="color: gray" selected>Selecione...</option>
                     <option value="1">Produto</option>
                     <option value="2">Serviço</option>
@@ -38,8 +33,52 @@
                 <input asp-for="PublicoAlvo" class="form-control" />
                 <span asp-validation-for="PublicoAlvo" class="text-danger"></span>
             </div>
+            <div class="form-control">
+                <label asp-for="ImgPostagem" class="control-label"></label>
+                <input asp-for="ImgPostagem" class="form-control" />
+                <span asp-validation-for="ImgPostagem" class="text-danger"></span>
+            </div>
+            <div id="formProduto" hidden="true">
+                <div class="form-group">
+                    <label asp-for="Modelo" class="control-label"></label>
+                    <input asp-for="Modelo" class="form-control" />
+                    <span asp-validation-for="Modelo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Fabricante" class="control-label"></label>
+                    <input asp-for="Fabricante" class="form-control" />
+                    <span asp-validation-for="Fabricante" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LinkProduto" class="control-label"></label>
+                    <input asp-for="LinkProduto" class="form-control" />
+                    <span asp-validation-for="LinkProduto" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TempoUso" class="control-label"></label>
+                    <input asp-for="TempoUso" class="form-control" />
+                    <span asp-validation-for="TempoUso" class="text-danger"></span>
+                </div>
+            </div>
+            <div id="formServico" hidden="true">
+                <div class="form-group">
+                    <label asp-for="NomeServico" class="control-label"></label>
+                    <input asp-for="NomeServico" class="form-control" />
+                    <span asp-validation-for="NomeServico" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Endereco" class="control-label"></label>
+                    <input asp-for="Endereco" class="form-control" />
+                    <span asp-validation-for="Endereco" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Contato" class="control-label"></label>
+                    <input asp-for="Contato" class="form-control" />
+                    <span asp-validation-for="Contato" class="text-danger"></span>
+                </div>
+            </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" id="btnSubmit" value="Create" class="btn btn-primary" disabled="true" />
             </div>
         </form>
     </div>
@@ -52,5 +91,6 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script scr="~/js/site.js"></script>
     }
 }
