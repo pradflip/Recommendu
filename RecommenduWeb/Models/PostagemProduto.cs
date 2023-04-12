@@ -9,8 +9,8 @@
 
         public PostagemProduto() { }
 
-        public PostagemProduto(int postagemId, string categoria, string descricao, string publicoAlvo, DateTime dtPostagem, int curtidas, Usuario usuario, string modelo, string fabricante, string linkProduto, DateTime tempoUso)
-            : base (postagemId, categoria, descricao, publicoAlvo, dtPostagem, curtidas, usuario)
+        public PostagemProduto(int postagemId, string categoria, string descricao, string publicoAlvo, string imgPostagem, DateTime dtPostagem, int curtidas, Usuario usuario, string modelo, string fabricante, string linkProduto, DateTime tempoUso)
+            : base (postagemId, categoria, descricao, publicoAlvo, imgPostagem, dtPostagem, curtidas, usuario)
         {
             Modelo = modelo;
             Fabricante = fabricante;

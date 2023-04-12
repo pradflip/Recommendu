@@ -1,0 +1,55 @@
+﻿@model IEnumerable<RecommenduWeb.Models.Postagem>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+<h2 style="color: red">Slide 7</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ImgPostagem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublicoAlvo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    <img src="~/Resources/Images/@item.ImgPostagem" class="rounded-circle" width="50" height="50" asp-append-version="true" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categoria)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublicoAlvo)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PostagemId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PostagemId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PostagemId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

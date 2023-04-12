@@ -33,7 +33,7 @@ namespace RecommenduWeb.Data.Migrations
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
-                name: "ImgPerfil",
+                name: "ImagemPerfil",
                 table: "AspNetUsers",
                 type: "nvarchar(max)",
                 nullable: true);
@@ -51,18 +51,20 @@ namespace RecommenduWeb.Data.Migrations
                 {
                     PostagemId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PublicoAlvo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgPostagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DtPostagem = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Curtidas = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Modelo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Fabricante = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LinkProduto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TempoUso = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Endereco = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Contato = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Contato = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,8 +73,7 @@ namespace RecommenduWeb.Data.Migrations
                         name: "FK_Postagem_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -96,34 +97,9 @@ namespace RecommenduWeb.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "imagemPostagem",
-                columns: table => new
-                {
-                    ImgId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Imagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostagemId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_imagemPostagem", x => x.ImgId);
-                    table.ForeignKey(
-                        name: "FK_imagemPostagem_Postagem_PostagemId",
-                        column: x => x.PostagemId,
-                        principalTable: "Postagem",
-                        principalColumn: "PostagemId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_comentarioPostagem_PostagemId",
                 table: "comentarioPostagem",
-                column: "PostagemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_imagemPostagem_PostagemId",
-                table: "imagemPostagem",
                 column: "PostagemId");
 
             migrationBuilder.CreateIndex(
@@ -139,9 +115,6 @@ namespace RecommenduWeb.Data.Migrations
                 name: "comentarioPostagem");
 
             migrationBuilder.DropTable(
-                name: "imagemPostagem");
-
-            migrationBuilder.DropTable(
                 name: "Postagem");
 
             migrationBuilder.DropColumn(
@@ -153,7 +126,7 @@ namespace RecommenduWeb.Data.Migrations
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
-                name: "ImgPerfil",
+                name: "ImagemPerfil",
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
