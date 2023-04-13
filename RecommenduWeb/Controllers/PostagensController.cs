@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using RecommenduWeb.Data;
 using RecommenduWeb.Models;
 using RecommenduWeb.Models.ViewModels;
@@ -171,13 +172,25 @@ namespace RecommenduWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Curtir(int id)
+        public async Task<IActionResult> Curtir(int postId, string cat, int acao)
         {
-            var post = await _postService.PostagemPorPostagemIdAsync(id);
-            if (post != null)
+            if (cat == "Produto")
             {
-                await _postService.AtualizarCurtidasAsync(post.PostagemId, 1);
+                var prod = await _postService.BuscarProdutosPorIdAsync(postId);
+                if (prod != null)
+                {
+                    await _postService.AtualizarCurtidasAsync(acao, prod, null);
+                }
             }
+            else if (cat == "Serviços")
+            {
+                var serv = await _postService.BuscarServicosPorIdAsync(postId);
+                if (serv != null)
+                {
+                    await _postService.AtualizarCurtidasAsync(acao, null, serv);
+                }
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

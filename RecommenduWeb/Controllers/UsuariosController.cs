@@ -15,29 +15,50 @@ namespace RecommenduWeb.Controllers
         private readonly PostService _postService;
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
+        private readonly IWebHostEnvironment _environment;
 
-        public UsuariosController(UsuarioService usuarioService, PostService postService, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager)
+        public UsuariosController(UsuarioService usuarioService, PostService postService, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, IWebHostEnvironment environment)
         {
             _usuarioService = usuarioService;
             _postService = postService;
             _userManager = userManager;
             _signInManager = signInManager;
+            _environment = environment;
         }
 
 
-        //[Route("/Usuarios/")] - Verificar como pegar nome do usuario
         public async Task<IActionResult> Index()
         {
-            //var user = await _userManager.GetUserAsync(HttpContext.User);
             var user = await _signInManager.UserManager.GetUserAsync(User);
-            var foto = user.ImagemPerfil;
-            ViewData["Foto"] = foto;
-            ViewData["Usuario"] = user.UserName;
-            ViewData["Reputacao"] = _usuarioService.ListaReputacao(user);
+            var listaProd = await _postService.BuscarProdutoPorUsuarioAsync(user.Id);
+            var listaServ = await _postService.BuscarServicoPorUsuarioAsync(user.Id);
+            var vm = new UsuarioViewModel()
+            { 
+                UsuarioId = user.Id,
+                UserName = user.UserName,
+                NomeCompleto = user.NomeCompleto,
+                Reputacao = user.Reputacao,
+                FotoPerfil = user.ImagemPerfil,
+                PostagemProduto = listaProd,
+                PostagemServico = listaServ
+            };
 
-            var listaPost = await _postService.PostagemPorUsuarioIdAsync(user.Id);
-            
-            return View(listaPost);
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AtualizarFoto([Bind("PerfilFile")] UsuarioViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                var webRoot = _environment.WebRootPath + @"\Resources\ProfileImages";
+                await _usuarioService.AtualizarFotoPerfilAsync(vm, user, webRoot);
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(vm);
         }
     }
 }

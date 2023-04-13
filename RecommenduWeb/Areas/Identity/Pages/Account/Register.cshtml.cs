@@ -171,7 +171,9 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                string profileImage = "default-profile-image.png";
+                Random random = new Random();
+                int num = random.Next(1, 3);
+                string profileImage = $"default-profile-image-{num}.png";
                 var user = new Usuario { NomeCompleto = Input.NomeCompleto, UserName = Input.UserName, Email = Input.Email, Cidade = Input.Cidade, Estado = Input.Estado, ImagemPerfil = profileImage };
                 //var user = CreateUser();
 
