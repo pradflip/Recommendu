@@ -4,11 +4,9 @@ namespace RecommenduWeb.Models
 {
     public class PostagemProduto : Postagem
     {
-        [Required]
-        public string Modelo { get; set; }
+        public string? Modelo { get; set; }
         public string? Fabricante { get; set; }
         public string? LinkProduto { get; set;}
-        public DateTime? TempoUso { get; set; }
 
         public PostagemProduto() { }
 
@@ -18,7 +16,6 @@ namespace RecommenduWeb.Models
             Modelo = modelo;
             Fabricante = fabricante;
             LinkProduto = linkProduto;
-            TempoUso = tempoUso;
         }
     }
 }

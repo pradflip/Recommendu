@@ -1,4 +1,4 @@
-﻿@model RecommenduWeb.Models.Postagem
+﻿@model RecommenduWeb.Models.ViewModels.PostagemViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,12 +12,12 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="PostagemId" />
             <div class="form-group">
                 <label asp-for="Categoria" class="control-label"></label>
-                <input asp-for="Categoria" class="form-control" />
+                <input asp-for="Categoria" class="form-control" readonly />
                 <span asp-validation-for="Categoria" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -30,16 +30,47 @@
                 <input asp-for="PublicoAlvo" class="form-control" />
                 <span asp-validation-for="PublicoAlvo" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DtPostagem" class="control-label"></label>
-                <input asp-for="DtPostagem" class="form-control" />
-                <span asp-validation-for="DtPostagem" class="text-danger"></span>
+            <div class="form-control">
+                <label asp-for="PostFile" class="control-label"></label>
+                <input asp-for="PostFile" class="form-control" />
+                <span asp-validation-for="PostFile" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Curtidas" class="control-label"></label>
-                <input asp-for="Curtidas" class="form-control" />
-                <span asp-validation-for="Curtidas" class="text-danger"></span>
-            </div>
+            @if (Model.Categoria.Equals("Produto"))
+            {
+                <div class="form-group">
+                    <label asp-for="Modelo" class="control-label"></label>
+                    <input asp-for="Modelo" class="form-control" />
+                    <span asp-validation-for="Modelo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Fabricante" class="control-label"></label>
+                    <input asp-for="Fabricante" class="form-control" />
+                    <span asp-validation-for="Fabricante" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LinkProduto" class="control-label"></label>
+                    <input asp-for="LinkProduto" class="form-control" />
+                    <span asp-validation-for="LinkProduto" class="text-danger"></span>
+                </div>
+            }
+            else if (Model.Categoria.Equals("Serviço"))
+            {
+                <div class="form-group">
+                    <label asp-for="NomeServico" class="control-label"></label>
+                    <input asp-for="NomeServico" class="form-control" />
+                    <span asp-validation-for="NomeServico" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Endereco" class="control-label"></label>
+                    <input asp-for="Endereco" class="form-control" />
+                    <span asp-validation-for="Endereco" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Contato" class="control-label"></label>
+                    <input asp-for="Contato" class="form-control" />
+                    <span asp-validation-for="Contato" class="text-danger"></span>
+                </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -48,7 +79,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <input type="button" class="btn btn-outline-dark" onclick="history.go(-1)" value="voltar" />
 </div>
 
 @section Scripts {

@@ -116,6 +116,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
 
                 // Login com userName ou Email
                 var userName = String.Empty;
+                Input.Login = Input.Login.ToLower();
                 switch (Input.Login.Contains("@"))
                 {
                     case true:

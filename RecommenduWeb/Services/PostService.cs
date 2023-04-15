@@ -19,9 +19,14 @@ namespace RecommenduWeb.Services
             _usuarioService = usuarioService;
         }
 
-        public async Task<List<Postagem>> TodasPostagensAsync()
+        public async Task<List<PostagemProduto>> BuscarTodosProdutosAsync()
         {
-            return await _context.Postagem.Include(p => p.Usuario).ToListAsync();
+            return await _context.PostagemProduto.Include(p => p.Usuario).ToListAsync();
+        }
+
+        public async Task<List<PostagemServico>> BuscarTodosServicosAsync()
+        {
+            return await _context.PostagemServico.Include(p => p.Usuario).ToListAsync();
         }
 
         public async Task<PostagemProduto> BuscarProdutosPorIdAsync(int postId)
@@ -58,11 +63,10 @@ namespace RecommenduWeb.Services
 
         public async Task PublicarAsync(PostagemViewModel vm, Usuario user, string webRoot)
         {
-            int tipoPostagem = int.Parse(vm.Categoria);
-            string stringArquivo = await UploadImagensAsync(vm.ImgPostagem, webRoot);
-            switch (tipoPostagem)
+            string stringArquivo = await UploadImagemAsync(vm.PostFile, webRoot, null);
+            switch (vm.Categoria)
             {
-                case 1:
+                case "1":
                     var produto = new PostagemProduto
                     {
                         Categoria = "Produto",
@@ -73,13 +77,12 @@ namespace RecommenduWeb.Services
                         Usuario = user,
                         Modelo = vm.Modelo,
                         Fabricante = vm.Fabricante,
-                        LinkProduto = vm.LinkProduto,
-                        TempoUso = vm.TempoUso
+                        LinkProduto = vm.LinkProduto
                     };
                     await _context.AddAsync(produto);
                     await _context.SaveChangesAsync();
                     break;
-                case 2:
+                case "2":
                     var servico = new PostagemServico
                     {
                         Categoria = "Serviço",
@@ -98,11 +101,116 @@ namespace RecommenduWeb.Services
                 default:
                     throw new Exception("Problemas ao tentar publicar!");
             }
-
-
         }
 
-        public async Task<string> UploadImagensAsync(IFormFile imagem, string webRoot)
+        public async Task DeletarPostagemAsync(string cat, string webRoot, PostagemProduto? prod, PostagemServico? serv)
+        {
+            string nomeImagem;
+            if (cat.Equals("Produto") && prod != null)
+            {
+                nomeImagem = prod.ImgPostagem;
+                _context.Remove(prod);
+                DeletarImagem(webRoot, nomeImagem);
+                await _context.SaveChangesAsync();
+
+                await _usuarioService.RemoverReputacaoPorPostagem(prod.Usuario.Id, prod.Curtidas);
+            }
+            else if (cat.Equals("Serviço") && serv != null)
+            {
+                nomeImagem = serv.ImgPostagem;
+                _context.Remove(serv);
+                DeletarImagem(webRoot, nomeImagem);
+                await _context.SaveChangesAsync();
+
+                await _usuarioService.RemoverReputacaoPorPostagem(serv.Usuario.Id, serv.Curtidas);
+            }
+            else { throw new Exception("Problemas ao tentar deletar a publicação: categoria ou publicação não identificada."); }
+        }
+
+        public async Task AtualizarPostagemAsync(PostagemViewModel vm, string webRoot, PostagemProduto? prod, PostagemServico? serv)
+        {
+            string stringArquivo;
+
+            switch (vm.Categoria)
+            {
+                case "Produto":
+                    stringArquivo = await UploadImagemAsync(vm.PostFile, webRoot, prod.ImgPostagem);
+                    prod.Descricao = vm.Descricao;
+                    prod.PublicoAlvo = vm.PublicoAlvo;
+                    prod.ImgPostagem = stringArquivo;
+                    prod.Modelo = vm.Modelo;
+                    prod.Fabricante = vm.Fabricante;
+                    prod.LinkProduto = vm.LinkProduto;
+
+                    _context.Update(prod);
+                    await _context.SaveChangesAsync();
+                    break;
+                case "Serviço":
+                    stringArquivo = await UploadImagemAsync(vm.PostFile, webRoot, serv.ImgPostagem);
+                    serv.Descricao = vm.Descricao;
+                    serv.PublicoAlvo = vm.PublicoAlvo;
+                    serv.ImgPostagem = stringArquivo;
+                    serv.NomeServico = vm.NomeServico;
+                    serv.Endereco = vm.Endereco;
+                    serv.Contato = vm.Contato;
+
+                    _context.Update(serv);
+                    await _context.SaveChangesAsync();
+                    break;
+                default:
+                    throw new Exception("Problemas ao tentar publicar!");
+            }
+        }
+
+        public async Task AtualizarCurtidasAsync(int acao, PostagemProduto? prod, PostagemServico? serv)
+        {
+            string userId = null;
+
+            // categoria = produto
+            if (prod != null)
+            {
+                // ação = dislike
+                if (acao == 0)
+                {
+                    prod.Curtidas--;
+                    prod.Curtidas = prod.Curtidas < 0 ? prod.Curtidas = 0 : prod.Curtidas;
+                }
+                // ação = like
+                else if (acao == 1)
+                {
+                    prod.Curtidas++;
+                    prod.Curtidas = prod.Curtidas < 0 ? prod.Curtidas = 0 : prod.Curtidas;
+                }
+
+                userId = prod.Usuario.Id;
+                _context.PostagemProduto.Update(prod);
+                await _context.SaveChangesAsync();
+            }
+            // categoria = serviço
+            else if (serv != null)
+            {
+                // ação = dislike
+                if (acao == 0)
+                {
+                    serv.Curtidas--;
+                    serv.Curtidas = serv.Curtidas < 0 ? serv.Curtidas = 0 : serv.Curtidas;
+                }
+                // ação = like
+                else if (acao == 1)
+                {
+                    serv.Curtidas++;
+                    serv.Curtidas = serv.Curtidas < 0 ? serv.Curtidas = 0 : serv.Curtidas;
+                }
+
+                userId = serv.Usuario.Id;
+                _context.PostagemServico.Update(serv);
+                await _context.SaveChangesAsync();
+            }
+
+            await _usuarioService.AtualizaReputacaoAsync(userId, acao);
+        }
+
+        public async Task<string> UploadImagemAsync(IFormFile imagem, string webRoot, string? nomeAntigo)
         {
             string nomeImagem = null;
             if (imagem != null)
@@ -114,63 +222,24 @@ namespace RecommenduWeb.Services
                 {
                     imagem.CopyTo(fileStream);
                 }
+                if (nomeAntigo != null)
+                {
+                    string pathDelete = Path.Combine(diretorio, nomeAntigo);
+                    File.Delete(pathDelete);
+                }
             }
             return nomeImagem;
         }
 
-        public async Task AtualizarCurtidasAsync(int acao, PostagemProduto? prod, PostagemServico? serv)
+        public void DeletarImagem(string webRoot, string? nomeImagem)
         {
-            try
+            if (webRoot != null && nomeImagem != null)
             {
-                string userId = null;
-
-                // categoria = produto
-                if (prod != null)
-                {
-                    // ação = dislike
-                    if (acao == 0)
-                    {
-                        prod.Curtidas--;
-                        prod.Curtidas = prod.Curtidas < 0 ? prod.Curtidas = 0 : prod.Curtidas;
-                    }
-                    // ação = like
-                    else if (acao == 1)
-                    {
-                        prod.Curtidas--;
-                        prod.Curtidas = prod.Curtidas < 0 ? prod.Curtidas = 0 : prod.Curtidas;
-                    }
-
-                    userId = prod.Usuario.Id;
-                    _context.PostagemProduto.Update(prod);
-                    await _context.SaveChangesAsync();
-                }
-                // categoria = serviço
-                else if (serv != null)
-                {
-                    if (acao == 0)
-                    {
-                        serv.Curtidas--;
-                        serv.Curtidas = serv.Curtidas < 0 ? serv.Curtidas = 0 : serv.Curtidas;
-                    }
-                    else if (acao == 1)
-                    {
-                        serv.Curtidas--;
-                        serv.Curtidas = serv.Curtidas < 0 ? serv.Curtidas = 0 : serv.Curtidas;
-                    }
-
-                    userId = serv.Usuario.Id;
-                    _context.PostagemServico.Update(serv);
-                    await _context.SaveChangesAsync();
-                }
-
-                await _usuarioService.AtualizaReputacaoAsync(userId, acao);
+                string diretorio = webRoot;
+                string pathDelete = Path.Combine(diretorio, nomeImagem);
+                File.Delete(pathDelete);
             }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao atualizar curtidas da postagem." + ex.Message);
-            }
-
-
+            else { throw new Exception("Problemas ao tentar deletar imagem: Caminho ou arquivo não encontrado."); }
         }
 
         public string TempoPostagem(DateTime dt)

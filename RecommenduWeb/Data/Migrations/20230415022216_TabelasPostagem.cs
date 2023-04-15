@@ -74,11 +74,10 @@ namespace RecommenduWeb.Data.Migrations
                     ImgPostagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DtPostagem = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Curtidas = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Modelo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Modelo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Fabricante = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LinkProduto = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TempoUso = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    LinkProduto = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -101,8 +100,8 @@ namespace RecommenduWeb.Data.Migrations
                     ImgPostagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DtPostagem = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Curtidas = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NomeServico = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    NomeServico = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Endereco = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Contato = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },

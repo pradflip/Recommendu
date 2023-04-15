@@ -323,11 +323,7 @@ namespace RecommenduWeb.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Modelo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("TempoUso")
-                        .HasColumnType("datetime2");
 
                     b.ToTable("PostagemProduto");
                 });
@@ -343,7 +339,6 @@ namespace RecommenduWeb.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NomeServico")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("PostagemServico");

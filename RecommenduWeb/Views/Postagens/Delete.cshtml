@@ -1,4 +1,4 @@
-﻿@model RecommenduWeb.Models.Postagem
+﻿@model RecommenduWeb.Models.ViewModels.PostagemViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -6,9 +6,9 @@
 }
 
 <h1>Delete</h1>
-<h2 style="color: red">Avaliar necessidade</h2>
+<h2 style="color: red">Remover lista de informações, deixar apenas a msg e botao, fazer essa tela aparecer menor em outras telas</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Deseja deletar essa publicação? A quantidade de curtidas será subtraída da sua reputação.</h3>
 <div>
     <h4>Postagem</h4>
     <hr />
@@ -47,7 +47,8 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="PostagemId" />
+        <input type="hidden" asp-for="Categoria" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="button" class="btn btn-outline-dark" onclick="history.go(-1)" value="voltar" />
     </form>
 </div>

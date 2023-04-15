@@ -46,6 +46,18 @@ namespace RecommenduWeb.Services
             }
         }
 
+        public async Task RemoverReputacaoPorPostagem(string userId, int likes)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                user.Reputacao -= likes;
+                await _userManager.UpdateAsync(user);
+            }
+            else { throw new Exception("Erro ao tentar atualizar reputação."); }
+
+        }
+
         public async Task AtualizarFotoPerfilAsync(UsuarioViewModel vm, Usuario user, string webRoot)
         {
             string stringArquivo = await UploadFotoPerfilAsync(vm.PerfilFile, webRoot, user.ImagemPerfil);
@@ -74,6 +86,33 @@ namespace RecommenduWeb.Services
                 }
             }
             return nomeImagem;
+        }
+
+        public async Task DeletarFotoPerfilAsync(Usuario user, string webRoot)
+        {
+            string stringArquivo = DeletarFotoDoDiretorio(webRoot, user.ImagemPerfil);
+            user.ImagemPerfil = stringArquivo;
+            await _userManager.UpdateAsync(user);
+        }
+
+        public string DeletarFotoDoDiretorio(string diretorio, string? nomeImagem)
+        {
+
+            if (diretorio != null)
+            {
+                Random random = new Random();
+
+                if (nomeImagem != null && !nomeImagem.Contains("default-profile-image-"))
+                {
+                    string pathDelete = Path.Combine(diretorio, nomeImagem);
+                    File.Delete(pathDelete);
+                }
+                int num = random.Next(1, 3);
+                string imagemPadrao = $"default-profile-image-{num}.png";
+
+                return imagemPadrao;
+            }
+            else { throw new Exception("Problemas ao tentar deletar imagem: Caminho ou arquivo não encontrado."); }
         }
     }
 }

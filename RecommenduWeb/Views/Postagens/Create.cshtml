@@ -34,9 +34,9 @@
                 <span asp-validation-for="PublicoAlvo" class="text-danger"></span>
             </div>
             <div class="form-control">
-                <label asp-for="ImgPostagem" class="control-label"></label>
-                <input asp-for="ImgPostagem" class="form-control" />
-                <span asp-validation-for="ImgPostagem" class="text-danger"></span>
+                <label asp-for="PostFile" class="control-label"></label>
+                <input asp-for="PostFile" class="form-control" />
+                <span asp-validation-for="PostFile" class="text-danger"></span>
             </div>
             <div id="formProduto" hidden="true">
                 <div class="form-group">
@@ -53,11 +53,6 @@
                     <label asp-for="LinkProduto" class="control-label"></label>
                     <input asp-for="LinkProduto" class="form-control" />
                     <span asp-validation-for="LinkProduto" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="TempoUso" class="control-label"></label>
-                    <input asp-for="TempoUso" class="form-control" />
-                    <span asp-validation-for="TempoUso" class="text-danger"></span>
                 </div>
             </div>
             <div id="formServico" hidden="true">
@@ -85,7 +80,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <input type="button" class="btn btn-outline-dark" onclick="history.go(-1)" value="voltar" />
 </div>
 
 @section Scripts {

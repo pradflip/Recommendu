@@ -4,15 +4,10 @@ namespace RecommenduWeb.Models
 {
     public abstract class Postagem
     {
-        [Key]
         public int PostagemId { get; set; }
-        [Required]
         public string Categoria { get; set; }
-        [Required]
         public string Descricao { get; set; }
-        [Required]
         public string PublicoAlvo { get; set; }
-        [Required]
         public string ImgPostagem { get; set; }
         public DateTime DtPostagem { get; set; }
         public int Curtidas { get; set; } = 0;

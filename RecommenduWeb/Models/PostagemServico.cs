@@ -4,8 +4,7 @@ namespace RecommenduWeb.Models
 {
     public class PostagemServico : Postagem
     {
-        [Required]
-        public string NomeServico { get; set; }
+        public string? NomeServico { get; set; }
         public string? Endereco { get; set; }
         public string? Contato { get; set; }
 

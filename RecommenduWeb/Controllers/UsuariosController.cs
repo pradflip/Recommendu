@@ -33,7 +33,7 @@ namespace RecommenduWeb.Controllers
             var listaProd = await _postService.BuscarProdutoPorUsuarioAsync(user.Id);
             var listaServ = await _postService.BuscarServicoPorUsuarioAsync(user.Id);
             var vm = new UsuarioViewModel()
-            { 
+            {
                 UsuarioId = user.Id,
                 UserName = user.UserName,
                 NomeCompleto = user.NomeCompleto,
@@ -48,6 +48,7 @@ namespace RecommenduWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Usuarios/AtualizarFoto")]
         public async Task<IActionResult> AtualizarFoto([Bind("PerfilFile")] UsuarioViewModel vm)
         {
             if (ModelState.IsValid)
@@ -59,6 +60,16 @@ namespace RecommenduWeb.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);
+        }
+
+        [Route("Usuarios/DeletarFoto")]
+        public async Task<IActionResult> DeletarFoto()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var webRoot = _environment.WebRootPath + @"\Resources\ProfileImages";
+            await _usuarioService.DeletarFotoPerfilAsync(user, webRoot);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

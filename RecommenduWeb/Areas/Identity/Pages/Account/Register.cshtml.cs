@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using Humanizer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -174,7 +175,8 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
                 Random random = new Random();
                 int num = random.Next(1, 3);
                 string profileImage = $"default-profile-image-{num}.png";
-                var user = new Usuario { NomeCompleto = Input.NomeCompleto, UserName = Input.UserName, Email = Input.Email, Cidade = Input.Cidade, Estado = Input.Estado, ImagemPerfil = profileImage };
+                Input.UserName = Input.UserName.ToLower();
+                var user = new Usuario { NomeCompleto = Input.NomeCompleto.Titleize(), UserName = Input.UserName, Email = Input.Email, Cidade = Input.Cidade, Estado = Input.Estado, ImagemPerfil = profileImage };
                 //var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);

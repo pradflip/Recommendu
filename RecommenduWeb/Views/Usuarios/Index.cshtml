@@ -8,9 +8,10 @@
 <div class="row justify-content-center p-3">
     <div class="col-3">
         <img src="~/Resources/ProfileImages/@Model.FotoPerfil" class="rounded-circle" width="200" height="200" asp-append-version="true" />
+        <button class="btn btn-danger" onclick="location.href='@Url.Action("DeletarFoto", "Usuarios")'">Excluir foto</button>
         <form asp-action="AtualizarFoto" enctype="multipart/form-data">
             <div class="form-control">
-                <label asp-for="PerfilFile" class="control-label"></label>
+                <label asp-for="PerfilFile" class="control-label">Escolha uma foto:</label>
                 <input asp-for="PerfilFile" class="form-control" />
                 <span asp-validation-for="PerfilFile" class="text-danger"></span>
                 <input type="submit" id="btnSubmit" value="Atualizar" class="btn btn-primary" />
@@ -21,6 +22,9 @@
         <h1>@Model.NomeCompleto</h1>
         <h2>@@@Model.UserName</h2>
         <h2 class="text-success">Reputação: @Model.Reputacao</h2>
+        <p>
+            <a asp-action="Create" asp-controller="Postagens" class="btn btn-dark">Nova publicação</a>
+        </p>
     </div>
 </div>
 
@@ -90,9 +94,9 @@
                     @Html.DisplayFor(modelItem => item.LinkProduto)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.PostagemId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.PostagemId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.PostagemId">Delete</a>
+                    <a asp-controller="Postagens" asp-action="Edit" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Edit</a> |
+                    <a asp-controller="Postagens" asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Details</a> |
+                    <a asp-controller="Postagens" asp-action="Delete" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Delete</a>
                 </td>
             </tr>
         }
@@ -164,9 +168,9 @@
                     @Html.DisplayFor(modelItem => item.Contato)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.PostagemId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.PostagemId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.PostagemId">Delete</a>
+                    <a asp-controller="Postagens" asp-action="Edit" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Edit</a> |
+                    <a asp-controller="Postagens" asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Details</a> |
+                    <a asp-controller="Postagens" asp-action="Delete" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Delete</a>
                 </td>
             </tr>
         }
