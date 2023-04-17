@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.ML;
 using RecommenduWeb.Data;
 using RecommenduWeb.Models;
 using RecommenduWeb.Models.ViewModels;
 using RecommenduWeb.Services;
+using static RecommenduWeb.AnaliseDescricao;
 
 namespace RecommenduWeb.Controllers
 {
@@ -21,12 +23,14 @@ namespace RecommenduWeb.Controllers
         private readonly PostService _postService;
         private readonly UserManager<Usuario> _userManager;
         private readonly IWebHostEnvironment _environment;
+        private readonly PredictionEnginePool<ModelInput, ModelOutput> _predictionEnginePool;
 
-        public PostagensController(PostService postagemService, UserManager<Usuario> userManager, IWebHostEnvironment environment)
+        public PostagensController(PostService postagemService, UserManager<Usuario> userManager, IWebHostEnvironment environment, PredictionEnginePool<ModelInput, ModelOutput> predictionEnginePool)
         {
             _postService = postagemService;
             _userManager = userManager;
             _environment = environment;
+            _predictionEnginePool = predictionEnginePool;
         }
 
         // GET: Postagens
@@ -109,7 +113,16 @@ namespace RecommenduWeb.Controllers
             {
                 var user = await _userManager.GetUserAsync(HttpContext.User);
                 var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
-                await _postService.PublicarAsync(vm, user, webRoot);
+                int postId = await _postService.PublicarAsync(vm, user, webRoot);
+
+                var descricao = new ModelInput { Col1 = vm.Descricao };
+                var previsao = _predictionEnginePool.Predict(descricao);
+                var opiniao = previsao.PredictedLabel == 0 ? "boa" : "ruim";
+                if (opiniao.Equals("ruim"))
+                {
+                    await _postService.AddReportPostagemAsync(postId, vm.Categoria);
+                }
+
             }
             return RedirectToAction(nameof(Index));
         }

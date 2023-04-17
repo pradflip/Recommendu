@@ -183,7 +183,7 @@ namespace RecommenduWeb.Data.Migrations
 
                     b.HasIndex("PostagemId");
 
-                    b.ToTable("comentarioPostagem");
+                    b.ToTable("ComentarioPostagem");
                 });
 
             modelBuilder.Entity("RecommenduWeb.Models.Postagem", b =>
@@ -227,6 +227,40 @@ namespace RecommenduWeb.Data.Migrations
                     b.ToTable((string)null);
 
                     b.UseTpcMappingStrategy();
+                });
+
+            modelBuilder.Entity("RecommenduWeb.Models.ReportPostagemNegativa", b =>
+                {
+                    b.Property<int>("ReportId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportId"));
+
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DtPostagem")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DtReport")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PostagemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReportId");
+
+                    b.ToTable("ReportPostagemNegativas");
                 });
 
             modelBuilder.Entity("RecommenduWeb.Models.Usuario", b =>

@@ -61,7 +61,7 @@ namespace RecommenduWeb.Services
             return await _context.PostagemServico.Where(u => u.Usuario.Id == userId).ToListAsync();
         }
 
-        public async Task PublicarAsync(PostagemViewModel vm, Usuario user, string webRoot)
+        public async Task<int> PublicarAsync(PostagemViewModel vm, Usuario user, string webRoot)
         {
             string stringArquivo = await UploadImagemAsync(vm.PostFile, webRoot, null);
             switch (vm.Categoria)
@@ -81,7 +81,7 @@ namespace RecommenduWeb.Services
                     };
                     await _context.AddAsync(produto);
                     await _context.SaveChangesAsync();
-                    break;
+                    return produto.PostagemId;
                 case "2":
                     var servico = new PostagemServico
                     {
@@ -97,7 +97,7 @@ namespace RecommenduWeb.Services
                     };
                     await _context.AddAsync(servico);
                     await _context.SaveChangesAsync();
-                    break;
+                    return servico.PostagemId;
                 default:
                     throw new Exception("Problemas ao tentar publicar!");
             }
@@ -220,7 +220,7 @@ namespace RecommenduWeb.Services
                 string path = Path.Combine(diretorio, nomeImagem);
                 using (var fileStream = new FileStream(path, FileMode.Create))
                 {
-                    imagem.CopyTo(fileStream);
+                    await imagem.CopyToAsync(fileStream);
                 }
                 if (nomeAntigo != null)
                 {
@@ -250,9 +250,44 @@ namespace RecommenduWeb.Services
             if (diferencaDt.Minutes < 1) { tempo = "Agora"; }
             else if (diferencaDt.Hours < 1) { tempo = $"Há {diferencaDt.Minutes}m"; }
             else if (diferencaDt.Days < 1) { tempo = $"Há {diferencaDt.Hours}h"; }
-            else { tempo = $"Há {diferencaDt.Days}d"; }
+            else if (diferencaDt.Days < 30) { tempo = $"Há {diferencaDt.Days}d"; }
+            else { tempo = dt.ToString("dd/MM/yyyy HH:mm:ss"); }
 
             return tempo;
+        }
+
+        public async Task AddReportPostagemAsync(int id, string cat)
+        {
+            if (id == null)
+            { 
+                throw new Exception("Erro ao tentar reportar.");
+            }
+            else
+            {
+                Postagem post;
+
+                if (cat.Equals("1"))
+                {
+                    post = await BuscarProdutosPorIdAsync(id);
+                }
+                else if (cat.Equals("2"))
+                {
+                    post = await BuscarServicosPorIdAsync(id);
+                }
+                else { throw new Exception("Erro. Categoria não identificada."); }
+
+                ReportPostagemNegativa report = new ReportPostagemNegativa()
+                {
+                    UsuarioId = post.Usuario.Id,
+                    PostagemId = (int)post.PostagemId,
+                    Categoria = post.Categoria,
+                    Descricao = post.Descricao,
+                    DtPostagem = (DateTime)post.DtPostagem
+                };
+
+                await _context.AddAsync(report);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

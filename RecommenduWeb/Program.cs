@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using RecommenduWeb.Data;
 using RecommenduWeb.Models;
 using RecommenduWeb.Services;
+using Microsoft.Extensions.ML;
+using static RecommenduWeb.AnaliseDescricao;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +53,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.SlidingExpiration = true;
 });
+
+builder.Services.AddPredictionEnginePool<ModelInput, ModelOutput>()
+    .FromFile("AnaliseDescricao.mlnet");
 
 var app = builder.Build();
 

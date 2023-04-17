@@ -11,7 +11,7 @@ namespace RecommenduWeb.Models
         public PostagemServico() { }
 
         public PostagemServico(int postagemId, string categoria, string descricao, string publicoAlvo, string imgPostagem, DateTime dtPostagem, int curtidas, Usuario usuario, string nomeServico, string endereco, string contato)
-            : base(postagemId, categoria, descricao, publicoAlvo, imgPostagem, dtPostagem, curtidas, usuario)
+            : base (postagemId, categoria, descricao, publicoAlvo, imgPostagem, dtPostagem, curtidas, usuario)
         {
             NomeServico = nomeServico;
             Endereco = endereco;

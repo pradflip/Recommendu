@@ -8,7 +8,14 @@
 <div class="row justify-content-center p-3">
     <div class="col-3">
         <img src="~/Resources/ProfileImages/@Model.FotoPerfil" class="rounded-circle" width="200" height="200" asp-append-version="true" />
-        <button class="btn btn-danger" onclick="location.href='@Url.Action("DeletarFoto", "Usuarios")'">Excluir foto</button>
+        @if (Model.FotoPerfil.Contains("default-profile-image"))
+        {
+            <button class="btn btn-danger" onclick="location.href='@Url.Action("DeletarFoto", "Usuarios")'" disabled="true">Excluir foto</button>
+        }
+        else
+        {
+            <button class="btn btn-danger" onclick="location.href='@Url.Action("DeletarFoto", "Usuarios")'">Excluir foto</button>
+        }
         <form asp-action="AtualizarFoto" enctype="multipart/form-data">
             <div class="form-control">
                 <label asp-for="PerfilFile" class="control-label">Escolha uma foto:</label>
