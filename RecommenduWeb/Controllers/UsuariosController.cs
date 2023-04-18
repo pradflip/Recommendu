@@ -8,7 +8,6 @@ using RecommenduWeb.Services;
 namespace RecommenduWeb.Controllers
 {
     [Authorize]
-    [Route("Usuarios")]
     public class UsuariosController : Controller
     {
         private readonly UsuarioService _usuarioService;
@@ -26,10 +25,9 @@ namespace RecommenduWeb.Controllers
             _environment = environment;
         }
 
-
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string userName)
         {
-            var user = await _signInManager.UserManager.GetUserAsync(User);
+            var user = await _userManager.FindByNameAsync(userName);
             var listaProd = await _postService.BuscarProdutoPorUsuarioAsync(user.Id);
             var listaServ = await _postService.BuscarServicoPorUsuarioAsync(user.Id);
             var vm = new UsuarioViewModel()
@@ -57,7 +55,7 @@ namespace RecommenduWeb.Controllers
                 var webRoot = _environment.WebRootPath + @"\Resources\ProfileImages";
                 await _usuarioService.AtualizarFotoPerfilAsync(vm, user, webRoot);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { userName = user.UserName });
             }
             return View(vm);
         }
@@ -69,7 +67,7 @@ namespace RecommenduWeb.Controllers
             var webRoot = _environment.WebRootPath + @"\Resources\ProfileImages";
             await _usuarioService.DeletarFotoPerfilAsync(user, webRoot);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", new {userName = user.UserName});
         }
     }
 }

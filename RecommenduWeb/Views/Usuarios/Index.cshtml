@@ -1,4 +1,6 @@
-﻿@inject RecommenduWeb.Services.PostService PostService
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<Usuario> SignInManager
+@inject RecommenduWeb.Services.PostService PostService
 @model RecommenduWeb.Models.ViewModels.UsuarioViewModel
 @{
     ViewData["Title"] = "Meu Perfil";
@@ -8,30 +10,37 @@
 <div class="row justify-content-center p-3">
     <div class="col-3">
         <img src="~/Resources/ProfileImages/@Model.FotoPerfil" class="rounded-circle" width="200" height="200" asp-append-version="true" />
-        @if (Model.FotoPerfil.Contains("default-profile-image"))
-        {
-            <button class="btn btn-danger" onclick="location.href='@Url.Action("DeletarFoto", "Usuarios")'" disabled="true">Excluir foto</button>
+        @{
+            var userName = SignInManager.UserManager.GetUserName(User);
+            if (userName == Model.UserName)
+            {
+
+                @if (Model.FotoPerfil.Contains("default-profile-image"))
+                {
+                    <button class="btn btn-danger" onclick="location.href='@Url.Action("DeletarFoto", "Usuarios")'" disabled="true">Excluir foto</button>
+                }
+                else
+                {
+                    <button class="btn btn-danger" onclick="location.href='@Url.Action("DeletarFoto", "Usuarios")'">Excluir foto</button>
+                }
+                <form asp-action="AtualizarFoto" enctype="multipart/form-data">
+                    <div class="form-control">
+                        <label asp-for="PerfilFile" class="control-label">Escolha uma foto:</label>
+                        <input asp-for="PerfilFile" class="form-control" />
+                        <span asp-validation-for="PerfilFile" class="text-danger"></span>
+                        <input type="submit" id="btnSubmit" value="Atualizar" class="btn btn-primary" />
+                    </div>
+                </form>
+                <p>
+                    <a asp-action="Create" asp-controller="Postagens" class="btn btn-dark">Nova publicação</a>
+                </p>
+            }
         }
-        else
-        {
-            <button class="btn btn-danger" onclick="location.href='@Url.Action("DeletarFoto", "Usuarios")'">Excluir foto</button>
-        }
-        <form asp-action="AtualizarFoto" enctype="multipart/form-data">
-            <div class="form-control">
-                <label asp-for="PerfilFile" class="control-label">Escolha uma foto:</label>
-                <input asp-for="PerfilFile" class="form-control" />
-                <span asp-validation-for="PerfilFile" class="text-danger"></span>
-                <input type="submit" id="btnSubmit" value="Atualizar" class="btn btn-primary" />
-            </div>
-        </form>
     </div>
     <div class="col-3 m-5">
         <h1>@Model.NomeCompleto</h1>
         <h2>@@@Model.UserName</h2>
         <h2 class="text-success">Reputação: @Model.Reputacao</h2>
-        <p>
-            <a asp-action="Create" asp-controller="Postagens" class="btn btn-dark">Nova publicação</a>
-        </p>
     </div>
 </div>
 

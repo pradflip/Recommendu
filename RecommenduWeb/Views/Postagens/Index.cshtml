@@ -55,7 +55,7 @@
                     @Html.DisplayFor(modelItem => tempo)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Usuario.UserName)
+                    <a asp-controller="Usuarios" asp-action="Index" asp-route-userName="@item.Usuario.UserName">@Html.DisplayFor(modelItem => item.Usuario.UserName)</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Categoria)
@@ -140,7 +140,7 @@
                     @Html.DisplayFor(modelItem => tempo)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Usuario.UserName)
+                    <a asp-controller="Usuarios" asp-action="Index" asp-route-id="@item.Usuario.Id">@Html.DisplayFor(modelItem => item.Usuario.UserName)</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Categoria)

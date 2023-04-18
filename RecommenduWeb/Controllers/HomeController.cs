@@ -20,8 +20,8 @@ namespace RecommenduWeb.Controllers
         {
             if (_signInManager.IsSignedIn(User))
             {
-                //var id = _signInManager.UserManager.GetUserId(User);
-                return Redirect("~/Usuarios");
+                var userName = _signInManager.UserManager.GetUserName(User);
+                return Redirect($"~/usuario/{userName}");
             }
             else
             {
