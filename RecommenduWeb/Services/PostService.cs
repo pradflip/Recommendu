@@ -70,12 +70,12 @@ namespace RecommenduWeb.Services
                     var produto = new PostagemProduto
                     {
                         Categoria = "Produto",
+                        Titulo = vm.Titulo,
                         Descricao = vm.Descricao,
                         PublicoAlvo = vm.PublicoAlvo,
                         ImgPostagem = stringArquivo,
                         DtPostagem = DateTime.Now,
                         Usuario = user,
-                        Modelo = vm.Modelo,
                         Fabricante = vm.Fabricante,
                         LinkProduto = vm.LinkProduto
                     };
@@ -86,12 +86,14 @@ namespace RecommenduWeb.Services
                     var servico = new PostagemServico
                     {
                         Categoria = "Serviço",
+                        Titulo = vm.Titulo,
                         Descricao = vm.Descricao,
                         PublicoAlvo = vm.PublicoAlvo,
                         ImgPostagem = stringArquivo,
+                        Estado = vm.Estado,
+                        Cidade = vm.Cidade,
                         DtPostagem = DateTime.Now,
                         Usuario = user,
-                        NomeServico = vm.NomeServico,
                         Endereco = vm.Endereco,
                         Contato = vm.Contato
                     };
@@ -135,10 +137,10 @@ namespace RecommenduWeb.Services
             {
                 case "Produto":
                     stringArquivo = await UploadImagemAsync(vm.PostFile, webRoot, prod.ImgPostagem);
+                    prod.Titulo = vm.Titulo;
                     prod.Descricao = vm.Descricao;
                     prod.PublicoAlvo = vm.PublicoAlvo;
                     prod.ImgPostagem = stringArquivo;
-                    prod.Modelo = vm.Modelo;
                     prod.Fabricante = vm.Fabricante;
                     prod.LinkProduto = vm.LinkProduto;
 
@@ -147,10 +149,12 @@ namespace RecommenduWeb.Services
                     break;
                 case "Serviço":
                     stringArquivo = await UploadImagemAsync(vm.PostFile, webRoot, serv.ImgPostagem);
+                    serv.Titulo = vm.Titulo;
                     serv.Descricao = vm.Descricao;
                     serv.PublicoAlvo = vm.PublicoAlvo;
                     serv.ImgPostagem = stringArquivo;
-                    serv.NomeServico = vm.NomeServico;
+                    serv.Estado = vm.Estado;
+                    serv.Cidade = vm.Cidade;
                     serv.Endereco = vm.Endereco;
                     serv.Contato = vm.Contato;
 
@@ -266,11 +270,11 @@ namespace RecommenduWeb.Services
             {
                 Postagem post;
 
-                if (cat.Equals("1"))
+                if (cat.Equals("1") || cat.Equals("Produto"))
                 {
                     post = await BuscarProdutosPorIdAsync(id);
                 }
-                else if (cat.Equals("2"))
+                else if (cat.Equals("2") || cat.Equals("Serviço"))
                 {
                     post = await BuscarServicosPorIdAsync(id);
                 }

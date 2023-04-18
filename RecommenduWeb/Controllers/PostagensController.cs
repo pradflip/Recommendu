@@ -21,13 +21,15 @@ namespace RecommenduWeb.Controllers
     public class PostagensController : Controller
     {
         private readonly PostService _postService;
+        private readonly LocalidadeService _localidadeService;
         private readonly UserManager<Usuario> _userManager;
         private readonly IWebHostEnvironment _environment;
         private readonly PredictionEnginePool<ModelInput, ModelOutput> _predictionEnginePool;
 
-        public PostagensController(PostService postagemService, UserManager<Usuario> userManager, IWebHostEnvironment environment, PredictionEnginePool<ModelInput, ModelOutput> predictionEnginePool)
+        public PostagensController(PostService postagemService, LocalidadeService localidadeService, UserManager<Usuario> userManager, IWebHostEnvironment environment, PredictionEnginePool<ModelInput, ModelOutput> predictionEnginePool)
         {
             _postService = postagemService;
+            _localidadeService = localidadeService;
             _userManager = userManager;
             _environment = environment;
             _predictionEnginePool = predictionEnginePool;
@@ -57,10 +59,10 @@ namespace RecommenduWeb.Controllers
                 {
                     PostagemId = prod.PostagemId,
                     Categoria = prod.Categoria,
+                    Titulo = prod.Titulo,
                     Descricao = prod.Descricao,
                     PublicoAlvo = prod.PublicoAlvo,
                     ImgPostagem = prod.ImgPostagem,
-                    Modelo = prod.Modelo,
                     Fabricante = prod.Fabricante,
                     LinkProduto = prod.LinkProduto
                 };
@@ -76,10 +78,12 @@ namespace RecommenduWeb.Controllers
                 {
                     PostagemId = serv.PostagemId,
                     Categoria = serv.Categoria,
+                    Titulo = serv.Titulo,
                     Descricao = serv.Descricao,
                     PublicoAlvo = serv.PublicoAlvo,
                     ImgPostagem = serv.ImgPostagem,
-                    NomeServico = serv.NomeServico,
+                    Estado = serv.Estado,
+                    Cidade = serv.Cidade,
                     Endereco = serv.Endereco,
                     Contato = serv.Contato
                 };
@@ -93,16 +97,17 @@ namespace RecommenduWeb.Controllers
         }
 
         // GET: Postagens/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var vm = new PostagemViewModel();
+            ViewData["Estado"] = await _localidadeService.EstadoSelectListAsync();
             return View(vm);
         }
 
         // POST: Postagens/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Categoria,Descricao,PublicoAlvo,PostFile,Modelo,Fabricante,LinkProduto,NomeServico,Endereco,Contato")] PostagemViewModel vm)
+        public async Task<IActionResult> Create([Bind("Categoria,Titulo,Descricao,PublicoAlvo,PostFile,Fabricante,LinkProduto,Estado,Cidade,Endereco,Contato")] PostagemViewModel vm)
         {
             if (vm.Categoria.Equals("0"))
             {
@@ -111,6 +116,7 @@ namespace RecommenduWeb.Controllers
 
             if (ModelState.IsValid)
             {
+                ViewData["Estado"] = await _localidadeService.EstadoSelectListAsync();
                 var user = await _userManager.GetUserAsync(HttpContext.User);
                 var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
                 int postId = await _postService.PublicarAsync(vm, user, webRoot);
@@ -130,6 +136,7 @@ namespace RecommenduWeb.Controllers
         // GET: Postagens/Edit/5
         public async Task<IActionResult> Edit(int id, string cat)
         {
+            ViewData["Estado"] = await _localidadeService.EstadoSelectListAsync();
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (id != null && cat.Equals("Produto"))
             {
@@ -142,10 +149,10 @@ namespace RecommenduWeb.Controllers
                         {
                             PostagemId = prod.PostagemId,
                             Categoria = prod.Categoria,
+                            Titulo = prod.Titulo,
                             Descricao = prod.Descricao,
                             PublicoAlvo = prod.PublicoAlvo,
                             ImgPostagem = prod.ImgPostagem,
-                            Modelo = prod.Modelo,
                             Fabricante = prod.Fabricante,
                             LinkProduto = prod.LinkProduto
                         };
@@ -173,10 +180,12 @@ namespace RecommenduWeb.Controllers
                         {
                             PostagemId = serv.PostagemId,
                             Categoria = serv.Categoria,
+                            Titulo = serv.Titulo,
                             Descricao = serv.Descricao,
                             PublicoAlvo = serv.PublicoAlvo,
                             ImgPostagem = serv.ImgPostagem,
-                            NomeServico = serv.NomeServico,
+                            Estado = serv.Estado,
+                            Cidade = serv.Cidade,
                             Endereco = serv.Endereco,
                             Contato = serv.Contato
                         };
@@ -203,7 +212,7 @@ namespace RecommenduWeb.Controllers
         // POST: Postagens/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PostagemId,Categoria,Descricao,PublicoAlvo,PostFile,Modelo,Fabricante,LinkProduto,NomeServico,Endereco,Contato")] PostagemViewModel vm)
+        public async Task<IActionResult> Edit(int id, [Bind("PostagemId,Categoria,Titulo,Descricao,PublicoAlvo,PostFile,Fabricante,LinkProduto,Estado,Cidade,Endereco,Contato")] PostagemViewModel vm)
         {
             if (id != vm.PostagemId)
             {
@@ -212,6 +221,7 @@ namespace RecommenduWeb.Controllers
 
             if (ModelState.IsValid)
             {
+                ViewData["Estado"] = await _localidadeService.EstadoSelectListAsync();
                 var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
                 var user = await _userManager.GetUserAsync(HttpContext.User);
 
@@ -247,6 +257,15 @@ namespace RecommenduWeb.Controllers
                         return NotFound();
                     }
                 }
+
+                var descricao = new ModelInput { Col1 = vm.Descricao };
+                var previsao = _predictionEnginePool.Predict(descricao);
+                var opiniao = previsao.PredictedLabel == 0 ? "boa" : "ruim";
+                if (opiniao.Equals("ruim"))
+                {
+                    await _postService.AddReportPostagemAsync(id, vm.Categoria);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);

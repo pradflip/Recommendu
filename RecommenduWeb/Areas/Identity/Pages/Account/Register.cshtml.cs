@@ -148,14 +148,14 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
 
             // Alimenta viewdata com a lista de estados para o metodo GET
             // ViewData precisa ter o mesmo nome da propriedade
-            ViewData["Input.Estado"] = await GetEstadoAsync();
+            ViewData["Input.Estado"] = await _localidadeService.EstadoSelectListAsync();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             // Alimenta viewdata com a lista de estados para o metodo POST
             // ViewData precisa ter o mesmo nome da propriedade
-            var estados = await GetEstadoAsync();
+            var estados = await _localidadeService.EstadoSelectListAsync();
             ViewData["Input.Estado"] = estados;
 
             // Valida se um estado foi selecionado
@@ -173,7 +173,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 Random random = new Random();
-                int num = random.Next(1, 3);
+                int num = random.Next(1, 4);
                 string profileImage = $"default-profile-image-{num}.png";
                 Input.UserName = Input.UserName.ToLower();
                 var user = new Usuario { NomeCompleto = Input.NomeCompleto.Titleize(), UserName = Input.UserName, Email = Input.Email, Cidade = Input.Cidade, Estado = Input.Estado, ImagemPerfil = profileImage };
@@ -240,37 +240,6 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<Usuario>)_userStore;
-        }
-
-        public async Task<IEnumerable<SelectListItem>> GetEstadoAsync()
-        {
-            DataTable dt = new DataTable();
-            
-            // Consulta o serviço que realiza um request na API do IBGE e retorna um DataTable
-            dt = await _localidadeService.ListaEstadoAsync();
-
-            // Adiciona cada linha (DataRow) em uma lista
-            var dtItem = new List<DataRow>();
-            foreach (DataRow dr in dt.Rows)
-            {
-                dtItem.Add(dr);
-            }
-
-            // Cria a lista do DropDown com um valor padrão
-            List<SelectListItem> listaEstados = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "Selecione...", Value = "0" }
-            };
-
-            // Pega cada item da lista extraída do DataTable e adiciona na lista do DropDown
-            int count = 0;
-            foreach (DataRow dr in dtItem)
-            {
-                listaEstados.Add(new SelectListItem { Text = dtItem[count].ItemArray[1].ToString(), Value = dtItem[count].ItemArray[0].ToString() });
-                count++;
-            }
-
-            return listaEstados;
         }
     }
 }

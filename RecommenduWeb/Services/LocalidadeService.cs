@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using RecommenduWeb.Data;
 using System.Data;
 
@@ -56,6 +57,37 @@ namespace RecommenduWeb.Services
             dt = dt.DefaultView.ToTable();
             
             return dt;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> EstadoSelectListAsync()
+        {
+            DataTable dt = new DataTable();
+
+            // Consulta o serviço que realiza um request na API do IBGE e retorna um DataTable
+            dt = await ListaEstadoAsync();
+
+            // Adiciona cada linha (DataRow) em uma lista
+            var dtItem = new List<DataRow>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                dtItem.Add(dr);
+            }
+
+            // Cria a lista do DropDown com um valor padrão
+            List<SelectListItem> listaEstados = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Selecione...", Value = "0" }
+            };
+
+            // Pega cada item da lista extraída do DataTable e adiciona na lista do DropDown
+            int count = 0;
+            foreach (DataRow dr in dtItem)
+            {
+                listaEstados.Add(new SelectListItem { Text = dtItem[count].ItemArray[1].ToString(), Value = dtItem[count].ItemArray[0].ToString() });
+                count++;
+            }
+
+            return listaEstados;
         }
 
     }

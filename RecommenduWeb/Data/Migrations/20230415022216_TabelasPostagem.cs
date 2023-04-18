@@ -69,13 +69,13 @@ namespace RecommenduWeb.Data.Migrations
                 {
                     PostagemId = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [PostagemSequence]"),
                     Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PublicoAlvo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImgPostagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DtPostagem = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Curtidas = table.Column<int>(type: "int", nullable: false),
                     UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Modelo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Fabricante = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LinkProduto = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -95,13 +95,15 @@ namespace RecommenduWeb.Data.Migrations
                 {
                     PostagemId = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [PostagemSequence]"),
                     Categoria = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PublicoAlvo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImgPostagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DtPostagem = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Curtidas = table.Column<int>(type: "int", nullable: false),
                     UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    NomeServico = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Cidade = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Endereco = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Contato = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },

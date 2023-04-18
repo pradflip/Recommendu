@@ -16,7 +16,7 @@ function teste() {
     // pega o texto do valor selecionado
     var txtEstado = document.getElementById("ddlEstado").options[document.getElementById('ddlEstado').selectedIndex].text;
 
-    alert("Id: " + idEstado + ", Sigla: " + txtEstado);
+    //alert("Id: " + idEstado + ", Sigla: " + txtEstado);
 }
 
 function CarregaForm() {
@@ -26,15 +26,18 @@ function CarregaForm() {
         document.getElementById("formProduto").hidden = false;
         document.getElementById("formServico").hidden = true;
         document.getElementById("btnSubmit").disabled = false;
+        document.getElementById("lblTitulo").innerHTML = "Nome do produto";
     }
     else if (categoria === "2") {
         document.getElementById("formProduto").hidden = true;
         document.getElementById("formServico").hidden = false;
         document.getElementById("btnSubmit").disabled = false;
+        document.getElementById("lblTitulo").innerHTML = "Nome do serviço";
     }
     else {
         document.getElementById("formProduto").hidden = true;
         document.getElementById("formServico").hidden = true;
         document.getElementById("btnSubmit").disabled = true;
+        document.getElementById("lblTitulo").innerHTML = "Título";
     }
 }

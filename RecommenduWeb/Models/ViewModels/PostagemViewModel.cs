@@ -10,6 +10,10 @@ namespace RecommenduWeb.Models.ViewModels
 
         public string Categoria { get; set; }
 
+        [Display(Name = "Título")]
+        [StringLength(100, ErrorMessage = "Descrição deve conter entre 1 a 100 caracteres.", MinimumLength = 1)]
+        public string? Titulo { get; set; }
+
         [Required(ErrorMessage = "Campo Descrição é obrigatório")]
         [Display(Name = "Descrição")]
         [StringLength(500, ErrorMessage ="Descrição deve conter entre 1 a 500 caracteres.", MinimumLength = 1)]
@@ -27,8 +31,9 @@ namespace RecommenduWeb.Models.ViewModels
         [Display(Name = "Imagem")]
         public IFormFile PostFile { get; set; }
 
-        [StringLength(100, ErrorMessage = "Descrição deve conter entre 1 a 100 caracteres.", MinimumLength = 1)]
-        public string? Modelo { get; set; }
+        public string? Estado { get; set; }
+
+        public string? Cidade { get; set; }
 
         [StringLength(100, ErrorMessage = "Descrição deve conter entre 1 a 100 caracteres.", MinimumLength = 1)]
         public string? Fabricante { get; set; }
@@ -36,10 +41,6 @@ namespace RecommenduWeb.Models.ViewModels
         [Display(Name = "Link do produto")]
         [StringLength(500, ErrorMessage = "Descrição deve conter entre 1 a 500 caracteres.", MinimumLength = 1)]
         public string? LinkProduto { get; set; }
-
-        [Display(Name = "Nome do serviço")]
-        [StringLength(100, ErrorMessage = "Descrição deve conter entre 1 a 100 caracteres.", MinimumLength = 1)]
-        public string? NomeServico { get; set; }
 
         [Display(Name = "Endereço")]
         [StringLength(150, ErrorMessage = "Descrição deve conter entre 1 a 150 caracteres.", MinimumLength = 1)]

@@ -39,7 +39,7 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                @Html.DropDownListFor(model => model.Input.Estado, ViewData["listaEstados"] as SelectList, new {@class="form-control", @id="ddlEstado", @onChange="teste()"})
+                @Html.DropDownListFor(model => model.Input.Estado, ViewData["Input.Estado"] as SelectList, new {@class="form-control", @id="ddlEstado", @onChange="teste()"})
                 <label asp-for="Input.Estado">Estado</label>
                 <span asp-validation-for="Input.Estado" class="text-danger"></span>
             </div>

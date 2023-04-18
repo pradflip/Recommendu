@@ -51,13 +51,13 @@
                 Categoria
             </th>
             <th>
+                Produto
+            </th>
+            <th>
                 Descrição
             </th>
             <th>
                 Público Alvo
-            </th>
-            <th>
-                Modelo
             </th>
             <th>
                 Fabricante
@@ -86,13 +86,13 @@
                     @Html.DisplayFor(modelItem => item.Categoria)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Titulo)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Descricao)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PublicoAlvo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Modelo)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Fabricante)
@@ -125,19 +125,19 @@
                 Categoria
             </th>
             <th>
+                Serviço
+            </th>
+            <th>
                 Descrição
             </th>
             <th>
                 Público Alvo
             </th>
             <th>
-                Modelo
+                Endereco
             </th>
             <th>
-                Fabricante
-            </th>
-            <th>
-                Link do Produto
+                Contato
             </th>
             <th></th>
         </tr>
@@ -160,13 +160,13 @@
                     @Html.DisplayFor(modelItem => item.Categoria)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Titulo)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Descricao)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PublicoAlvo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NomeServico)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Endereco)

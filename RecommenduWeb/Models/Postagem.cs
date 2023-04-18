@@ -6,6 +6,7 @@ namespace RecommenduWeb.Models
     {
         public int PostagemId { get; set; }
         public string Categoria { get; set; }
+        public string Titulo { get; set; }
         public string Descricao { get; set; }
         public string PublicoAlvo { get; set; }
         public string ImgPostagem { get; set; }
@@ -16,10 +17,11 @@ namespace RecommenduWeb.Models
 
         public Postagem() { }
 
-        protected Postagem(int postagemId, string categoria, string descricao, string publicoAlvo, string imgPostagem, DateTime dtPostagem, int curtidas, Usuario usuario)
+        protected Postagem(int postagemId, string categoria, string titulo, string descricao, string publicoAlvo, string imgPostagem, DateTime dtPostagem, int curtidas, Usuario usuario)
         {
             PostagemId = postagemId;
             Categoria = categoria;
+            Titulo = titulo;
             Descricao = descricao;
             PublicoAlvo = publicoAlvo;
             ImgPostagem = imgPostagem;
