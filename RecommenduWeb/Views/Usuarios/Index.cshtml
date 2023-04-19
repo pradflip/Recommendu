@@ -68,12 +68,6 @@
             <th>
                 Público Alvo
             </th>
-            <th>
-                Fabricante
-            </th>
-            <th>
-                Link do Produto
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -102,12 +96,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PublicoAlvo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fabricante)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LinkProduto)
                 </td>
                 <td>
                     <a asp-controller="Postagens" asp-action="Edit" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Edit</a> |
@@ -142,12 +130,6 @@
             <th>
                 Público Alvo
             </th>
-            <th>
-                Endereco
-            </th>
-            <th>
-                Contato
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -176,12 +158,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PublicoAlvo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Endereco)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Contato)
                 </td>
                 <td>
                     <a asp-controller="Postagens" asp-action="Edit" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Edit</a> |

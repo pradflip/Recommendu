@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.ML;
+using Microsoft.IdentityModel.Tokens;
 using RecommenduWeb.Models;
 using RecommenduWeb.Models.ViewModels;
 using RecommenduWeb.Services;
@@ -32,12 +33,73 @@ namespace RecommenduWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var vm = new PostagemViewModel();
-            vm.PostagemProduto = await _postService.BuscarTodosProdutosAsync();
-            vm.PostagemServico = await _postService.BuscarTodosServicosAsync();
+            //vm.PostagemProduto = await _postService.BuscarTodosProdutosAsync();
+            //vm.PostagemServico = await _postService.BuscarTodosServicosAsync();
 
-            return vm.PostagemProduto != null || vm.PostagemServico != null ?
-                        View(vm) :
-                        Problem("Entity set 'ApplicationDbContext.Postagem'  is null.");
+            //return vm.PostagemProduto != null || vm.PostagemServico != null ?
+            //            View(vm) :
+            //            Problem("Entity set 'ApplicationDbContext.Postagem'  is null.");
+            return View();
+        }
+
+        // GET: Postagens/Produtos
+        [Route("/produtos")]
+        public async Task<ActionResult> Produtos(string? titulo, string? filtro)
+        {
+            ViewData["tituloAtual"] = titulo;
+            if (titulo.IsNullOrEmpty())
+            {
+                return View();
+            }
+            filtro = filtro == "relevantes" ? "relevantes" : "recentes";
+            var user = await _userManager.GetUserAsync(User);
+            var produtos = await _postService.BuscarProdutosAsync(titulo.ToLower(), filtro, user);
+
+            if (produtos != null)
+            {
+                var vm = new PostagemViewModel() 
+                {
+                    PostagemProduto = produtos
+                };
+
+                return View(vm);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        // GET: Postagens/Servicos
+        [Route("/servicos")]
+        public async Task<ActionResult> Servicos(string? titulo, string? filtro, string? estado, string? cidade)
+        {
+            ViewData["tituloAtual"] = titulo;
+            ViewData["estadoAtual"] = estado;
+            ViewData["cidadeAtual"] = cidade;
+            if (titulo.IsNullOrEmpty())
+            {
+                return View();
+            }
+            filtro = filtro == "relevantes" ? "relevantes" : "recentes";
+            estado = estado == null ? "" : estado;
+            cidade = cidade == null ? "" : cidade;
+            var user = await _userManager.GetUserAsync(User);
+            var servicos = await _postService.BuscarServicosAsync(titulo.ToLower(), filtro, estado.ToLower(), cidade.ToLower(), user);
+
+            if (servicos != null)
+            {
+                var vm = new PostagemViewModel()
+                {
+                    PostagemServico = servicos
+                };
+
+                return View(vm);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         // GET: Postagens/Details/5
@@ -107,10 +169,10 @@ namespace RecommenduWeb.Controllers
                 return View(vm);
             }
 
+            var user = await _userManager.GetUserAsync(HttpContext.User);
             if (ModelState.IsValid)
             {
                 ViewData["Estado"] = await _localidadeService.EstadoSelectListAsync();
-                var user = await _userManager.GetUserAsync(HttpContext.User);
                 var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
                 int postId = await _postService.PublicarAsync(vm, user, webRoot);
 
@@ -123,7 +185,8 @@ namespace RecommenduWeb.Controllers
                 }
 
             }
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Usuarios", new { userName = user.UserName });
         }
 
         // GET: Postagens/Edit/5
@@ -152,15 +215,9 @@ namespace RecommenduWeb.Controllers
 
                         return View(vm);
                     }
-                    else
-                    {
-                        return Unauthorized();
-                    }
+                    else { return Unauthorized(); }
                 }
-                else
-                {
-                    return NotFound();
-                }
+                else { return NotFound(); }
             }
             else if (id != null && cat.Equals("Serviço"))
             {
@@ -185,21 +242,11 @@ namespace RecommenduWeb.Controllers
 
                         return View(vm);
                     }
-                    else
-                    {
-                        return Unauthorized();
-                    }
+                    else { return Unauthorized(); }
                 }
-                else
-                {
-                    return NotFound();
-                }
-
+                else { return NotFound(); }
             }
-            else
-            {
-                return NotFound();
-            }
+            else { return NotFound(); }
         }
 
         // POST: Postagens/Edit/5
@@ -259,7 +306,7 @@ namespace RecommenduWeb.Controllers
                     await _postService.AddReportPostagemAsync(id, vm.Categoria);
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Usuarios", new { userName = user.UserName });
             }
             return View(vm);
         }
@@ -370,7 +417,8 @@ namespace RecommenduWeb.Controllers
                     return NotFound();
                 }
             }
-            return Redirect("~/Usuarios");
+            //return Redirect($"~/usuarios/{user.UserName}");
+            return RedirectToAction("Index", "Usuarios", new { userName = user.UserName });
         }
 
         public async Task<IActionResult> Curtir(int postId, string cat, int acao)

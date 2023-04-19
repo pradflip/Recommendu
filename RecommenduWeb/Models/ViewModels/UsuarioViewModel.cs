@@ -8,6 +8,7 @@
         public int?  Reputacao { get; set; }
         public string? FotoPerfil { get; set; }
         public IFormFile? PerfilFile { get; set; }
+        public ICollection<Usuario>? Usuario { get; set; } = new List<Usuario>();
         public ICollection<PostagemProduto>? PostagemProduto { get; set; } = new List<PostagemProduto>();
         public ICollection<PostagemServico>? PostagemServico { get; set; } = new List<PostagemServico>();
     }

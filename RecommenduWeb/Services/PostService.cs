@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using RecommenduWeb.Data;
 using RecommenduWeb.Models;
 using RecommenduWeb.Models.ViewModels;
 using System.Runtime.Intrinsics.X86;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RecommenduWeb.Services
 {
@@ -19,14 +21,76 @@ namespace RecommenduWeb.Services
             _usuarioService = usuarioService;
         }
 
-        public async Task<List<PostagemProduto>> BuscarTodosProdutosAsync()
+        public async Task<List<PostagemProduto>> BuscarProdutosAsync(string? titulo, string? filtro, Usuario usuario)
         {
-            return await _context.PostagemProduto.Include(p => p.Usuario).ToListAsync();
+            List<PostagemProduto> produtos = new List<PostagemProduto>();
+            if (!string.IsNullOrWhiteSpace(filtro))
+            {
+                switch (filtro)
+                {
+                    case "recentes":
+                        var query = from p in _context.PostagemProduto.Include(p => p.Usuario)
+                                    where p.Titulo.ToLower().Contains($"{titulo}")
+                                    where p.Usuario != usuario
+                                    orderby p.Titulo.IndexOf($"{titulo}"),
+                                            p.Titulo.Length ascending,
+                                            p.DtPostagem descending,
+                                            p.Curtidas descending
+                                    select p;
+                        produtos = await query.ToListAsync();
+                        break;
+                    case "relevantes":
+                        query = from p in _context.PostagemProduto.Include(p => p.Usuario)
+                                where p.Titulo.ToLower().Contains($"{titulo}")
+                                where p.Usuario != usuario
+                                orderby p.Titulo.IndexOf($"{titulo}"),
+                                        p.Titulo.Length ascending,
+                                        p.Curtidas descending,
+                                        p.DtPostagem descending
+                                select p;
+                        produtos = await query.ToListAsync();
+                        break;
+                }
+            }
+            return produtos;
         }
 
-        public async Task<List<PostagemServico>> BuscarTodosServicosAsync()
+        public async Task<List<PostagemServico>> BuscarServicosAsync(string? titulo, string? filtro, string? estado, string? cidade, Usuario usuario)
         {
-            return await _context.PostagemServico.Include(p => p.Usuario).ToListAsync();
+            List<PostagemServico> servicos = new List<PostagemServico>();
+            if (!string.IsNullOrWhiteSpace(filtro))
+            {
+                switch (filtro)
+                {
+                    case "recentes":
+                        var query = from s in _context.PostagemServico.Include(s => s.Usuario)
+                                    where s.Titulo.ToLower().Contains($"{titulo}")
+                                    where s.Usuario != usuario
+                                    where s.Estado.ToLower() == estado
+                                    where s.Cidade.ToLower() == cidade
+                                    orderby s.Titulo.IndexOf($"{titulo}"),
+                                            s.Titulo.Length ascending,
+                                            s.DtPostagem descending,
+                                            s.Curtidas descending
+                                    select s;
+                        servicos = await query.ToListAsync();
+                        break;
+                    case "relevantes":
+                        query = from s in _context.PostagemServico.Include(s => s.Usuario)
+                                where s.Titulo.ToLower().Contains($"{titulo}")
+                                where s.Usuario != usuario
+                                where s.Estado.ToLower() == estado
+                                where s.Cidade.ToLower() == cidade
+                                orderby s.Titulo.IndexOf($"{titulo}"),
+                                           s.Titulo.Length ascending,
+                                           s.Curtidas descending,
+                                           s.DtPostagem descending
+                                select s;
+                        servicos = await query.ToListAsync();
+                        break;
+                }
+            }
+            return servicos;
         }
 
         public async Task<PostagemProduto> BuscarProdutosPorIdAsync(int postId)
@@ -249,13 +313,13 @@ namespace RecommenduWeb.Services
         public string TempoPostagem(DateTime dt)
         {
             var diferencaDt = DateTime.Now.Subtract(dt);
-
             string tempo;
-            if (diferencaDt.Minutes < 1) { tempo = "Agora"; }
-            else if (diferencaDt.Hours < 1) { tempo = $"Há {diferencaDt.Minutes}m"; }
-            else if (diferencaDt.Days < 1) { tempo = $"Há {diferencaDt.Hours}h"; }
-            else if (diferencaDt.Days < 30) { tempo = $"Há {diferencaDt.Days}d"; }
-            else { tempo = dt.ToString("dd/MM/yyyy HH:mm:ss"); }
+
+            if (diferencaDt.Days > 30) { tempo = dt.ToString("dd/MM/yyyy HH:mm:ss"); }
+            else if (diferencaDt.Days >= 1) { tempo = $"Há {diferencaDt.Days}d"; }
+            else if (diferencaDt.Hours >= 1) { tempo = $"Há {diferencaDt.Hours}h"; }
+            else if (diferencaDt.Minutes >= 1) { tempo = $"Há {diferencaDt.Minutes}m"; }
+            else { tempo = "Agora"; }
 
             return tempo;
         }
@@ -263,7 +327,7 @@ namespace RecommenduWeb.Services
         public async Task AddReportPostagemAsync(int id, string cat)
         {
             if (id == null)
-            { 
+            {
                 throw new Exception("Erro ao tentar reportar.");
             }
             else

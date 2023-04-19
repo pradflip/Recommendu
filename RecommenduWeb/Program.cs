@@ -79,7 +79,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute( name: "usuarios",
-                        pattern: "usuario/{userName?}",
+                        pattern: "usuarios/{userName?}",
                         defaults: new { controller = "Usuarios", action = "Index" });
 app.MapControllerRoute(
     name: "default",

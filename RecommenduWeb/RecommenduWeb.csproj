@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.Extensions.ML" Version="2.0.1" />
     <PackageReference Include="Microsoft.ML" Version="2.0.1" />
     <PackageReference Include="Microsoft.ML.TorchSharp" Version="0.20.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
     <PackageReference Include="TorchSharp-cpu" Version="0.98.3" />
   </ItemGroup>
   <ItemGroup>

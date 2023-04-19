@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using RecommenduWeb.Models;
 using RecommenduWeb.Models.ViewModels;
 using RecommenduWeb.Services;
@@ -42,6 +43,29 @@ namespace RecommenduWeb.Controllers
             };
 
             return View(vm);
+        }
+
+        // GET: Postagens/Servicos
+        [Route("/usuarios")]
+        public async Task<ActionResult> Usuarios(string? nomeUsuario)
+        {
+            if (nomeUsuario.IsNullOrEmpty())
+            {
+                return View();
+            }
+            var user = await _userManager.GetUserAsync(User);
+            var vm = new UsuarioViewModel();
+            vm.Usuario = await _usuarioService.BuscarUsuariosAsync(nomeUsuario, user);
+
+            if (vm.Usuario != null)
+            {
+                return View(vm);
+            }
+            else
+            {
+                return View();
+                //retornar nenhum dado encontrado.
+            }
         }
 
         [HttpPost]

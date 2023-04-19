@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.ML;
 using RecommenduWeb.Data;
 using RecommenduWeb.Models;
 using RecommenduWeb.Models.ViewModels;
@@ -15,9 +16,17 @@ namespace RecommenduWeb.Services
             _userManager = userManager;
         }
 
-        public async Task<List<Usuario>> TodosUsuariosAsync()
+        public async Task<List<Usuario>> BuscarUsuariosAsync(string nomeUsuario, Usuario usuario)
         {
-            return await _userManager.Users.ToListAsync();
+            var query = from u in _userManager.Users
+                        where u.UserName.Contains($"{nomeUsuario.ToLower()}")
+                        where u != usuario
+                        orderby u.UserName.IndexOf($"{nomeUsuario.ToLower()}"),
+                                u.UserName.Length ascending,
+                                u.Reputacao
+                        select u;
+
+            return await query.ToListAsync();
         }
 
         public string ListaReputacao(Usuario user)
