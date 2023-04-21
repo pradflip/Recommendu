@@ -8,6 +8,7 @@ using RecommenduWeb.Models;
 using RecommenduWeb.Models.ViewModels;
 using RecommenduWeb.Services;
 using static RecommenduWeb.AnaliseDescricao;
+using static TorchSharp.torch.nn;
 
 namespace RecommenduWeb.Controllers
 {
@@ -72,20 +73,26 @@ namespace RecommenduWeb.Controllers
 
         // GET: Postagens/Servicos
         [Route("/servicos")]
-        public async Task<ActionResult> Servicos(string? titulo, string? filtro, string? estado, string? cidade)
+        public async Task<ActionResult> Servicos(string? titulo, string? GetEstados, string? GetCidades, string? filtro)
         {
             ViewData["tituloAtual"] = titulo;
-            ViewData["estadoAtual"] = estado;
-            ViewData["cidadeAtual"] = cidade;
+            ViewData["estadoAtual"] = GetEstados;
+            ViewData["cidadeAtual"] = GetCidades;
+            var estados = await _localidadeService.EstadoSelectListAsync();
+            ViewBag.GetEstados = estados;
+            var cidades = await _localidadeService.GetCidadesAsync(GetEstados);
+            ViewBag.GetCidades = cidades;
+
             if (titulo.IsNullOrEmpty())
             {
                 return View();
             }
+
+            GetEstados = GetEstados != null && GetEstados != "0" ? estados.Where(p => p.Value == GetEstados).First().Text : "";
+            GetCidades = GetCidades != null && GetCidades != "0" ? cidades.Where(p => p.Value == GetCidades).First().Text : "";
             filtro = filtro == "relevantes" ? "relevantes" : "recentes";
-            estado = estado == null ? "" : estado;
-            cidade = cidade == null ? "" : cidade;
             var user = await _userManager.GetUserAsync(User);
-            var servicos = await _postService.BuscarServicosAsync(titulo.ToLower(), filtro, estado.ToLower(), cidade.ToLower(), user);
+            var servicos = await _postService.BuscarServicosAsync(titulo.ToLower(), filtro, GetEstados.ToLower(), GetCidades.ToLower(), user);
 
             if (servicos != null)
             {
@@ -172,7 +179,10 @@ namespace RecommenduWeb.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (ModelState.IsValid)
             {
-                ViewData["Estado"] = await _localidadeService.EstadoSelectListAsync();
+                var estados = await _localidadeService.EstadoSelectListAsync();
+                ViewData["Estado"] = estados;
+                vm.Estado = estados.Where(p => p.Value == vm.Estado).First().Text;
+
                 var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
                 int postId = await _postService.PublicarAsync(vm, user, webRoot);
 
@@ -261,7 +271,10 @@ namespace RecommenduWeb.Controllers
 
             if (ModelState.IsValid)
             {
-                ViewData["Estado"] = await _localidadeService.EstadoSelectListAsync();
+                var estados = await _localidadeService.EstadoSelectListAsync();
+                ViewData["Estado"] = estados;
+                vm.Estado = estados.Where(p => p.Value == vm.Estado).First().Text;
+
                 var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
                 var user = await _userManager.GetUserAsync(HttpContext.User);
 
@@ -440,7 +453,8 @@ namespace RecommenduWeb.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return View();
         }
     }
 }

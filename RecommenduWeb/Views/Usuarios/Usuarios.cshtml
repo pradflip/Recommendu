@@ -9,7 +9,7 @@
 <div>
     <form asp-action="Usuarios" method="get">
         <span class="btn-group">
-            <input class="form-control" type="search" name="nomeUsuario" placeholder="Procure pelo nome do usuario" />
+            <input class="form-control" type="search" value="@ViewData["usuarioAtual"]" name="nomeUsuario" placeholder="Procure pelo nome do usuario" />
             <input class="btn btn-sm btn-primary" type="submit" value="Buscar" />
         </span>
     </form>

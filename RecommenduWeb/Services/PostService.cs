@@ -29,26 +29,40 @@ namespace RecommenduWeb.Services
                 switch (filtro)
                 {
                     case "recentes":
-                        var query = from p in _context.PostagemProduto.Include(p => p.Usuario)
-                                    where p.Titulo.ToLower().Contains($"{titulo}")
-                                    where p.Usuario != usuario
-                                    orderby p.Titulo.IndexOf($"{titulo}"),
-                                            p.Titulo.Length ascending,
-                                            p.DtPostagem descending,
-                                            p.Curtidas descending
-                                    select p;
-                        produtos = await query.ToListAsync();
+                        //var query = from p in _context.PostagemProduto.Include(p => p.Usuario)
+                        //            where p.Titulo.ToLower().Contains($"{titulo}")
+                        //            where p.Usuario != usuario
+                        //            orderby p.Titulo.IndexOf($"{titulo}"),
+                        //                    p.Titulo.Length ascending,
+                        //                    p.DtPostagem descending,
+                        //                    p.Curtidas descending
+                        //            select p;
+                        var query = _context.PostagemProduto.Include(u => u.Usuario)
+                                    .Where(u => u.Titulo.ToLower().Contains($"{titulo}"))
+                                    .Where(u => u.Usuario != usuario);
+                        produtos = await query.OrderBy(u => u.Titulo.IndexOf($"{titulo}"))
+                                              .ThenBy(u => u.Titulo.Length)
+                                              .ThenByDescending(u => u.DtPostagem)
+                                              .ThenByDescending(u => u.Curtidas)
+                                              .ToListAsync();
                         break;
                     case "relevantes":
-                        query = from p in _context.PostagemProduto.Include(p => p.Usuario)
-                                where p.Titulo.ToLower().Contains($"{titulo}")
-                                where p.Usuario != usuario
-                                orderby p.Titulo.IndexOf($"{titulo}"),
-                                        p.Titulo.Length ascending,
-                                        p.Curtidas descending,
-                                        p.DtPostagem descending
-                                select p;
-                        produtos = await query.ToListAsync();
+                        //query = from p in _context.PostagemProduto.Include(p => p.Usuario)
+                        //        where p.Titulo.ToLower().Contains($"{titulo}")
+                        //        where p.Usuario != usuario
+                        //        orderby p.Titulo.IndexOf($"{titulo}"),
+                        //                p.Titulo.Length ascending,
+                        //                p.Curtidas descending,
+                        //                p.DtPostagem descending
+                        //        select p;
+                        query = _context.PostagemProduto.Include(u => u.Usuario)
+                                    .Where(u => u.Titulo.ToLower().Contains($"{titulo}"))
+                                    .Where(u => u.Usuario != usuario);
+                        produtos = await query.OrderBy(u => u.Titulo.IndexOf($"{titulo}"))
+                                              .ThenBy(u => u.Titulo.Length)
+                                              .ThenByDescending(u => u.Curtidas)
+                                              .ThenByDescending(u => u.DtPostagem)
+                                              .ToListAsync();
                         break;
                 }
             }
@@ -63,30 +77,60 @@ namespace RecommenduWeb.Services
                 switch (filtro)
                 {
                     case "recentes":
-                        var query = from s in _context.PostagemServico.Include(s => s.Usuario)
-                                    where s.Titulo.ToLower().Contains($"{titulo}")
-                                    where s.Usuario != usuario
-                                    where s.Estado.ToLower() == estado
-                                    where s.Cidade.ToLower() == cidade
-                                    orderby s.Titulo.IndexOf($"{titulo}"),
-                                            s.Titulo.Length ascending,
-                                            s.DtPostagem descending,
-                                            s.Curtidas descending
-                                    select s;
-                        servicos = await query.ToListAsync();
+                        //var query = from s in _context.PostagemServico.Include(s => s.Usuario)
+                        //            where s.Titulo.ToLower().Contains($"{titulo}")
+                        //            where s.Usuario != usuario
+                        //            where s.Estado.ToLower() == estado
+                        //            where s.Cidade.ToLower() == cidade
+                        //            orderby s.Titulo.IndexOf($"{titulo}"),
+                        //                    s.Titulo.Length ascending,
+                        //                    s.DtPostagem descending,
+                        //                    s.Curtidas descending
+                        //            select s;
+                        var query = _context.PostagemServico.Include(s => s.Usuario)
+                                    .Where(s => s.Titulo.ToLower().Contains($"{titulo}"))
+                                    .Where(s => s.Usuario != usuario);
+                        if (estado != "")
+                        {
+                            query = query.Where(s => s.Estado.ToLower() == estado);
+                        }
+                        if (cidade != "")
+                        {
+                            query = query.Where(s => s.Cidade.ToLower() == cidade);
+                        }
+                        servicos = await query.OrderBy(s => s.Titulo.IndexOf($"{titulo}"))
+                                              .ThenBy(s => s.Titulo.Length)
+                                              .ThenByDescending(s => s.DtPostagem)
+                                              .ThenByDescending(s => s.Curtidas)
+                                              .ToListAsync();
                         break;
                     case "relevantes":
-                        query = from s in _context.PostagemServico.Include(s => s.Usuario)
-                                where s.Titulo.ToLower().Contains($"{titulo}")
-                                where s.Usuario != usuario
-                                where s.Estado.ToLower() == estado
-                                where s.Cidade.ToLower() == cidade
-                                orderby s.Titulo.IndexOf($"{titulo}"),
-                                           s.Titulo.Length ascending,
-                                           s.Curtidas descending,
-                                           s.DtPostagem descending
-                                select s;
-                        servicos = await query.ToListAsync();
+                        //query = from s in _context.PostagemServico.Include(s => s.Usuario)
+                        //        where s.Titulo.ToLower().Contains($"{titulo}")
+                        //        where s.Usuario != usuario
+                        //        where s.Estado.ToLower() == estado
+                        //        where s.Cidade.ToLower() == cidade
+                        //        orderby s.Titulo.IndexOf($"{titulo}"),
+                        //                   s.Titulo.Length ascending,
+                        //                   s.Curtidas descending,
+                        //                   s.DtPostagem descending
+                        //        select s;
+                        query = _context.PostagemServico.Include(s => s.Usuario)
+                                    .Where(s => s.Titulo.ToLower().Contains($"{titulo}"))
+                                    .Where(s => s.Usuario != usuario);
+                        if (estado != "")
+                        {
+                            query = query.Where(s => s.Estado.ToLower() == estado);
+                        }
+                        if (cidade != "")
+                        {
+                            query = query.Where(s => s.Cidade.ToLower() == cidade);
+                        }
+                        servicos = await query.OrderBy(s => s.Titulo.IndexOf($"{titulo}"))
+                                              .ThenBy(s => s.Titulo.Length)
+                                              .ThenByDescending(s => s.Curtidas)
+                                              .ThenByDescending(s => s.DtPostagem)
+                                              .ToListAsync();
                         break;
                 }
             }

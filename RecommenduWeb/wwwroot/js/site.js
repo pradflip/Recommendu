@@ -1,27 +1,20 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-
-function teste() {
+﻿
+function ListarCidades() {
     // pega o valor do campo selecionado
-    var idEstado = document.getElementById('ddlEstado').value
-    if (idEstado.toString() === "0") {
-        document.getElementById("ddlCidade").disabled = true;
-    }
-    else {
-        document.getElementById("ddlCidade").disabled = false;
-    }
+    var idTitulo = document.getElementById('srcTitulo').value;
+    var idEstado = document.getElementById('ddlEstados').value;
 
-    // pega o texto do valor selecionado
-    var txtEstado = document.getElementById("ddlEstado").options[document.getElementById('ddlEstado').selectedIndex].text;
+    // refresh na tela
+    location.reload()
 
-    //alert("Id: " + idEstado + ", Sigla: " + txtEstado);
+    // passa para a url os parametros selecionados
+    self.location = 'servicos?titulo=' + idTitulo + '&GetEstados=' + idEstado
 }
+
 
 function CarregaForm() {
     var categoria = document.getElementById('slcCategoria').value.toString();
-    
+
     if (categoria === "1") {
         document.getElementById("formProduto").hidden = false;
         document.getElementById("formServico").hidden = true;

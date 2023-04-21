@@ -4,21 +4,22 @@
     ViewData["Title"] = "Produtos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h1>Serviços</h1>
 
-<div>
-    <form asp-action="Servicos" method="get">
+<div class="row col-4">
+    <form asp-action="Servicos" id="formServicos" method="get">
         <span class="btn-group">
-            <input class="form-control" type="search" name="titulo" placeholder="Procure pelo nome do serviço" />
-            <input class="btn btn-sm btn-primary" type="submit" value="Buscar" />
+            <input class="form-control" type="search" value="@ViewData["tituloAtual"]" id="srcTitulo" name="titulo" placeholder="Procure pelo nome do serviço" />
+            <input class="btn btn-primary" type="submit" value="Buscar" />
         </span>
-        <input class="form-control" type="text" name="estado" placeholder="Estado" />
-        <input class="form-control" type="text" name="cidade" placeholder="Cidade" />
+        <label for="ddlEstados">Estado:</label>
+        @Html.DropDownList("GetEstados", (IEnumerable<SelectListItem>)ViewBag.GetEstados, new {@class="form-control", id="ddlEstados", @onChange="ListarCidades()"})
+        <label for="ddlCidades">Cidade:</label>
+        @Html.DropDownList("GetCidades", (IEnumerable<SelectListItem>)ViewBag.GetCidade, new {@class="form-control", id="ddlCidades", @name="GetCidades"})
     </form>
-    <a asp-action="Servicos" asp-route-titulo="@ViewData["tituloAtual"]" asp-route-filtro="recentes">Mais recentes</a>
-    <a asp-action="Servicos" asp-route-titulo="@ViewData["tituloAtual"]" asp-route-filtro="relevantes">Mais relevantes</a>
 </div>
+<a asp-action="Servicos" asp-route-titulo="@ViewData["tituloAtual"]" asp-route-GetEstados="@ViewData["estadoAtual"]" asp-route-GetCidade="@ViewData["cidadeAtual"]" asp-route-filtro="recentes">Mais recentes</a>
+<a asp-action="Servicos" asp-route-titulo="@ViewData["tituloAtual"]" asp-route-GetEstados="@ViewData["estadoAtual"]" asp-route-GetCidade="@ViewData["cidadeAtual"]" asp-route-filtro="relevantes">Mais relevantes</a>
 
 @if (Model != null && Model.PostagemServico.Count > 0)
 {
@@ -122,4 +123,11 @@
     <div class="bg-info" style="height: 50px; width: 300px;">
         <p>Nenhum resultado encontrado.</p>
     </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script scr="~/js/site.js"></script>
+    }
 }
