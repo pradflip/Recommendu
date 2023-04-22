@@ -45,7 +45,7 @@
   --bs-light-rgb: 248, 249, 250;
   --bs-dark-rgb: 33, 37, 41;
   --bs-white-rgb: 244, 243, 244;
-  --bs-black-rgb: 0, 0, 0;
+  --bs-black-rgb: 25, 25, 25;
   --bs-body-rgb: 33, 37, 41;
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -79,10 +79,6 @@ body {
     color: var(--bs-body-color);
     text-align: var(--bs-body-text-align);
     background-color: var(--bs-body-bg);
-    background-image: url(https://i.im.ge/2023/04/09/IHY3Ep.Background.png);
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-size: cover;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -2199,6 +2195,24 @@ progress {
 }
 
 .form-control {
+    display: block;
+    width: 70%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 2px solid #191919;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 1.0rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/*.form-control {
   display: block;
   width: 100%;
   padding: 0.375rem 0.75rem;
@@ -2215,6 +2229,7 @@ progress {
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+*/
 @media (prefers-reduced-motion: reduce) {
   .form-control {
     transition: none;
@@ -2229,7 +2244,7 @@ progress {
 .form-control:focus {
   color: #212529;
   background-color: #fff;
-  border-color: #86b7fe;
+  border-color: #db924f;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
@@ -3022,32 +3037,35 @@ textarea.form-control-lg {
 
 .btn-secondary {
   color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d;
+  background-color: #191919;
+  border-color: #f4f3f4;
+  border-radius: 20px;
+  width: 160px;
+  font-size: small;
 }
 .btn-secondary:hover {
   color: #fff;
-  background-color: #5c636a;
-  border-color: #565e64;
+  background-color: #db924f;
+  border-color: #191919;
 }
 .btn-check:focus + .btn-secondary, .btn-secondary:focus {
   color: #fff;
-  background-color: #5c636a;
-  border-color: #565e64;
+  background-color: #db924f;
+  border-color: #191919;
   box-shadow: 0 0 0 0.25rem rgba(130, 138, 145, 0.5);
 }
 .btn-check:checked + .btn-secondary, .btn-check:active + .btn-secondary, .btn-secondary:active, .btn-secondary.active, .show > .btn-secondary.dropdown-toggle {
   color: #fff;
-  background-color: #565e64;
-  border-color: #51585e;
+  background-color: #191919;
+  border-color: #191919;
 }
 .btn-check:checked + .btn-secondary:focus, .btn-check:active + .btn-secondary:focus, .btn-secondary:active:focus, .btn-secondary.active:focus, .show > .btn-secondary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.25rem rgba(130, 138, 145, 0.5);
 }
 .btn-secondary:disabled, .btn-secondary.disabled {
   color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d;
+  background-color: #191919;
+  border-color: #191919;
 }
 
 .btn-success {
@@ -5357,6 +5375,7 @@ textarea.form-control-lg {
   width: 1em;
   height: 1em;
   padding: 0.25em 0.25em;
+  margin-top: 0.7em;
   color: #000;
   background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
   border: 0;
@@ -7220,6 +7239,7 @@ textarea.form-control-lg {
   margin-left: 3rem !important;
 }
 
+
 .mx-auto {
   margin-right: auto !important;
   margin-left: auto !important;
@@ -7280,6 +7300,10 @@ textarea.form-control-lg {
   margin-top: 1.5rem !important;
 }
 
+.mt-4-5 {
+    margin-top: 2rem !important;
+}
+
 .mt-5 {
   margin-top: 3rem !important;
 }
@@ -7314,6 +7338,14 @@ textarea.form-control-lg {
 
 .me-5 {
   margin-right: 3rem !important;
+}
+
+.me-6 {
+    margin-right: 6rem !important;
+}
+
+.me-7 {
+    margin-right: 9rem !important;
 }
 
 .me-auto {
@@ -8393,6 +8425,10 @@ textarea.form-control-lg {
 
   .ms-sm-4 {
     margin-left: 1.5rem !important;
+  }
+
+  .ms-sm-4-5 {
+      margin-left: 2.5rem !important;
   }
 
   .ms-sm-5 {

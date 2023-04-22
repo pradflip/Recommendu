@@ -18,6 +18,7 @@
     <PackageReference Include="TorchSharp-cpu" Version="0.98.3" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="wwwroot\Resources\SiteImages\" />
     <Folder Include="wwwroot\Resources\PostImages\" />
   </ItemGroup>
   <ItemGroup Label="AnaliseDescricao">

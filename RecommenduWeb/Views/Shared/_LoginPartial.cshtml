@@ -2,6 +2,7 @@
 @inject SignInManager<Usuario> SignInManager
 @inject UserManager<Usuario> UserManager
 
+
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
@@ -18,9 +19,11 @@ else
 {
     <li class="nav-item">
             <a class="nav-link text-dark me-3" asp-area="Identity" asp-page="/Account/Login">Entrar</a>
+            <a id="abrir-modal" type="button" class="nav-link text-dark me-3" data-bs-toggle="modal" data-bs-target="#JanelaLogin">Entrar</a>
     </li>
     <li class="nav-item">
             <a class="nav-link text-white btn btn-primary me-4" asp-area="Identity" asp-page="/Account/Register">Registrar-se</a>
     </li>
 }
 </ul>
+
