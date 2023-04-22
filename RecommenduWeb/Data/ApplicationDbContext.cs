@@ -15,8 +15,9 @@ namespace RecommenduWeb.Data
         public DbSet<Postagem> Postagem { get; set; }
         public DbSet<PostagemProduto> PostagemProduto { get; set; }
         public DbSet<PostagemServico> PostagemServico { get; set; }
-        public DbSet<ReportPostagemNegativa> ReportPostagemNegativas { get; set; }
         public DbSet<ComentarioPostagem> ComentarioPostagem { get; set; }
+        public DbSet<RegistroCurtida> RegistroCurtida { get; set; }
+        public DbSet<ReportPostagemNegativa> ReportPostagemNegativas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.ML;
@@ -58,7 +59,7 @@ namespace RecommenduWeb.Controllers
 
             if (produtos != null)
             {
-                var vm = new PostagemViewModel() 
+                var vm = new PostagemViewModel()
                 {
                     PostagemProduto = produtos
                 };
@@ -112,6 +113,10 @@ namespace RecommenduWeb.Controllers
         // GET: Postagens/Details/5
         public async Task<IActionResult> Details(int id, string cat)
         {
+            //ViewData["Referer"] = Request.Headers["Referer"].ToString();
+            var referer = Request.Headers["Referer"].ToString();
+            ViewData["Count"] = referer.Contains("/Postagens/Details") ? Convert.ToInt32(TempData["Count"]) : 1;
+
             if (id != null && cat.Equals("Produto"))
             {
                 var prod = await _postService.BuscarProdutosPorIdAsync(id);
@@ -126,7 +131,8 @@ namespace RecommenduWeb.Controllers
                     PublicoAlvo = prod.PublicoAlvo,
                     ImgPostagem = prod.ImgPostagem,
                     Fabricante = prod.Fabricante,
-                    LinkProduto = prod.LinkProduto
+                    LinkProduto = prod.LinkProduto,
+                    Curtidas = prod.Curtidas
                 };
 
                 return View(vm);
@@ -147,7 +153,8 @@ namespace RecommenduWeb.Controllers
                     Estado = serv.Estado,
                     Cidade = serv.Cidade,
                     Endereco = serv.Endereco,
-                    Contato = serv.Contato
+                    Contato = serv.Contato,
+                    Curtidas = serv.Curtidas
                 };
 
                 return View(vm);
@@ -271,10 +278,6 @@ namespace RecommenduWeb.Controllers
 
             if (ModelState.IsValid)
             {
-                var estados = await _localidadeService.EstadoSelectListAsync();
-                ViewData["Estado"] = estados;
-                vm.Estado = estados.Where(p => p.Value == vm.Estado).First().Text;
-
                 var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
                 var user = await _userManager.GetUserAsync(HttpContext.User);
 
@@ -296,6 +299,10 @@ namespace RecommenduWeb.Controllers
                 }
                 else if (vm.Categoria.Equals("Serviço"))
                 {
+                    var estados = await _localidadeService.EstadoSelectListAsync();
+                    ViewData["Estado"] = estados;
+                    vm.Estado = estados.Where(p => p.Value == vm.Estado).First().Text;
+
                     var serv = await _postService.BuscarServicosPorIdAsync(id);
                     if (serv != null)
                     {
@@ -434,14 +441,18 @@ namespace RecommenduWeb.Controllers
             return RedirectToAction("Index", "Usuarios", new { userName = user.UserName });
         }
 
-        public async Task<IActionResult> Curtir(int postId, string cat, int acao)
+        public async Task<IActionResult> Curtir(int postId, string cat, int acao, string userId, int Count)
         {
+            var referer = Request.Headers["Referer"].ToString();
+            ViewData["Count"] = Count + 1;
+            TempData["Count"] = ViewData["Count"];
+
             if (cat == "Produto")
             {
                 var prod = await _postService.BuscarProdutosPorIdAsync(postId);
                 if (prod != null)
                 {
-                    await _postService.AtualizarCurtidasAsync(acao, prod, null);
+                    await _postService.AtualizarCurtidasAsync(acao, userId, prod, null);
                 }
             }
             else if (cat == "Serviço")
@@ -449,12 +460,12 @@ namespace RecommenduWeb.Controllers
                 var serv = await _postService.BuscarServicosPorIdAsync(postId);
                 if (serv != null)
                 {
-                    await _postService.AtualizarCurtidasAsync(acao, null, serv);
+                    await _postService.AtualizarCurtidasAsync(acao, userId, null, serv);
                 }
             }
 
             //return RedirectToAction(nameof(Index));
-            return View();
+            return Redirect(referer);
         }
     }
 }

@@ -35,23 +35,26 @@ namespace RecommenduWeb.Services
             return rep;
         }
 
-        public async Task AtualizaReputacaoAsync(string id, int acao)
+        public async Task AtualizaReputacaoAsync(string id, int acao, bool realizouAcao)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (acao == 0)
+            if (realizouAcao)
             {
-                user.Reputacao--;
-                user.Reputacao = user.Reputacao < 0 ? user.Reputacao = 0 : user.Reputacao;
-                await _userManager.UpdateAsync(user);
-            }
-            else if (acao == 1)
-            {
-                user.Reputacao++;
-                await _userManager.UpdateAsync(user);
-            }
-            else
-            {
-                throw new Exception("Erro ao tentar atualizar a reputação.");
+                var user = await _userManager.FindByIdAsync(id);
+                if (acao == 0)
+                {
+                    user.Reputacao--;
+                    user.Reputacao = user.Reputacao < 0 ? user.Reputacao = 0 : user.Reputacao;
+                    await _userManager.UpdateAsync(user);
+                }
+                else if (acao == 1)
+                {
+                    user.Reputacao++;
+                    await _userManager.UpdateAsync(user);
+                }
+                else
+                {
+                    throw new Exception("Erro ao tentar atualizar a reputação.");
+                }
             }
         }
 

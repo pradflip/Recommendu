@@ -51,16 +51,6 @@
                     <label asp-for="Input.ConfirmPassword" class="form-label mx-7">Confirmar Senha</label>
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
-                <div class="form-floating mb-3 d-flex justify-content-end">
-                    @Html.DropDownListFor(model => model.Input.Estado, ViewData["listaEstados"] as SelectList, new {@class="form-control", @id="ddlEstado", @onChange="teste()"})
-                    <label asp-for="Input.Estado" class="form-label mx-7">Estado</label>
-                    <span asp-validation-for="Input.Estado" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3 d-flex justify-content-end">
-                    <input asp-for="Input.Cidade" class="form-control" id="ddlCidade" disabled="true" aria-required="true" placeholder="Nome da cidade" />
-                    <label asp-for="Input.Cidade" class="form-label mx-7">Cidade</label>
-                    <span asp-validation-for="Input.Cidade" class="text-danger"></span>
-                </div>
                 <div class="text-end">
                     <button id="registerSubmit" type="submit" class="w-70 btn btn-secondary">Register</button>
                 </div>
@@ -72,30 +62,3 @@
     <partial name="_ValidationScriptsPartial" />
     <script scr="~/js/site.js"></script>
 }
-
-@*            <section>
-                @{
-                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                    {
-                        //<div>
-                        //    <p>
-                        //        There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                        //        about setting up this ASP.NET application to support logging in via external services</a>.
-                        //    </p>
-                        //</div>
-                    }
-                    else
-                    {
-                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                            <div>
-                                <p>
-                                    @foreach (var provider in Model.ExternalLogins!)
-                                    {
-                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                    }
-                                </p>
-                            </div>
-                        </form>
-                    }
-                }
-            </section>*@

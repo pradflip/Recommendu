@@ -22,20 +22,6 @@ namespace RecommenduWeb.Data.Migrations
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
-                name: "Cidade",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Estado",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<string>(
                 name: "ImagemPerfil",
                 table: "AspNetUsers",
                 type: "nvarchar(max)",

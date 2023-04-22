@@ -77,16 +77,6 @@ namespace RecommenduWeb.Services
                 switch (filtro)
                 {
                     case "recentes":
-                        //var query = from s in _context.PostagemServico.Include(s => s.Usuario)
-                        //            where s.Titulo.ToLower().Contains($"{titulo}")
-                        //            where s.Usuario != usuario
-                        //            where s.Estado.ToLower() == estado
-                        //            where s.Cidade.ToLower() == cidade
-                        //            orderby s.Titulo.IndexOf($"{titulo}"),
-                        //                    s.Titulo.Length ascending,
-                        //                    s.DtPostagem descending,
-                        //                    s.Curtidas descending
-                        //            select s;
                         var query = _context.PostagemServico.Include(s => s.Usuario)
                                     .Where(s => s.Titulo.ToLower().Contains($"{titulo}"))
                                     .Where(s => s.Usuario != usuario);
@@ -105,16 +95,6 @@ namespace RecommenduWeb.Services
                                               .ToListAsync();
                         break;
                     case "relevantes":
-                        //query = from s in _context.PostagemServico.Include(s => s.Usuario)
-                        //        where s.Titulo.ToLower().Contains($"{titulo}")
-                        //        where s.Usuario != usuario
-                        //        where s.Estado.ToLower() == estado
-                        //        where s.Cidade.ToLower() == cidade
-                        //        orderby s.Titulo.IndexOf($"{titulo}"),
-                        //                   s.Titulo.Length ascending,
-                        //                   s.Curtidas descending,
-                        //                   s.DtPostagem descending
-                        //        select s;
                         query = _context.PostagemServico.Include(s => s.Usuario)
                                     .Where(s => s.Titulo.ToLower().Contains($"{titulo}"))
                                     .Where(s => s.Usuario != usuario);
@@ -274,52 +254,88 @@ namespace RecommenduWeb.Services
             }
         }
 
-        public async Task AtualizarCurtidasAsync(int acao, PostagemProduto? prod, PostagemServico? serv)
+        public async Task AtualizarCurtidasAsync(int acao, string userId, PostagemProduto? prod, PostagemServico? serv)
         {
-            string userId = null;
+            // userId = usuario que realizou acao de curtir - a acao sera registrada em RegistroCurtida
+            // userAlvoId = usuario que recebe o like e aumento na reputacao
+
+            string userAlvoId = null;
+            bool realizouAcao = false;
+            RegistroCurtida rc = new RegistroCurtida();
 
             // categoria = produto
             if (prod != null)
             {
+                rc = await GetRegistroCurtidaAsync(userId, prod.PostagemId);
                 // ação = dislike
                 if (acao == 0)
                 {
-                    prod.Curtidas--;
-                    prod.Curtidas = prod.Curtidas < 0 ? prod.Curtidas = 0 : prod.Curtidas;
+                    if (rc != null)
+                    {
+                        prod.Curtidas--;
+                        prod.Curtidas = prod.Curtidas < 0 ? prod.Curtidas = 0 : prod.Curtidas;
+                        _context.RegistroCurtida.Remove(rc);
+                        realizouAcao = true;
+                    }
                 }
                 // ação = like
                 else if (acao == 1)
                 {
-                    prod.Curtidas++;
-                    prod.Curtidas = prod.Curtidas < 0 ? prod.Curtidas = 0 : prod.Curtidas;
+                    if (rc == null)
+                    {
+                        prod.Curtidas++;
+                        prod.Curtidas = prod.Curtidas < 0 ? prod.Curtidas = 1 : prod.Curtidas;
+
+                        rc = new RegistroCurtida();
+                        rc.UsuarioId = userId;
+                        rc.PostagemId = prod.PostagemId;
+                        rc.DtCurtida = DateTime.Now;
+                        _context.RegistroCurtida.Add(rc);
+                        realizouAcao = true;
+                    }
                 }
 
-                userId = prod.Usuario.Id;
+                userAlvoId = prod.Usuario.Id;
                 _context.PostagemProduto.Update(prod);
-                await _context.SaveChangesAsync();
             }
             // categoria = serviço
             else if (serv != null)
             {
+                rc = await GetRegistroCurtidaAsync(userId, serv.PostagemId);
                 // ação = dislike
                 if (acao == 0)
                 {
-                    serv.Curtidas--;
-                    serv.Curtidas = serv.Curtidas < 0 ? serv.Curtidas = 0 : serv.Curtidas;
+                    if (rc != null)
+                    {
+                        serv.Curtidas--;
+                        serv.Curtidas = serv.Curtidas < 0 ? serv.Curtidas = 0 : serv.Curtidas;
+                        _context.RegistroCurtida.Remove(rc);
+                        realizouAcao = true;
+                    }
                 }
                 // ação = like
                 else if (acao == 1)
                 {
-                    serv.Curtidas++;
-                    serv.Curtidas = serv.Curtidas < 0 ? serv.Curtidas = 0 : serv.Curtidas;
+                    if (rc == null)
+                    {
+                        serv.Curtidas++;
+                        serv.Curtidas = serv.Curtidas < 0 ? serv.Curtidas = 1 : serv.Curtidas;
+
+                        rc = new RegistroCurtida();
+                        rc.UsuarioId = userId;
+                        rc.PostagemId = serv.PostagemId;
+                        rc.DtCurtida = DateTime.Now;
+                        _context.RegistroCurtida.Add(rc);
+                        realizouAcao = true;
+                    }
                 }
 
-                userId = serv.Usuario.Id;
+                userAlvoId = serv.Usuario.Id;
                 _context.PostagemServico.Update(serv);
-                await _context.SaveChangesAsync();
             }
 
-            await _usuarioService.AtualizaReputacaoAsync(userId, acao);
+            await _context.SaveChangesAsync();
+            await _usuarioService.AtualizaReputacaoAsync(userAlvoId, acao, realizouAcao);
         }
 
         public async Task<string> UploadImagemAsync(IFormFile imagem, string webRoot, string? nomeAntigo)
@@ -391,15 +407,24 @@ namespace RecommenduWeb.Services
                 ReportPostagemNegativa report = new ReportPostagemNegativa()
                 {
                     UsuarioId = post.Usuario.Id,
-                    PostagemId = (int)post.PostagemId,
+                    PostagemId = post.PostagemId,
                     Categoria = post.Categoria,
                     Descricao = post.Descricao,
-                    DtPostagem = (DateTime)post.DtPostagem
+                    DtPostagem = post.DtPostagem
                 };
 
                 await _context.AddAsync(report);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<RegistroCurtida> GetRegistroCurtidaAsync(string userId, int postId)
+        {
+            RegistroCurtida rc = new RegistroCurtida();
+
+            rc = await _context.RegistroCurtida.FirstOrDefaultAsync(r => r.UsuarioId == userId && r.PostagemId == postId);
+
+            return rc;
         }
     }
 }

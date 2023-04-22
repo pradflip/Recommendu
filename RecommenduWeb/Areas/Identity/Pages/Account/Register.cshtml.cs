@@ -124,20 +124,6 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             [Display(Name = "Confirmar Senha")]
             [Compare("Password", ErrorMessage = "A senha verificada não combina.")]
             public string ConfirmPassword { get; set; }
-
-            // Estado
-            [Required]
-            [DataType(DataType.Text)]
-            [Display(Name = "Estado")]
-            public string Estado { get; set; }
-
-            // Cidade
-            [Required]
-            [StringLength(100, ErrorMessage = "A cidade deve ter entre {2} a {1} caracteres.", MinimumLength = 4)]
-            [DataType(DataType.Text)]
-            [Display(Name = "Cidade")]
-            public string Cidade { get; set; }
-
         }
 
 
@@ -145,29 +131,10 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            // Alimenta viewdata com a lista de estados para o metodo GET
-            // ViewData precisa ter o mesmo nome da propriedade
-            ViewData["Input.Estado"] = await _localidadeService.EstadoSelectListAsync();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            // Alimenta viewdata com a lista de estados para o metodo POST
-            // ViewData precisa ter o mesmo nome da propriedade
-            var estados = await _localidadeService.EstadoSelectListAsync();
-            ViewData["Input.Estado"] = estados;
-
-            // Valida se um estado foi selecionado
-            if (Input.Estado == "0")
-            {
-                ModelState.AddModelError(string.Empty, "Selecione o Estado.");
-                return Page();
-            }
-
-            // Atualiza o Input.Estado buscando a sigla do estado de acordo com o ID recebido do proprio Input.Estado
-            Input.Estado = estados.Where(p => p.Value == Input.Estado).First().Text;
-
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -176,7 +143,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
                 int num = random.Next(1, 4);
                 string profileImage = $"default-profile-image-{num}.png";
                 Input.UserName = Input.UserName.ToLower();
-                var user = new Usuario { NomeCompleto = Input.NomeCompleto.Titleize(), UserName = Input.UserName, Email = Input.Email, Cidade = Input.Cidade, Estado = Input.Estado, ImagemPerfil = profileImage };
+                var user = new Usuario { NomeCompleto = Input.NomeCompleto.Titleize(), UserName = Input.UserName, Email = Input.Email, ImagemPerfil = profileImage };
                 //var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
