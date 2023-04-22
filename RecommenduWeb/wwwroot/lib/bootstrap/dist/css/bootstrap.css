@@ -3039,9 +3039,10 @@ textarea.form-control-lg {
   color: #fff;
   background-color: #191919;
   border-color: #f4f3f4;
-  border-radius: 20px;
-  width: 160px;
-  font-size: small;
+  border-radius: 50px;
+  width: 260px;
+  height: 50px;
+  font-size: larger;
 }
 .btn-secondary:hover {
   color: #fff;
@@ -6929,6 +6930,10 @@ textarea.form-control-lg {
   width: 50% !important;
 }
 
+.w-70 {
+    width: 70% !important;
+}
+
 .w-75 {
   width: 75% !important;
 }
@@ -7239,6 +7244,16 @@ textarea.form-control-lg {
   margin-left: 3rem !important;
 }
 
+.mx-6 {
+    margin-right: 6rem !important;
+    margin-left: 6rem !important;
+}
+
+.mx-7 {
+    margin-right: 12rem !important;
+    margin-left: 12rem !important;
+}
+
 
 .mx-auto {
   margin-right: auto !important;
@@ -7312,6 +7327,10 @@ textarea.form-control-lg {
   margin-top: 6rem !important;
 }
 
+.mt-7 {
+    margin-top: 12rem !important;
+}
+
 .mt-auto {
   margin-top: auto !important;
 }
@@ -7376,6 +7395,14 @@ textarea.form-control-lg {
   margin-bottom: 3rem !important;
 }
 
+.mb-6 {
+    margin-bottom: 6rem !important;
+}
+
+.mb-7 {
+    margin-bottom: 12rem !important;
+}
+
 .mb-auto {
   margin-bottom: auto !important;
 }
@@ -7402,6 +7429,10 @@ textarea.form-control-lg {
 
 .ms-5 {
   margin-left: 3rem !important;
+}
+
+.ms-6 {
+    margin-left: 6rem !important;
 }
 
 .ms-auto {
@@ -7460,6 +7491,11 @@ textarea.form-control-lg {
 .px-5 {
   padding-right: 3rem !important;
   padding-left: 3rem !important;
+}
+
+.px-6 {
+    padding-right: 6rem !important;
+    padding-left: 6rem !important;
 }
 
 .py-0 {

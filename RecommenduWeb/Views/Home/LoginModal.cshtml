@@ -1,0 +1,54 @@
+﻿@using RecommenduWeb.Areas.Identity.Pages.Account;
+@model LoginModel
+
+<div class="modal-body-home row" id="JanelaLogin">
+<!--Bloco do lado esquerdo do modal de login-->
+<div class="col-sm-5 bg-black text-light text-center">
+    <img src="/Resources/SiteImages/LogoReverso.png" class="img-logo-reverso mt-3" />
+    <h3>Bem vindo de volta!</h3><br />
+    <h6>
+        <p class="mt-0">Para se manter conectado<br />conosco, faça o login com suas<br />informações pessoais</p><br /><br /><br /><br />
+        <p class="mb-4">Caso não possua conta faça o<br /> seu registro</p>
+    </h6>
+    <a class="nav-link text-white btn btn-secondary mb-5 mx-auto" asp-area="Identity" asp-page="/Account/Register">REGISTRAR-SE</a>
+</div>
+<!--Bloco do lado direito do modal de lopin-->
+<div class="col-sm-7">
+    <button type="button" class="btn btn-close col-sm-6 float-end" data-bs-dismiss="modal"></button><br />
+    <h2 class="ms-sm-5">Login</h2><br />
+    <div class="row my-sm-4">
+        <div class="text-sm-center mt-sm-4">
+            <form id="account" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Login" class="form-control" autocomplete="login" aria-required="true" placeholder="usuário ou email" />
+                    <label asp-for="Input.Login" class="form-label">Login <span style="color: gray">(usuário ou email)</span></label>
+                    <span asp-validation-for="Input.Login" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                    <label asp-for="Input.Password" class="form-label">Password</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="checkbox mb-3 text-sm-start">
+                    <label asp-for="Input.RememberMe" class="form-label">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                </div>
+                <div>
+                    <p>
+                        <a id="forgot-password" class="link-primary-1" asp-page="./ForgotPassword">Recuperar acesso</a>
+                    </p>
+                    <p>
+                        <a id="resend-confirmation" class="link-primary-1" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                    </p>
+                </div>
+                <div>
+                    <button id="login-submit" type="submit" class="btn btn-secondary mt-sm-0 mb-sm-5">Log in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

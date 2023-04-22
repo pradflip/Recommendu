@@ -1,20 +1,20 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
@@ -63,12 +63,16 @@ body {
     margin-left: 2rem;
 }
 
-.img-logo-reverso {
-    max-width: 200px;
-    max-height: 100px;
-    width: auto;
-    height: auto;
+.img-login {
+    max-width: 100%;
+    max-height: 100%;
+    width: 40%;
     margin-left: 2rem;
+}
+
+.avatar-circle {
+    z-index: 10;
+    border: 0.2em solid #191919;
 }
 
 .circles-0 {
@@ -140,8 +144,34 @@ body {
 
 .link-primary-1 {
     color: #191919;
+    font-size: small;
 }
 
 .link-primary-1:hover, .link-primary-1:focus {
+        color: #db924f;
+}
+
+.link-voltar {
+    color: #f4f3f4;
+    font-size: larger;
+    text-decoration: underline;
+    z-index: 5;
+    position: relative;
+    top: 10%;
+    right: 50%;
+}
+
+.link-voltar:hover, .link-voltar:focus {
     color: #db924f;
+}
+
+.bg-login {
+    width: 50%;
+    height: 100%;
+    border: 0em;
+    background-color: #191919;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: -10;
 }
