@@ -49,6 +49,7 @@ namespace RecommenduWeb.Controllers
         [Route("/usuarios")]
         public async Task<ActionResult> Usuarios(string? nomeUsuario)
         {
+            ViewData["usuarioAtual"] = nomeUsuario;
             if (nomeUsuario.IsNullOrEmpty())
             {
                 return View();

@@ -24,10 +24,10 @@ namespace RecommenduWeb.Services
 
             // Realiza a consulta na API e recebe o response
             var response = await client.GetAsync("https://servicodados.ibge.gov.br/api/v1/localidades/estados");
-            
+
             // Converte o conteudo JSON para String
             var jsonString = await response.Content.ReadAsStringAsync();
-            
+
             // Como nao esta sendo usada nenhuma classe com propriedas, nao precisa desserializar a jsonString
             // Separa em vetores cada conjunto de informacoes dos Estados
             // A consulta busca todos os estados e nao apenas um
@@ -41,7 +41,7 @@ namespace RecommenduWeb.Services
 
                 // Primeiro elemento possui comprimento maior
                 string itemId = count == 0 ? linha[0].Substring(7) : linha[0].Substring(6);
-                string itemSigla = linha[1].Substring(9,2);
+                string itemSigla = linha[1].Substring(9, 2);
 
                 // Adiciona linhas no DataTable com as siglas recebidas
                 DataRow dr = dt.NewRow();
@@ -55,7 +55,7 @@ namespace RecommenduWeb.Services
             // Ordena o DataTable pela sigla de forma crescente
             dt.DefaultView.Sort = "sigla" + " " + "asc";
             dt = dt.DefaultView.ToTable();
-            
+
             return dt;
         }
 
@@ -88,6 +88,32 @@ namespace RecommenduWeb.Services
             }
 
             return listaEstados;
+        }
+
+        public async Task<List<SelectListItem>> GetCidadesAsync(string id)
+        {
+            HttpClient client = new HttpClient();
+            var listaCidade = new List<SelectListItem>(){
+                new SelectListItem { Text = "Selecione...", Value = "0" }
+            };
+
+            if (id != null && id != "0")
+            {
+                var response = await client.GetAsync($"https://servicodados.ibge.gov.br/api/v1/localidades/estados/{id}/municipios");
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var jsonArray = jsonString.Split("},{");
+                int count = 1;
+                foreach (var item in jsonArray)
+                {
+                    var linha = item.Split(",");
+                    var linhaNome = linha[1].Split("\"");
+                    var nomeCidade = linhaNome[3];
+                    listaCidade.Add(new SelectListItem { Text = nomeCidade, Value = count.ToString() });
+                    count++;
+                }
+            }
+            
+            return listaCidade;
         }
 
     }
