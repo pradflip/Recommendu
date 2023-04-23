@@ -63,14 +63,15 @@
             else if (Model.Categoria.Equals("Serviço"))
             {
                 <div class="form-floating mb-3">
-                    @Html.DropDownListFor(model => model.Estado, ViewData["Estados"] as SelectList, new {@class="form-control", @id="ddlEstado", @onChange="teste()"})
+                    @Html.DropDownListFor(model => model.Estado, ViewData["Estado"] as SelectList, new {@class="form-control", @id="ddlEstado"})
                     <label asp-for="Estado"></label>
                     <span asp-validation-for="Estado" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
-                    <input asp-for="Cidade" class="form-control" id="ddlCidades" disabled="true" aria-required="true" placeholder="Nome da cidade" />
+                    <input asp-for="Cidade" class="form-control" aria-required="true" placeholder="Nome da cidade" />
                     <label asp-for="Cidade">Cidade</label>
                     <span asp-validation-for="Cidade" class="text-danger"></span>
+                    <span style="color: #4684b0" title="Preencha corretamente para sua publicação ser encontrada com mais facilidade">&#9432 &#x1F6C8;</span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Endereco" class="control-label"></label>
@@ -91,7 +92,7 @@
 </div>
 
 <div>
-    <input type="button" class="btn btn-outline-dark" onclick="history.go(-1)" value="voltar" />
+    <a asp-action="Index" asp-controller="Postagens" class="btn btn-light">Voltar</a>
 </div>
 
 @section Scripts {

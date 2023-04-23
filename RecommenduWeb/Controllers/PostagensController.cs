@@ -34,14 +34,12 @@ namespace RecommenduWeb.Controllers
         // GET: Postagens
         public async Task<IActionResult> Index()
         {
+            var userId = _userManager.GetUserId(User);
             var vm = new PostagemViewModel();
-            //vm.PostagemProduto = await _postService.BuscarTodosProdutosAsync();
-            //vm.PostagemServico = await _postService.BuscarTodosServicosAsync();
+            vm.PostagemProduto = await _postService.BuscarProdutoPorUsuarioAsync(userId);
+            vm.PostagemServico = await _postService.BuscarServicoPorUsuarioAsync(userId);
 
-            //return vm.PostagemProduto != null || vm.PostagemServico != null ?
-            //            View(vm) :
-            //            Problem("Entity set 'ApplicationDbContext.Postagem'  is null.");
-            return View();
+            return View(vm);
         }
 
         // GET: Postagens/Produtos

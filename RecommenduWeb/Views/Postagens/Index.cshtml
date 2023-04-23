@@ -6,5 +6,174 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-<h2 style="color: red">Slide 7</h2>
+<h1>Minhas publicações</h1>
+
+<div>
+    <button class="btn btn-primary" id="btnProdutos" onclick="MostrarPost(1)">Mostrar produtos</button>
+    <div id="divProdutos" hidden="true">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Imagem
+                    </th>
+                    <th>
+                        Data de Publicação
+                    </th>
+                    <th>
+                        Usuário
+                    </th>
+                    <th>
+                        Categoria
+                    </th>
+                    <th>
+                        Titulo
+                    </th>
+                    <th>
+                        Descrição
+                    </th>
+                    <th>
+                        Público Alvo
+                    </th>
+                    <th>
+                        Fabricante
+                    </th>
+                    <th>
+                        Link do Produto
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PostagemProduto)
+                {
+                    string tempo = PostService.TempoPostagem(item.DtPostagem);
+                    <tr>
+                        <td>
+                            <img src="~/Resources/PostImages/@item.ImgPostagem" class="rounded-circle" width="50" height="50" asp-append-version="true" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => tempo)
+                        </td>
+                        <td>
+                            <a asp-controller="Usuarios" asp-action="Index" asp-route-userName="@item.Usuario.UserName">@Html.DisplayFor(modelItem => item.Usuario.UserName)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Categoria)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Titulo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descricao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PublicoAlvo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fabricante)
+                        </td>
+                        <td>
+                            <a href="@Html.DisplayFor(modelItem => item.LinkProduto)" target="_blank">@Html.DisplayFor(modelItem => item.LinkProduto)</a>
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Ver completo</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div>
+    <button class="btn btn-primary" id="btnServicos" onclick="MostrarPost(2)">Mostar serviços</button>
+    <div id="divServicos" hidden="true">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Imagem
+                    </th>
+                    <th>
+                        Data de Publicação
+                    </th>
+                    <th>
+                        Usuário
+                    </th>
+                    <th>
+                        Categoria
+                    </th>
+                    <th>
+                        Descrição
+                    </th>
+                    <th>
+                        Público Alvo
+                    </th>
+                    <th>
+                        Cidade
+                    </th>
+                    <th>
+                        Estado
+                    </th>
+                    <th>
+                        Endereço
+                    </th>
+                    <th>
+                        Contato
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PostagemServico)
+                {
+                    string tempo = PostService.TempoPostagem(item.DtPostagem);
+                    <tr>
+                        <td>
+                            <img src="~/Resources/PostImages/@item.ImgPostagem" class="rounded-circle" width="50" height="50" asp-append-version="true" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => tempo)
+                        </td>
+                        <td>
+                            <a asp-controller="Usuarios" asp-action="Index" asp-route-userName="@item.Usuario.UserName">@Html.DisplayFor(modelItem => item.Usuario.UserName)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Categoria)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Titulo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descricao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PublicoAlvo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cidade)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Endereco)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Contato)
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Ver completo</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <script scr="~/js/site.js"></script>
+    }
+}

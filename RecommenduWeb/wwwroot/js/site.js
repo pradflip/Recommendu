@@ -11,7 +11,6 @@ function ListarCidades() {
     self.location = 'servicos?titulo=' + idTitulo + '&GetEstados=' + idEstado
 }
 
-
 function CarregaForm() {
     var categoria = document.getElementById('slcCategoria').value.toString();
 
@@ -32,5 +31,24 @@ function CarregaForm() {
         document.getElementById("formServico").hidden = true;
         document.getElementById("btnSubmit").disabled = true;
         document.getElementById("lblTitulo").innerHTML = "Título";
+    }
+}
+
+function MostrarPost(cat) {
+    if (cat === 1) {
+        if (document.getElementById("divProdutos").hidden === true) {
+            document.getElementById("divProdutos").hidden = false;
+        }
+        else {
+            document.getElementById("divProdutos").hidden = true;
+        }
+    }
+    else {
+        if (document.getElementById("divServicos").hidden === true) {
+            document.getElementById("divServicos").hidden = false;
+        }
+        else {
+            document.getElementById("divServicos").hidden = true;
+        }
     }
 }

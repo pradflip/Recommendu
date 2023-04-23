@@ -29,14 +29,6 @@ namespace RecommenduWeb.Services
                 switch (filtro)
                 {
                     case "recentes":
-                        //var query = from p in _context.PostagemProduto.Include(p => p.Usuario)
-                        //            where p.Titulo.ToLower().Contains($"{titulo}")
-                        //            where p.Usuario != usuario
-                        //            orderby p.Titulo.IndexOf($"{titulo}"),
-                        //                    p.Titulo.Length ascending,
-                        //                    p.DtPostagem descending,
-                        //                    p.Curtidas descending
-                        //            select p;
                         var query = _context.PostagemProduto.Include(u => u.Usuario)
                                     .Where(u => u.Titulo.ToLower().Contains($"{titulo}"))
                                     .Where(u => u.Usuario != usuario);
@@ -47,14 +39,6 @@ namespace RecommenduWeb.Services
                                               .ToListAsync();
                         break;
                     case "relevantes":
-                        //query = from p in _context.PostagemProduto.Include(p => p.Usuario)
-                        //        where p.Titulo.ToLower().Contains($"{titulo}")
-                        //        where p.Usuario != usuario
-                        //        orderby p.Titulo.IndexOf($"{titulo}"),
-                        //                p.Titulo.Length ascending,
-                        //                p.Curtidas descending,
-                        //                p.DtPostagem descending
-                        //        select p;
                         query = _context.PostagemProduto.Include(u => u.Usuario)
                                     .Where(u => u.Titulo.ToLower().Contains($"{titulo}"))
                                     .Where(u => u.Usuario != usuario);
@@ -141,12 +125,12 @@ namespace RecommenduWeb.Services
 
         public async Task<List<PostagemProduto>> BuscarProdutoPorUsuarioAsync(string userId)
         {
-            return await _context.PostagemProduto.Where(u => u.Usuario.Id == userId).ToListAsync();
+            return await _context.PostagemProduto.Include(p => p.Usuario).Where(u => u.Usuario.Id == userId).ToListAsync();
         }
 
         public async Task<List<PostagemServico>> BuscarServicoPorUsuarioAsync(string userId)
         {
-            return await _context.PostagemServico.Where(u => u.Usuario.Id == userId).ToListAsync();
+            return await _context.PostagemServico.Include(s => s.Usuario).Where(u => u.Usuario.Id == userId).ToListAsync();
         }
 
         public async Task<int> PublicarAsync(PostagemViewModel vm, Usuario user, string webRoot)

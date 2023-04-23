@@ -89,6 +89,7 @@
 </div>
 <div>
     <a class="btn btn-primary" asp-action="Edit" asp-route-cat="@Model.Categoria" asp-route-id="@Model.PostagemId">Edit</a>
+    <a class="btn btn-danger" asp-action="Delete" asp-route-cat="@Model.Categoria" asp-route-id="@Model.PostagemId">Delete</a>
     <input type="button" class="btn btn-light" onclick="history.go(-@ViewData["Count"])" value="voltar" />
 
 </div>
