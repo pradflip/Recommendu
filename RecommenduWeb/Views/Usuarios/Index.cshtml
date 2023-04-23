@@ -33,10 +33,9 @@
                         </div>
                     </form>
                     <p>
-                        <a asp-action="Create" asp-controller="Postagens" class="btn btn-dark">Nova publicação</a>
-                        <a class="nav-link text-dark btn btn-primary" text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Configurações</a>
+                        <a class="nav-link text-dark btn btn-primary" text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">Configurações</a>
+                        <button class="btn btn-outline-brabo" data-bs-toggle="modal" data-bs-target="#modalLogout">Sair</button>
                     </p>
-
                 }
             }
         </div>
@@ -46,160 +45,14 @@
             <h2 class="text-success">Reputação: @Model.Reputacao</h2>
         </div>
     </div>
-
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Imagem
-                </th>
-                <th>
-                    Data de Publicação
-                </th>
-                <th>
-                    Usuário
-                </th>
-                <th>
-                    Categoria
-                </th>
-                <th>
-                    Produto
-                </th>
-                <th>
-                    Descrição
-                </th>
-                <th>
-                    Público Alvo
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.PostagemProduto)
-            {
-                string tempo = PostService.TempoPostagem(item.DtPostagem);
-                <div class="card-pub">
-                    <div class="card-pub-1 text-light">
-                        <div class="card-title">@Html.DisplayFor(modelItem => item.Titulo)</div>
-                        <div class="card-seta"></div>
-                        <img src="~/Resources/PostImages/@item.ImgPostagem" class="card-img" asp-append-version="true" />
-                    </div>
-                    <div class="card-pub-2 p-2">
-                        <div class="text-black">
-                            <div class="text-start">
-                                <img src="~/Resources/ProfileImages/@Model.FotoPerfil" class="rounded-circle avatar-circle card-ava" asp-append-version="true" />
-                                <b>@Html.DisplayFor(modelItem => item.Usuario.UserName)</b>
-                                <div class="float-end me-2 mt-2 fs-6">@Html.DisplayFor(modelItem => tempo)</div>
-                            </div>
-                        </div>
-                        <div class="text-start my-3">
-                            <h6 class="p-1 fs-6">
-                                Público Alvo: @Html.DisplayFor(modelItem => item.PublicoAlvo)
-                            </h6>
-                            <h6 class="p-1 fs-6">
-                                Categoria: @Html.DisplayFor(modelItem => item.Categoria)
-                            </h6>
-                            <h6 class="p-1 fs-6">
-                                Curtidas obtidas: @Html.DisplayFor(modelItem => item.Curtidas)
-                            </h6>
-                        </div>
-                        <div class="my-4 mx-1">
-                            <a class="link-primary-1 fs-6" asp-controller="Postagens" asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Ver completo</a>
-                        </div>
-                    </div>
-                </div>
-                <tr>
-                    <td>
-                        <img src="~/Resources/PostImages/@item.ImgPostagem" width="150" height="150" asp-append-version="true" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => tempo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Usuario.UserName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Categoria)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Titulo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Descricao)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PublicoAlvo)
-                    </td>
-                    <td>
-                        <a asp-controller="Postagens" asp-action="Edit" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Edit</a> |
-                        <a asp-controller="Postagens" asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Details</a> |
-                        <a asp-controller="Postagens" asp-action="Delete" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Imagem
-                </th>
-                <th>
-                    Data de Publicação
-                </th>
-                <th>
-                    Usuário
-                </th>
-                <th>
-                    Categoria
-                </th>
-                <th>
-                    Serviço
-                </th>
-                <th>
-                    Descrição
-                </th>
-                <th>
-                    Público Alvo
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.PostagemServico)
-            {
-                string tempo = PostService.TempoPostagem(item.DtPostagem);
-                <tr>
-                    <td>
-                        <img src="~/Resources/PostImages/@item.ImgPostagem" class="rounded-circle" width="50" height="50" asp-append-version="true" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => tempo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Usuario.UserName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Categoria)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Titulo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Descricao)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PublicoAlvo)
-                    </td>
-                    <td>
-                        <a asp-controller="Postagens" asp-action="Edit" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Edit</a> |
-                        <a asp-controller="Postagens" asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Details</a> |
-                        <a asp-controller="Postagens" asp-action="Delete" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div id="modalLogout" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                    <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
+                    <button type="button" class="btn btn-outline-dark float-end" data-bs-dismiss="modal">Cancelar</button><br />
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

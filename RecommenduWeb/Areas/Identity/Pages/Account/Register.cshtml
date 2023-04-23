@@ -18,7 +18,7 @@
                     <p>Para se manter conectado conosco, faça o cadastro com suas informações pessoais</p>
                     <p class="mt-7">Caso possua conta faça o login</p>
                 </h3>
-                <a class="btn btn-secondary mt-5 p-2" asp-area="Identity" asp-page="/Account/Login">Log in</a>
+                <a class="btn btn-secondary mt-5 p-2" asp-area="Identity" asp-page="/Account/Login">Entrar</a>
             </div>
         </div>
         <div class="col-md-6 ps-5 mt-4">
@@ -51,7 +51,7 @@
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
                 <div class="row justify-content-end">
-                    <a class="col-sm-6 btn btn-secondary w-20 me-6" onclick="location.href='@Url.Action("Index", "Home")'">Voltar</a>
+                    <a class="col-sm-6 btn btn-outline-secondary w-20 me-6" onclick="location.href='@Url.Action("Index", "Home")'">Voltar</a>
                     <button id="registerSubmit" type="submit" class="col-sm-6 w-35 btn btn-primary me-0">Register</button>
                 </div>               
             </form>
