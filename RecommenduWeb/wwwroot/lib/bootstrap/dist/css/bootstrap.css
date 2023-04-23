@@ -2212,24 +2212,6 @@ progress {
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-/*.form-control {
-  display: block;
-  width: 100%;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-*/
 @media (prefers-reduced-motion: reduce) {
   .form-control {
     transition: none;
@@ -3007,19 +2989,19 @@ textarea.form-control-lg {
   color: #fff;
   background-color: #db924f;
   border-color: none;
-  border-radius: 20px;
+  border-radius: 50px;
   width: 160px;
 }
 .btn-primary:hover {
   color: #fff;
   background-color: #e1a974;
-  border-color: none;
+  border-color: #191919;
 }
 .btn-check:focus + .btn-primary, .btn-primary:focus {
   color: #fff;
   background-color: #d46500;
-  border-color: none;
-  box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+  border-color: #191919;
+  box-shadow: 0 0 0 0.25rem rgba(219, 146, 79, 0.5);
 }
 .btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
   color: #fff;
@@ -3027,7 +3009,7 @@ textarea.form-control-lg {
   border-color: none;
 }
 .btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus, .show > .btn-primary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+  box-shadow: 0 0 0 0.25rem rgba(219, 146, 79, 0.5);
 }
 .btn-primary:disabled, .btn-primary.disabled {
   color: #fff;
@@ -7364,7 +7346,7 @@ textarea.form-control-lg {
 }
 
 .me-7 {
-    margin-right: 9rem !important;
+    margin-right: 12rem !important;
 }
 
 .me-auto {
@@ -7433,6 +7415,10 @@ textarea.form-control-lg {
 
 .ms-6 {
     margin-left: 6rem !important;
+}
+
+.ms-7 {
+    margin-left: 13rem !important;
 }
 
 .ms-auto {

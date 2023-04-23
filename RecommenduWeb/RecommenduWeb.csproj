@@ -18,8 +18,8 @@
     <PackageReference Include="TorchSharp-cpu" Version="0.98.3" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\Resources\SiteImages\" />
     <Folder Include="wwwroot\Resources\PostImages\" />
+    <Folder Include="wwwroot\Resources\SiteImages\" />
   </ItemGroup>
   <ItemGroup Label="AnaliseDescricao">
     <None Include="AnaliseDescricao.mlnet">

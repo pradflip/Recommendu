@@ -2,27 +2,35 @@
 @inject SignInManager<Usuario> SignInManager
 @inject UserManager<Usuario> UserManager
 
-
-<ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent">
+            <div class="container-fluid mx-5">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/Resources/SiteImages/Logo.png" class="img-logo" alt="Imagem responsiva" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav flex-grow-1 d-sm-inline-flex justify-content-end">
+@*                        <li class ="nav-item">
+                            <img src="~/Resources/ProfileImages/@Model.FotoPerfil" class="rounded-circle avatar-circle" width="50" height="50" asp-append-version="true" />
+                        </li>*@
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+                        </li>
+                        <li class="nav-item">
+                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 }
-else
-{
-    <li class="nav-item">
-            <a class="nav-link text-dark me-3" asp-area="Identity" asp-page="/Account/Login">Entrar</a>
-    </li>
-    <li class="nav-item">
-            <a class="nav-link text-white btn btn-primary me-4" asp-area="Identity" asp-page="/Account/Register">Registrar-se</a>
-    </li>
-}
-</ul>
+@*<img src="~/Resources/ProfileImages/@Model.FotoPerfil" class="rounded-circle avatar-circle" width="50" height="50" asp-append-version="true" />
+<a class="col-sm-6 btn btn-secondary w-20 me-6" onclick="location.href='@Url.Action("Index", "Home")'">Voltar</a>*@
 

@@ -6,14 +6,16 @@
 }
 
 <h1>@ViewData["Title"]</h1>
+
 <div class="bg-login">
 </div>
-<div class="container-fluid text-center">
-    <a class="btn link-voltar" onclick="location.href='@Url.Action("Index", "Home")'">Voltar</a>
+<div class="container-fluid text-center my-5">
     <div class="row">
         <div class="col-sm-6 pe-5 text-white">
             <div>
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/Resources/SiteImages/LogoReverso.png" class="img-login" alt="Imagem responsiva" /></a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="/Resources/SiteImages/LogoReverso.png" class="img-login" alt="Imagem responsiva" />
+                </a>
                 <h1 class="my-5"><b>Bem vindo de volta!</b></h1>
                 <h3>
                     <p>Para se manter conectado conosco, faça o login com suas informações pessoais</p>
@@ -22,20 +24,20 @@
                 <a class="btn btn-secondary mt-5 p-2" asp-area="Identity" asp-page="/Account/Register">Registrar-se</a>
             </div>
         </div>
-        <div class="col-md-6 ps-5 mt-4">
+        <div class="col-6 ps-5 mt-4">
             <section>
                 <form id="account" method="post">
                     <h1 class="text-start mb-6">Login</h1>
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                    <div class="form-floating mb-4 d-flex justify-content-end">
+                    <div class="row form-floating mb-3 d-flex justify-content-end">
                         <input asp-for="Input.Login" class="form-control" autocomplete="login" aria-required="true" placeholder="Usuário ou Email" />
-                        <label asp-for="Input.Login" class="form-label mx-7">Login <span style="color: gray">(Usuário ou Email)</span></label>
-                        <span asp-validation-for="Input.Login" class="text-danger"></span>
+                        <label asp-for="Input.Login" class="form-label">Login <span style="color: gray">(Usuário ou Email)</span></label>
+                        <span asp-validation-for="Input.Login" class="text-danger col-6 text-start mt-1"></span>
                     </div>
-                    <div class="form-floating mb-4 d-flex justify-content-end">
+                    <div class="row form-floating d-flex justify-content-end">
                         <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                        <label asp-for="Input.Password" class="form-label mx-7">Senha</label>
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        <label asp-for="Input.Password" class="form-label text-center ms-7 d-flex">Senha</label>
+                        <span asp-validation-for="Input.Password" class="text-danger col-6 text-start mt-1"></span>
                     </div>
                     <div class="checkbox mb-1 text-center me-6">
                         <label asp-for="Input.RememberMe" class="form-label">
@@ -48,12 +50,10 @@
                             <a id="forgot-password" class="link-primary-1" asp-page="./ForgotPassword">Esqueceu sua senha?</a>
                             <a id="resend-confirmation" class="link-primary-1" asp-page="./ResendEmailConfirmation">Reenviar email de confirmação</a>
                         </p>
-                        @*<p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                        </p>*@
                     </div>
-                    <div class="text-end">
-                        <button id="login-submit" type="submit" class="w-70 btn btn-secondary">Log in</button>
+                    <div class="row justify-content-end">
+                        <a class="col-sm-6 btn btn-secondary w-20 me-6" onclick="location.href='@Url.Action("Index", "Home")'">Voltar</a>
+                        <button id="login-submit" type="submit" class="col-sm-6 w-35 btn btn-primary me-0">Log in</button>
                     </div>
                 </form>
             </section>
