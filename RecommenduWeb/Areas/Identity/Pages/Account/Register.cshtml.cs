@@ -140,7 +140,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 Random random = new Random();
-                int num = random.Next(1, 4);
+                int num = random.Next(1, 5);
                 string profileImage = $"default-profile-image-{num}.png";
                 Input.UserName = Input.UserName.ToLower();
                 var user = new Usuario { NomeCompleto = Input.NomeCompleto.Titleize(), UserName = Input.UserName, Email = Input.Email, ImagemPerfil = profileImage };

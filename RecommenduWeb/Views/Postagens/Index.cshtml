@@ -1,4 +1,6 @@
-﻿@inject RecommenduWeb.Services.PostService PostService
+﻿@using Microsoft.AspNetCore.Identity;
+@inject RecommenduWeb.Services.PostService PostService
+@inject SignInManager<Usuario> SignInManager
 @model RecommenduWeb.Models.ViewModels.PostagemViewModel
 
 @{
@@ -6,8 +8,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Minhas publicações</h1>
-<a asp-action="Create" asp-controller="Postagens" class="btn btn-dark">Nova publicação</a>
+@{
+    var user = await SignInManager.UserManager.GetUserAsync(User);
+    if (ViewData["UserName"] == user.UserName)
+    {
+        <h1>Minhas publicações</h1>
+        <a asp-action="Create" asp-controller="Postagens" class="btn btn-dark">Nova publicação</a>
+    }
+    else
+    {
+        <h1>Publicações de @ViewData["UserName"]</h1>
+    }
+}
 <div>
     <button class="btn btn-primary" id="btnProdutos" onclick="MostrarPost(1)">Mostrar produtos</button>
     <div id="divProdutos" hidden="true">

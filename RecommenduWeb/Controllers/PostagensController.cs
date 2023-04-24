@@ -35,8 +35,8 @@ namespace RecommenduWeb.Controllers
         // GET: Postagens
         public async Task<IActionResult> Index(string userName)
         {
-
             var user = await _userManager.FindByNameAsync(userName);
+            ViewData["UserName"] = user.UserName;
             var vm = new PostagemViewModel();
             vm.PostagemProduto = await _postService.BuscarProdutoPorUsuarioAsync(user.Id);
             vm.PostagemServico = await _postService.BuscarServicoPorUsuarioAsync(user.Id);
@@ -131,6 +131,7 @@ namespace RecommenduWeb.Controllers
                     LinkProduto = prod.LinkProduto,
                     Curtidas = prod.Curtidas
                 };
+                ViewData["UserId"] = prod.Usuario.Id;
 
                 return View(vm);
             }
@@ -153,6 +154,7 @@ namespace RecommenduWeb.Controllers
                     Contato = serv.Contato,
                     Curtidas = serv.Curtidas
                 };
+                ViewData["UserId"] = serv.Usuario.Id;
 
                 return View(vm);
             }
