@@ -8,7 +8,7 @@ function ListarCidades() {
     location.reload()
 
     // passa para a url os parametros selecionados
-    self.location = 'servicos?titulo=' + idTitulo + '&GetEstados=' + idEstado
+    self.location = 'encontrar-servicos?titulo=' + idTitulo + '&GetEstados=' + idEstado
 }
 
 function CarregaForm() {

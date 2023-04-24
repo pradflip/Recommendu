@@ -125,12 +125,12 @@ namespace RecommenduWeb.Services
 
         public async Task<List<PostagemProduto>> BuscarProdutoPorUsuarioAsync(string userId)
         {
-            return await _context.PostagemProduto.Include(p => p.Usuario).Where(u => u.Usuario.Id == userId).ToListAsync();
+            return await _context.PostagemProduto.Include(p => p.Usuario).Where(u => u.Usuario.Id == userId).OrderByDescending(p => p.DtPostagem).ToListAsync();
         }
 
         public async Task<List<PostagemServico>> BuscarServicoPorUsuarioAsync(string userId)
         {
-            return await _context.PostagemServico.Include(s => s.Usuario).Where(u => u.Usuario.Id == userId).ToListAsync();
+            return await _context.PostagemServico.Include(s => s.Usuario).Where(u => u.Usuario.Id == userId).OrderByDescending(s => s.DtPostagem).ToListAsync();
         }
 
         public async Task<int> PublicarAsync(PostagemViewModel vm, Usuario user, string webRoot)

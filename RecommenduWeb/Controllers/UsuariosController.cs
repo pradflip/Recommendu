@@ -46,7 +46,7 @@ namespace RecommenduWeb.Controllers
         }
 
         // GET: Postagens/Servicos
-        [Route("/usuarios")]
+        [Route("/encontrar-usuarios")]
         public async Task<ActionResult> Usuarios(string? nomeUsuario)
         {
             ViewData["usuarioAtual"] = nomeUsuario;

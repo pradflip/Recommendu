@@ -78,12 +78,35 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute( name: "usuarios",
-                        pattern: "usuarios/{userName?}",
+app.MapControllerRoute(name: "postagens",
+                        pattern: "/postagens/{userName}",
+                        defaults: new { controller = "Postagens", action = "Index" });
+app.MapControllerRoute(name: "postagem-completa",
+                        pattern: "/postagens/detalhes/{id}/{cat}",
+                        defaults: new { controller = "Postagens", action = "Details" });
+app.MapControllerRoute(name: "nova-postagem",
+                        pattern: "/postagens/minhas-postagens/nova",
+                        defaults: new { controller = "Postagens", action = "Create" });
+app.MapControllerRoute(name: "editar-postagem",
+                        pattern: "/postagens/minhas-postagens/editar/{id}/{cat}",
+                        defaults: new { controller = "Postagens", action = "Edit" });
+app.MapControllerRoute(name: "excluir-postagem",
+                        pattern: "/postagens/minhas-postagens/excluir/{id}/{cat}",
+                        defaults: new { controller = "Postagens", action = "Delete" });
+app.MapControllerRoute( name: "produtos",
+                        pattern: "/postagens/encontrar-produtos",
+                        defaults: new { controller = "Postagens", action = "Produtos" });
+app.MapControllerRoute(name: "servicos",
+                        pattern: "/postagens/encontrar-servicos",
+                        defaults: new { controller = "Postagens", action = "Servicos" });
+app.MapControllerRoute(name: "perfil-usuarios",
+                        pattern: "usuarios/{userName}",
                         defaults: new { controller = "Usuarios", action = "Index" });
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(name: "usuarios",
+                        pattern: "/usuarios/encontrar-usuarios",
+                        defaults: new { controller = "Usuarios", action = "Usuarios" });
+app.MapControllerRoute(name: "default",
+                       pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 app.Run();

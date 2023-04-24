@@ -4,13 +4,15 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
+    //var user = await UserManager.GetUserAsync(User);
     var user = await UserManager.GetUserAsync(User);
+    var userName = user.UserName;
     var imgPerfil = user.ImagemPerfil;
 
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent">
             <div class="container-fluid mx-5">
-                <a class="navbar-brand" asp-area="" asp-controller="Postagens" asp-action="Index"><img src="/Resources/SiteImages/Logo.png" class="img-logo" alt="Imagem responsiva" /></a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/Resources/SiteImages/Logo.png" class="img-logo" alt="Imagem responsiva" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -18,7 +20,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav flex-grow-1 d-sm-inline-flex justify-content-end">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@user.UserName">
                                 <img src="~/Resources/ProfileImages/@imgPerfil" class="rounded-circle avatar-circle" width="50" height="50" asp-append-version="true" />
                                 @User.Identity?.Name
                             </a>

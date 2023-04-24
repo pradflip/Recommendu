@@ -1,4 +1,5 @@
 ﻿
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Identity;
@@ -32,18 +33,18 @@ namespace RecommenduWeb.Controllers
         }
 
         // GET: Postagens
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string userName)
         {
-            var userId = _userManager.GetUserId(User);
+
+            var user = await _userManager.FindByNameAsync(userName);
             var vm = new PostagemViewModel();
-            vm.PostagemProduto = await _postService.BuscarProdutoPorUsuarioAsync(userId);
-            vm.PostagemServico = await _postService.BuscarServicoPorUsuarioAsync(userId);
+            vm.PostagemProduto = await _postService.BuscarProdutoPorUsuarioAsync(user.Id);
+            vm.PostagemServico = await _postService.BuscarServicoPorUsuarioAsync(user.Id);
 
             return View(vm);
         }
 
         // GET: Postagens/Produtos
-        [Route("/produtos")]
         public async Task<ActionResult> Produtos(string? titulo, string? filtro)
         {
             ViewData["tituloAtual"] = titulo;
@@ -71,7 +72,6 @@ namespace RecommenduWeb.Controllers
         }
 
         // GET: Postagens/Servicos
-        [Route("/servicos")]
         public async Task<ActionResult> Servicos(string? titulo, string? GetEstados, string? GetCidades, string? filtro)
         {
             ViewData["tituloAtual"] = titulo;
@@ -111,9 +111,8 @@ namespace RecommenduWeb.Controllers
         // GET: Postagens/Details/5
         public async Task<IActionResult> Details(int id, string cat)
         {
-            //ViewData["Referer"] = Request.Headers["Referer"].ToString();
             var referer = Request.Headers["Referer"].ToString();
-            ViewData["Count"] = referer.Contains("/Postagens/Details") ? Convert.ToInt32(TempData["Count"]) : 1;
+            ViewData["Count"] = referer.Contains("/postagens/detalhes") ? Convert.ToInt32(TempData["Count"]) : 1;
 
             if (id != null && cat.Equals("Produto"))
             {
@@ -188,6 +187,7 @@ namespace RecommenduWeb.Controllers
                 ViewData["Estado"] = estados;
                 vm.Estado = estados.Where(p => p.Value == vm.Estado).First().Text;
 
+                vm.Cidade = vm.Cidade == null ? null : vm.Cidade.Titleize();
                 var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
                 int postId = await _postService.PublicarAsync(vm, user, webRoot);
 
@@ -201,7 +201,7 @@ namespace RecommenduWeb.Controllers
 
             }
             //return RedirectToAction(nameof(Index));
-            return RedirectToAction("Index", "Usuarios", new { userName = user.UserName });
+            return RedirectToAction("Index", "Postagens", new { userName = user.UserName });
         }
 
         // GET: Postagens/Edit/5
@@ -324,7 +324,7 @@ namespace RecommenduWeb.Controllers
                     await _postService.AddReportPostagemAsync(id, vm.Categoria);
                 }
 
-                return RedirectToAction("Index", "Usuarios", new { userName = user.UserName });
+                return RedirectToAction("Index", "Postagens", new { userName = user.UserName });
             }
             return View(vm);
         }
