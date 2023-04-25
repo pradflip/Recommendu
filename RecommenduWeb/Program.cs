@@ -21,6 +21,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<LocalidadeService>();
 builder.Services.AddScoped<PostService>();
 builder.Services.AddScoped<UsuarioService>();
+builder.Services.AddScoped<ComentarioService>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -93,18 +94,21 @@ app.MapControllerRoute(name: "editar-postagem",
 app.MapControllerRoute(name: "excluir-postagem",
                         pattern: "/postagens/minhas-postagens/excluir/{id}/{cat}",
                         defaults: new { controller = "Postagens", action = "Delete" });
+app.MapControllerRoute(name: "curtir-postagem",
+                        pattern: "/postagens/curtir/{postId}/{cat}/{userId}/{acao}/Count",
+                        defaults: new { controller = "Postagens", action = "Curtir" });
 app.MapControllerRoute( name: "produtos",
-                        pattern: "/postagens/encontrar-produtos",
+                        pattern: "/encontrar/produtos",
                         defaults: new { controller = "Postagens", action = "Produtos" });
 app.MapControllerRoute(name: "servicos",
-                        pattern: "/postagens/encontrar-servicos",
+                        pattern: "/encontrar/servicos",
                         defaults: new { controller = "Postagens", action = "Servicos" });
+app.MapControllerRoute(name: "usuarios",
+                        pattern: "/encontrar/usuarios",
+                        defaults: new { controller = "Usuarios", action = "Usuarios" });
 app.MapControllerRoute(name: "perfil-usuarios",
                         pattern: "usuarios/{userName}",
                         defaults: new { controller = "Usuarios", action = "Index" });
-app.MapControllerRoute(name: "usuarios",
-                        pattern: "/usuarios/encontrar-usuarios",
-                        defaults: new { controller = "Usuarios", action = "Usuarios" });
 app.MapControllerRoute(name: "default",
                        pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();

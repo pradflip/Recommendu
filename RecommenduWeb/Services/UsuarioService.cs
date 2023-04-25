@@ -119,7 +119,7 @@ namespace RecommenduWeb.Services
                     string pathDelete = Path.Combine(diretorio, nomeImagem);
                     File.Delete(pathDelete);
                 }
-                int num = random.Next(1, 5);
+                int num = random.Next(1, 8);
                 string imagemPadrao = $"default-profile-image-{num}.png";
 
                 return imagemPadrao;

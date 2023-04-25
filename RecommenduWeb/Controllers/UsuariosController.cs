@@ -46,7 +46,6 @@ namespace RecommenduWeb.Controllers
         }
 
         // GET: Postagens/Servicos
-        [Route("/encontrar-usuarios")]
         public async Task<ActionResult> Usuarios(string? nomeUsuario)
         {
             ViewData["usuarioAtual"] = nomeUsuario;
@@ -71,7 +70,6 @@ namespace RecommenduWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Usuarios/AtualizarFoto")]
         public async Task<IActionResult> AtualizarFoto([Bind("PerfilFile")] UsuarioViewModel vm)
         {
             if (ModelState.IsValid)
@@ -85,7 +83,6 @@ namespace RecommenduWeb.Controllers
             return View(vm);
         }
 
-        [Route("Usuarios/DeletarFoto")]
         public async Task<IActionResult> DeletarFoto()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);

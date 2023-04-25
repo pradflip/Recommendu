@@ -54,6 +54,10 @@ namespace RecommenduWeb.Models.ViewModels
 
         public int? Curtidas { get; set; }
 
+        [Display(Name = "Comentário")]
+        [StringLength(250, ErrorMessage = "Comentário deve conter entre 1 a 250 caracteres.", MinimumLength = 1)]
+        public string? Comentario { get; set; }
+
         public ICollection<PostagemProduto>? PostagemProduto { get; set; } = new List<PostagemProduto>();
         public ICollection<PostagemServico>? PostagemServico { get; set; } = new List<PostagemServico>();
         public ICollection<ComentarioPostagem>? ComentarioPostagem { get; set; } = new List<ComentarioPostagem>();

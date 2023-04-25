@@ -19,14 +19,16 @@ namespace RecommenduWeb.Controllers
     {
         private readonly PostService _postService;
         private readonly LocalidadeService _localidadeService;
+        private readonly ComentarioService _comentarioService;
         private readonly UserManager<Usuario> _userManager;
         private readonly IWebHostEnvironment _environment;
         private readonly PredictionEnginePool<ModelInput, ModelOutput> _predictionEnginePool;
 
-        public PostagensController(PostService postagemService, LocalidadeService localidadeService, UserManager<Usuario> userManager, IWebHostEnvironment environment, PredictionEnginePool<ModelInput, ModelOutput> predictionEnginePool)
+        public PostagensController(PostService postagemService, LocalidadeService localidadeService, ComentarioService comentarioService, UserManager<Usuario> userManager, IWebHostEnvironment environment, PredictionEnginePool<ModelInput, ModelOutput> predictionEnginePool)
         {
             _postService = postagemService;
             _localidadeService = localidadeService;
+            _comentarioService = comentarioService;
             _userManager = userManager;
             _environment = environment;
             _predictionEnginePool = predictionEnginePool;
@@ -117,6 +119,7 @@ namespace RecommenduWeb.Controllers
             if (id != null && cat.Equals("Produto"))
             {
                 var prod = await _postService.BuscarProdutosPorIdAsync(id);
+                prod.ComentariosPostagem = await _comentarioService.ListarComentarios(prod.PostagemId);
                 if (prod == null) { return NotFound(); }
 
                 var vm = new PostagemViewModel
@@ -129,7 +132,8 @@ namespace RecommenduWeb.Controllers
                     ImgPostagem = prod.ImgPostagem,
                     Fabricante = prod.Fabricante,
                     LinkProduto = prod.LinkProduto,
-                    Curtidas = prod.Curtidas
+                    Curtidas = prod.Curtidas,
+                    ComentarioPostagem = prod.ComentariosPostagem
                 };
                 ViewData["UserId"] = prod.Usuario.Id;
 
@@ -138,6 +142,7 @@ namespace RecommenduWeb.Controllers
             else if (id != null && cat.Equals("Serviço"))
             {
                 var serv = await _postService.BuscarServicosPorIdAsync(id);
+                serv.ComentariosPostagem = await _comentarioService.ListarComentarios(serv.PostagemId);
                 if (serv == null) { return NotFound(); }
 
                 var vm = new PostagemViewModel
@@ -152,7 +157,8 @@ namespace RecommenduWeb.Controllers
                     Cidade = serv.Cidade,
                     Endereco = serv.Endereco,
                     Contato = serv.Contato,
-                    Curtidas = serv.Curtidas
+                    Curtidas = serv.Curtidas,
+                    ComentarioPostagem = serv.ComentariosPostagem
                 };
                 ViewData["UserId"] = serv.Usuario.Id;
 
