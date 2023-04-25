@@ -3,8 +3,13 @@
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
+<h1 class="text-danger">Ocorreu um problema</h1>
 <h2 class="text-danger">@Model.Mensagem</h2>
+
+@if (Model.IsNotFound)
+{
+    <img src="~/Resources/SiteImages/notFound.png" width="500" height="500" asp-append-version="true" />
+}
 
 @if (Model.ShowRequestId)
 {
@@ -12,4 +17,3 @@
         <strong>Request ID:</strong> <code>@Model.RequestId</code>
     </p>
 }
-

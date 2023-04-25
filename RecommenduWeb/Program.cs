@@ -98,7 +98,7 @@ app.MapControllerRoute(name: "excluir-postagem",
 app.MapControllerRoute(name: "curtir-postagem",
                         pattern: "/postagens/curtir/{postId}/{cat}/{userId}/{acao}/Count",
                         defaults: new { controller = "Postagens", action = "Curtir" });
-app.MapControllerRoute( name: "produtos",
+app.MapControllerRoute(name: "produtos",
                         pattern: "/encontrar/produtos",
                         defaults: new { controller = "Postagens", action = "Produtos" });
 app.MapControllerRoute(name: "servicos",
@@ -107,6 +107,12 @@ app.MapControllerRoute(name: "servicos",
 app.MapControllerRoute(name: "usuarios",
                         pattern: "/encontrar/usuarios",
                         defaults: new { controller = "Usuarios", action = "Usuarios" });
+app.MapControllerRoute(name: "perfil-usuarios",
+                        pattern: "usuarios/atualizar-foto",
+                        defaults: new { controller = "Usuarios", action = "AtualizarFoto" });
+app.MapControllerRoute(name: "perfil-usuarios",
+                        pattern: "usuarios/deletar-foto",
+                        defaults: new { controller = "Usuarios", action = "DeletarFoto" });
 app.MapControllerRoute(name: "perfil-usuarios",
                         pattern: "usuarios/{userName}",
                         defaults: new { controller = "Usuarios", action = "Index" });

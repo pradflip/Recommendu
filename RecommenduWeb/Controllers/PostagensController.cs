@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using RecommenduWeb.Models;
 using RecommenduWeb.Models.ViewModels;
 using RecommenduWeb.Services;
+using System.Diagnostics;
 using static RecommenduWeb.AnaliseDescricao;
 using static TorchSharp.torch.nn;
 
@@ -34,444 +35,537 @@ namespace RecommenduWeb.Controllers
             _predictionEnginePool = predictionEnginePool;
         }
 
-        // GET: Postagens
         public async Task<IActionResult> Index(string userName)
         {
-            var user = await _userManager.FindByNameAsync(userName);
-            ViewData["UserName"] = user.UserName;
-            var vm = new PostagemViewModel();
-            vm.PostagemProduto = await _postService.BuscarProdutoPorUsuarioAsync(user.Id);
-            vm.PostagemServico = await _postService.BuscarServicoPorUsuarioAsync(user.Id);
+            try
+            {
+                var user = await _userManager.FindByNameAsync(userName);
+                ViewData["UserName"] = user.UserName;
+                var vm = new PostagemViewModel();
+                vm.PostagemProduto = await _postService.BuscarProdutoPorUsuarioAsync(user.Id);
+                vm.PostagemServico = await _postService.BuscarServicoPorUsuarioAsync(user.Id);
 
-            return View(vm);
+                return View(vm);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
         }
 
-        // GET: Postagens/Produtos
         public async Task<ActionResult> Produtos(string? titulo, string? filtro)
         {
-            ViewData["tituloAtual"] = titulo;
-            if (titulo.IsNullOrEmpty())
+            try
             {
-                return View();
-            }
-            filtro = filtro == "relevantes" ? "relevantes" : "recentes";
-            var user = await _userManager.GetUserAsync(User);
-            var produtos = await _postService.BuscarProdutosAsync(titulo.ToLower(), filtro, user);
-
-            if (produtos != null)
-            {
-                var vm = new PostagemViewModel()
+                ViewData["tituloAtual"] = titulo;
+                if (titulo.IsNullOrEmpty())
                 {
-                    PostagemProduto = produtos
-                };
+                    return View();
+                }
+                filtro = filtro == "relevantes" ? "relevantes" : "recentes";
+                var user = await _userManager.GetUserAsync(User);
+                var produtos = await _postService.BuscarProdutosAsync(titulo.ToLower(), filtro, user);
 
-                return View(vm);
+                if (produtos != null)
+                {
+                    var vm = new PostagemViewModel()
+                    {
+                        PostagemProduto = produtos
+                    };
+
+                    return View(vm);
+                }
+                else
+                {
+                    return View();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return View();
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+
             }
         }
 
-        // GET: Postagens/Servicos
         public async Task<ActionResult> Servicos(string? titulo, string? GetEstados, string? GetCidades, string? filtro)
         {
-            ViewData["tituloAtual"] = titulo;
-            ViewData["estadoAtual"] = GetEstados;
-            ViewData["cidadeAtual"] = GetCidades;
-            var estados = await _localidadeService.EstadoSelectListAsync();
-            ViewBag.GetEstados = estados;
-            var cidades = await _localidadeService.GetCidadesAsync(GetEstados);
-            ViewBag.GetCidades = cidades;
-
-            if (titulo.IsNullOrEmpty())
+            try
             {
-                return View();
-            }
+                ViewData["tituloAtual"] = titulo;
+                ViewData["estadoAtual"] = GetEstados;
+                ViewData["cidadeAtual"] = GetCidades;
+                var estados = await _localidadeService.EstadoSelectListAsync();
+                ViewBag.GetEstados = estados;
+                var cidades = await _localidadeService.GetCidadesAsync(GetEstados);
+                ViewBag.GetCidades = cidades;
 
-            GetEstados = GetEstados != null && GetEstados != "0" ? estados.Where(p => p.Value == GetEstados).First().Text : "";
-            GetCidades = GetCidades != null && GetCidades != "0" ? cidades.Where(p => p.Value == GetCidades).First().Text : "";
-            filtro = filtro == "relevantes" ? "relevantes" : "recentes";
-            var user = await _userManager.GetUserAsync(User);
-            var servicos = await _postService.BuscarServicosAsync(titulo.ToLower(), filtro, GetEstados.ToLower(), GetCidades.ToLower(), user);
-
-            if (servicos != null)
-            {
-                var vm = new PostagemViewModel()
+                if (titulo.IsNullOrEmpty())
                 {
-                    PostagemServico = servicos
-                };
+                    return View();
+                }
 
-                return View(vm);
+                GetEstados = GetEstados != null && GetEstados != "0" ? estados.Where(p => p.Value == GetEstados).First().Text : "";
+                GetCidades = GetCidades != null && GetCidades != "0" ? cidades.Where(p => p.Value == GetCidades).First().Text : "";
+                filtro = filtro == "relevantes" ? "relevantes" : "recentes";
+                var user = await _userManager.GetUserAsync(User);
+                var servicos = await _postService.BuscarServicosAsync(titulo.ToLower(), filtro, GetEstados.ToLower(), GetCidades.ToLower(), user);
+
+                if (servicos != null)
+                {
+                    var vm = new PostagemViewModel()
+                    {
+                        PostagemServico = servicos
+                    };
+
+                    return View(vm);
+                }
+                else
+                {
+                    return View();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return View();
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+
             }
         }
 
-        // GET: Postagens/Details/5
         public async Task<IActionResult> Details(int id, string cat)
         {
-            var referer = Request.Headers["Referer"].ToString();
-            ViewData["Count"] = referer.Contains("/postagens/detalhes") ? Convert.ToInt32(TempData["Count"]) : 1;
-
-            if (id != null && cat.Equals("Produto"))
+            try
             {
-                var prod = await _postService.BuscarProdutosPorIdAsync(id);
-                prod.ComentariosPostagem = await _comentarioService.ListarComentarios(prod.PostagemId);
-                if (prod == null) { return NotFound(); }
+                var referer = Request.Headers["Referer"].ToString();
+                ViewData["Count"] = referer.Contains("/postagens/detalhes") ? Convert.ToInt32(TempData["Count"]) : 1;
 
-                var vm = new PostagemViewModel
+                if (id != null && cat.Equals("Produto"))
                 {
-                    PostagemId = prod.PostagemId,
-                    Categoria = prod.Categoria,
-                    Titulo = prod.Titulo,
-                    Descricao = prod.Descricao,
-                    PublicoAlvo = prod.PublicoAlvo,
-                    ImgPostagem = prod.ImgPostagem,
-                    Fabricante = prod.Fabricante,
-                    LinkProduto = prod.LinkProduto,
-                    Curtidas = prod.Curtidas,
-                    ComentarioPostagem = prod.ComentariosPostagem
-                };
-                ViewData["UserId"] = prod.Usuario.Id;
+                    var prod = await _postService.BuscarProdutosPorIdAsync(id);
+                    prod.ComentariosPostagem = await _comentarioService.ListarComentarios(prod.PostagemId);
 
-                return View(vm);
-            }
-            else if (id != null && cat.Equals("Serviço"))
-            {
-                var serv = await _postService.BuscarServicosPorIdAsync(id);
-                serv.ComentariosPostagem = await _comentarioService.ListarComentarios(serv.PostagemId);
-                if (serv == null) { return NotFound(); }
+                    if (prod == null)
+                    {
+                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
+                    }
 
-                var vm = new PostagemViewModel
+                    var vm = new PostagemViewModel
+                    {
+                        PostagemId = prod.PostagemId,
+                        Categoria = prod.Categoria,
+                        Titulo = prod.Titulo,
+                        Descricao = prod.Descricao,
+                        PublicoAlvo = prod.PublicoAlvo,
+                        ImgPostagem = prod.ImgPostagem,
+                        Fabricante = prod.Fabricante,
+                        LinkProduto = prod.LinkProduto,
+                        Curtidas = prod.Curtidas,
+                        ComentarioPostagem = prod.ComentariosPostagem
+                    };
+                    ViewData["UserId"] = prod.Usuario.Id;
+
+                    return View(vm);
+                }
+                else if (id != null && cat.Equals("Serviço"))
                 {
-                    PostagemId = serv.PostagemId,
-                    Categoria = serv.Categoria,
-                    Titulo = serv.Titulo,
-                    Descricao = serv.Descricao,
-                    PublicoAlvo = serv.PublicoAlvo,
-                    ImgPostagem = serv.ImgPostagem,
-                    Estado = serv.Estado,
-                    Cidade = serv.Cidade,
-                    Endereco = serv.Endereco,
-                    Contato = serv.Contato,
-                    Curtidas = serv.Curtidas,
-                    ComentarioPostagem = serv.ComentariosPostagem
-                };
-                ViewData["UserId"] = serv.Usuario.Id;
+                    var serv = await _postService.BuscarServicosPorIdAsync(id);
+                    serv.ComentariosPostagem = await _comentarioService.ListarComentarios(serv.PostagemId);
 
-                return View(vm);
+                    if (serv == null)
+                    {
+                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
+                    }
+
+                    var vm = new PostagemViewModel
+                    {
+                        PostagemId = serv.PostagemId,
+                        Categoria = serv.Categoria,
+                        Titulo = serv.Titulo,
+                        Descricao = serv.Descricao,
+                        PublicoAlvo = serv.PublicoAlvo,
+                        ImgPostagem = serv.ImgPostagem,
+                        Estado = serv.Estado,
+                        Cidade = serv.Cidade,
+                        Endereco = serv.Endereco,
+                        Contato = serv.Contato,
+                        Curtidas = serv.Curtidas,
+                        ComentarioPostagem = serv.ComentariosPostagem
+                    };
+                    ViewData["UserId"] = serv.Usuario.Id;
+
+                    return View(vm);
+                }
+                else
+                {
+                    return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+
             }
         }
 
-        // GET: Postagens/Create
         public async Task<IActionResult> Create()
         {
-            var vm = new PostagemViewModel();
-            ViewData["Estado"] = await _localidadeService.EstadoSelectListAsync();
-            return View(vm);
+            try
+            {
+                var vm = new PostagemViewModel();
+                ViewData["Estado"] = await _localidadeService.EstadoSelectListAsync();
+                return View(vm);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
         }
 
-        // POST: Postagens/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Categoria,Titulo,Descricao,PublicoAlvo,PostFile,Fabricante,LinkProduto,Estado,Cidade,Endereco,Contato")] PostagemViewModel vm)
         {
-            if (vm.Categoria.Equals("0"))
+            try
             {
-                return View(vm);
-            }
-
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (ModelState.IsValid)
-            {
-                var estados = await _localidadeService.EstadoSelectListAsync();
-                ViewData["Estado"] = estados;
-                vm.Estado = estados.Where(p => p.Value == vm.Estado).First().Text;
-
-                vm.Cidade = vm.Cidade == null ? null : vm.Cidade.Titleize();
-                var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
-                int postId = await _postService.PublicarAsync(vm, user, webRoot);
-
-                var descricao = new ModelInput { Col1 = vm.Descricao };
-                var previsao = _predictionEnginePool.Predict(descricao);
-                var opiniao = previsao.PredictedLabel == 0 ? "boa" : "ruim";
-                if (opiniao.Equals("ruim"))
+                if (!ModelState.IsValid)
                 {
-                    await _postService.AddReportPostagemAsync(postId, vm.Categoria);
+                    return View(vm);
                 }
 
+                else
+                {
+                    var user = await _userManager.GetUserAsync(HttpContext.User);
+                    var estados = await _localidadeService.EstadoSelectListAsync();
+                    ViewData["Estado"] = estados;
+                    vm.Estado = estados.Where(p => p.Value == vm.Estado).First().Text;
+
+                    vm.Cidade = vm.Cidade == null ? null : vm.Cidade.Titleize();
+                    var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
+                    int postId = await _postService.PublicarAsync(vm, user, webRoot);
+
+                    var descricao = new ModelInput { Col1 = vm.Descricao };
+                    var previsao = _predictionEnginePool.Predict(descricao);
+                    var opiniao = previsao.PredictedLabel == 0 ? "boa" : "ruim";
+                    if (opiniao.Equals("ruim"))
+                    {
+                        await _postService.AddReportPostagemAsync(postId, vm.Categoria);
+                    }
+                    return RedirectToAction("Index", "Postagens", new { userName = user.UserName });
+                }
             }
-            //return RedirectToAction(nameof(Index));
-            return RedirectToAction("Index", "Postagens", new { userName = user.UserName });
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
         }
 
-        // GET: Postagens/Edit/5
         public async Task<IActionResult> Edit(int id, string cat)
         {
-            ViewData["Estado"] = await _localidadeService.EstadoSelectListAsync();
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (id != null && cat.Equals("Produto"))
+            try
             {
-                var prod = await _postService.BuscarProdutosPorIdAsync(id);
-                if (prod != null)
+                ViewData["Estado"] = await _localidadeService.EstadoSelectListAsync();
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                if (id != null && cat.Equals("Produto"))
                 {
-                    if (user.Id == prod.Usuario.Id)
+                    var prod = await _postService.BuscarProdutosPorIdAsync(id);
+                    if (prod != null)
                     {
-                        var vm = new PostagemViewModel
+                        if (user.Id == prod.Usuario.Id)
                         {
-                            PostagemId = prod.PostagemId,
-                            Categoria = prod.Categoria,
-                            Titulo = prod.Titulo,
-                            Descricao = prod.Descricao,
-                            PublicoAlvo = prod.PublicoAlvo,
-                            ImgPostagem = prod.ImgPostagem,
-                            Fabricante = prod.Fabricante,
-                            LinkProduto = prod.LinkProduto
-                        };
+                            var vm = new PostagemViewModel
+                            {
+                                PostagemId = prod.PostagemId,
+                                Categoria = prod.Categoria,
+                                Titulo = prod.Titulo,
+                                Descricao = prod.Descricao,
+                                PublicoAlvo = prod.PublicoAlvo,
+                                ImgPostagem = prod.ImgPostagem,
+                                Fabricante = prod.Fabricante,
+                                LinkProduto = prod.LinkProduto
+                            };
 
-                        return View(vm);
+                            return View(vm);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Error", "Home", new { mensagem = "Você não possui permissão para editar essa postagem.", isNotFound = false });
+                        }
                     }
-                    else { return Unauthorized(); }
+                    else
+                    {
+                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
+                    }
                 }
-                else { return NotFound(); }
+                else if (id != null && cat.Equals("Serviço"))
+                {
+                    var serv = await _postService.BuscarServicosPorIdAsync(id);
+                    if (serv != null)
+                    {
+                        if (user.Id == serv.Usuario.Id)
+                        {
+                            var vm = new PostagemViewModel
+                            {
+                                PostagemId = serv.PostagemId,
+                                Categoria = serv.Categoria,
+                                Titulo = serv.Titulo,
+                                Descricao = serv.Descricao,
+                                PublicoAlvo = serv.PublicoAlvo,
+                                ImgPostagem = serv.ImgPostagem,
+                                Estado = serv.Estado,
+                                Cidade = serv.Cidade,
+                                Endereco = serv.Endereco,
+                                Contato = serv.Contato
+                            };
+
+                            return View(vm);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Error", "Home", new { mensagem = "Você não possui permissão para editar essa postagem.", isNotFound = false });
+                        }
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem ou categoria identificada.", isNotFound = true });
+                }
+
             }
-            else if (id != null && cat.Equals("Serviço"))
+            catch (Exception ex)
             {
-                var serv = await _postService.BuscarServicosPorIdAsync(id);
-                if (serv != null)
-                {
-                    if (user.Id == serv.Usuario.Id)
-                    {
-                        var vm = new PostagemViewModel
-                        {
-                            PostagemId = serv.PostagemId,
-                            Categoria = serv.Categoria,
-                            Titulo = serv.Titulo,
-                            Descricao = serv.Descricao,
-                            PublicoAlvo = serv.PublicoAlvo,
-                            ImgPostagem = serv.ImgPostagem,
-                            Estado = serv.Estado,
-                            Cidade = serv.Cidade,
-                            Endereco = serv.Endereco,
-                            Contato = serv.Contato
-                        };
-
-                        return View(vm);
-                    }
-                    else { return Unauthorized(); }
-                }
-                else { return NotFound(); }
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
             }
-            else { return NotFound(); }
         }
 
-        // POST: Postagens/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PostagemId,Categoria,Titulo,Descricao,PublicoAlvo,PostFile,Fabricante,LinkProduto,Estado,Cidade,Endereco,Contato")] PostagemViewModel vm)
         {
-            if (id != vm.PostagemId)
+            try
             {
-                return NotFound();
-            }
+                if (id != vm.PostagemId)
+                {
+                    return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
+                }
 
-            if (ModelState.IsValid)
+                if (ModelState.IsValid)
+                {
+                    var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
+                    var user = await _userManager.GetUserAsync(HttpContext.User);
+
+                    if (vm.Categoria.Equals("Produto"))
+                    {
+                        var prod = await _postService.BuscarProdutosPorIdAsync(id);
+                        if (prod != null)
+                        {
+                            if (user.Id != prod.Usuario.Id)
+                            {
+                                return RedirectToAction("Error", "Home", new { mensagem = "Você não possui permissão para editar essa postagem.", isNotFound = false });
+                            }
+                            await _postService.AtualizarPostagemAsync(vm, webRoot, prod, null);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
+                        }
+                    }
+                    else if (vm.Categoria.Equals("Serviço"))
+                    {
+                        var estados = await _localidadeService.EstadoSelectListAsync();
+                        ViewData["Estado"] = estados;
+                        vm.Estado = estados.Where(p => p.Value == vm.Estado).First().Text;
+
+                        var serv = await _postService.BuscarServicosPorIdAsync(id);
+                        if (serv != null)
+                        {
+                            if (user.Id != serv.Usuario.Id)
+                            {
+                                return RedirectToAction("Error", "Home", new { mensagem = "Você não possui permissão para editar essa postagem.", isNotFound = false });
+                            }
+                            await _postService.AtualizarPostagemAsync(vm, webRoot, null, serv);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
+                        }
+                    }
+
+                    var descricao = new ModelInput { Col1 = vm.Descricao };
+                    var previsao = _predictionEnginePool.Predict(descricao);
+                    var opiniao = previsao.PredictedLabel == 0 ? "boa" : "ruim";
+                    if (opiniao.Equals("ruim"))
+                    {
+                        await _postService.AddReportPostagemAsync(id, vm.Categoria);
+                    }
+
+                    return RedirectToAction("Index", "Postagens", new { userName = user.UserName });
+                }
+                return View(vm);
+            }
+            catch (Exception ex)
             {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
+        }
+
+        public async Task<IActionResult> Delete(int id, string cat)
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                if (id != null && cat.Equals("Produto"))
+                {
+                    var prod = await _postService.BuscarProdutosPorIdAsync(id);
+                    if (prod != null)
+                    {
+                        if (user.Id == prod.Usuario.Id)
+                        {
+                            var vm = new PostagemViewModel
+                            {
+                                PostagemId = prod.PostagemId,
+                                Categoria = prod.Categoria
+                            };
+
+                            return View(vm);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Error", "Home", new { mensagem = "Você não possui permissão para excluir essa postagem.", isNotFound = false });
+                        }
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
+                    }
+                }
+                else if (id != null && cat.Equals("Serviço"))
+                {
+                    var serv = await _postService.BuscarServicosPorIdAsync(id);
+                    if (serv != null)
+                    {
+                        if (user.Id == serv.Usuario.Id)
+                        {
+                            var vm = new PostagemViewModel
+                            {
+                                PostagemId = serv.PostagemId,
+                                Categoria = serv.Categoria
+                            };
+
+                            return View(vm);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Error", "Home", new { mensagem = "Você não possui permissão para excluir essa postagem.", isNotFound = false });
+                        }
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
+                    }
+
+                }
+                else
+                {
+                    return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem ou categoria identificada.", isNotFound = true });
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed([Bind("PostagemId,Categoria")] PostagemViewModel vm)
+        {
+            try
+            {
+                if (vm.PostagemId == null || vm.Categoria == null)
+                {
+                    return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem ou categoria identificada.", isNotFound = true });
+                }
+
                 var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
                 var user = await _userManager.GetUserAsync(HttpContext.User);
 
                 if (vm.Categoria.Equals("Produto"))
                 {
-                    var prod = await _postService.BuscarProdutosPorIdAsync(id);
+                    var prod = await _postService.BuscarProdutosPorIdAsync((int)vm.PostagemId);
                     if (prod != null)
                     {
                         if (user.Id != prod.Usuario.Id)
                         {
-                            return Unauthorized();
+                            return RedirectToAction("Error", "Home", new { mensagem = "Você não possui permissão para excluir essa postagem.", isNotFound = false });
                         }
-                        await _postService.AtualizarPostagemAsync(vm, webRoot, prod, null);
+                        await _postService.DeletarPostagemAsync(prod.Categoria, webRoot, prod, null);
                     }
                     else
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
                     }
                 }
                 else if (vm.Categoria.Equals("Serviço"))
                 {
-                    var estados = await _localidadeService.EstadoSelectListAsync();
-                    ViewData["Estado"] = estados;
-                    vm.Estado = estados.Where(p => p.Value == vm.Estado).First().Text;
-
-                    var serv = await _postService.BuscarServicosPorIdAsync(id);
+                    var serv = await _postService.BuscarServicosPorIdAsync((int)vm.PostagemId);
                     if (serv != null)
                     {
                         if (user.Id != serv.Usuario.Id)
                         {
-                            return Unauthorized();
+                            return RedirectToAction("Error", "Home", new { mensagem = "Você não possui permissão para excluir essa postagem.", isNotFound = false });
                         }
-                        await _postService.AtualizarPostagemAsync(vm, webRoot, null, serv);
+                        await _postService.DeletarPostagemAsync(serv.Categoria, webRoot, null, serv);
                     }
                     else
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
                     }
                 }
-
-                var descricao = new ModelInput { Col1 = vm.Descricao };
-                var previsao = _predictionEnginePool.Predict(descricao);
-                var opiniao = previsao.PredictedLabel == 0 ? "boa" : "ruim";
-                if (opiniao.Equals("ruim"))
-                {
-                    await _postService.AddReportPostagemAsync(id, vm.Categoria);
-                }
-
-                return RedirectToAction("Index", "Postagens", new { userName = user.UserName });
+                //return Redirect($"~/usuarios/{user.UserName}");
+                return RedirectToAction("Index", "Usuarios", new { userName = user.UserName });
             }
-            return View(vm);
-        }
-
-        // GET: Postagens/Delete/5
-        public async Task<IActionResult> Delete(int id, string cat)
-        {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (id != null && cat.Equals("Produto"))
+            catch (Exception ex)
             {
-                var prod = await _postService.BuscarProdutosPorIdAsync(id);
-                if (prod != null)
-                {
-                    if (user.Id == prod.Usuario.Id)
-                    {
-                        var vm = new PostagemViewModel
-                        {
-                            PostagemId = prod.PostagemId,
-                            Categoria = prod.Categoria
-                        };
-
-                        return View(vm);
-                    }
-                    else
-                    {
-                        return Unauthorized();
-                    }
-                }
-                else
-                {
-                    return NotFound();
-                }
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
             }
-            else if (id != null && cat.Equals("Serviço"))
-            {
-                var serv = await _postService.BuscarServicosPorIdAsync(id);
-                if (serv != null)
-                {
-                    if (user.Id == serv.Usuario.Id)
-                    {
-                        var vm = new PostagemViewModel
-                        {
-                            PostagemId = serv.PostagemId,
-                            Categoria = serv.Categoria
-                        };
-
-                        return View(vm);
-                    }
-                    else
-                    {
-                        return Unauthorized();
-                    }
-                }
-                else
-                {
-                    return NotFound();
-                }
-
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
-
-        // POST: Postagens/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed([Bind("PostagemId,Categoria")] PostagemViewModel vm)
-        {
-            if (vm.PostagemId == null || vm.Categoria == null)
-            {
-                return NotFound();
-            }
-
-            var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-
-            if (vm.Categoria.Equals("Produto"))
-            {
-                var prod = await _postService.BuscarProdutosPorIdAsync((int)vm.PostagemId);
-                if (prod != null)
-                {
-                    if (user.Id != prod.Usuario.Id)
-                    {
-                        return Unauthorized();
-                    }
-                    await _postService.DeletarPostagemAsync(prod.Categoria, webRoot, prod, null);
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-            else if (vm.Categoria.Equals("Serviço"))
-            {
-                var serv = await _postService.BuscarServicosPorIdAsync((int)vm.PostagemId);
-                if (serv != null)
-                {
-                    if (user.Id != serv.Usuario.Id)
-                    {
-                        return Unauthorized();
-                    }
-                    await _postService.DeletarPostagemAsync(serv.Categoria, webRoot, null, serv);
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-            //return Redirect($"~/usuarios/{user.UserName}");
-            return RedirectToAction("Index", "Usuarios", new { userName = user.UserName });
         }
 
         public async Task<IActionResult> Curtir(int postId, string cat, int acao, string userId, int Count)
         {
-            var referer = Request.Headers["Referer"].ToString();
-            ViewData["Count"] = Count + 1;
-            TempData["Count"] = ViewData["Count"];
-
-            if (cat == "Produto")
+            try
             {
-                var prod = await _postService.BuscarProdutosPorIdAsync(postId);
-                if (prod != null)
-                {
-                    await _postService.AtualizarCurtidasAsync(acao, userId, prod, null);
-                }
-            }
-            else if (cat == "Serviço")
-            {
-                var serv = await _postService.BuscarServicosPorIdAsync(postId);
-                if (serv != null)
-                {
-                    await _postService.AtualizarCurtidasAsync(acao, userId, null, serv);
-                }
-            }
+                var referer = Request.Headers["Referer"].ToString();
+                ViewData["Count"] = Count + 1;
+                TempData["Count"] = ViewData["Count"];
 
-            //return RedirectToAction(nameof(Index));
-            return Redirect(referer);
+                if (cat == "Produto")
+                {
+                    var prod = await _postService.BuscarProdutosPorIdAsync(postId);
+                    if (prod != null)
+                    {
+                        await _postService.AtualizarCurtidasAsync(acao, userId, prod, null);
+                    }
+                }
+                else if (cat == "Serviço")
+                {
+                    var serv = await _postService.BuscarServicosPorIdAsync(postId);
+                    if (serv != null)
+                    {
+                        await _postService.AtualizarCurtidasAsync(acao, userId, null, serv);
+                    }
+                }
+
+                //return RedirectToAction(nameof(Index));
+                return Redirect(referer);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
         }
+
     }
 }

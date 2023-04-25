@@ -19,7 +19,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\Resources\PostImages\" />
-    <Folder Include="wwwroot\Resources\SiteImages\" />
   </ItemGroup>
   <ItemGroup Label="AnaliseDescricao">
     <None Include="AnaliseDescricao.mlnet">

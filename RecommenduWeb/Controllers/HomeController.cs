@@ -19,14 +19,27 @@ namespace RecommenduWeb.Controllers
 
         public IActionResult Index()
         {
-            if (_signInManager.IsSignedIn(User))
+            try
             {
-                var userName = _signInManager.UserManager.GetUserName(User);
-                return Redirect($"~/postagens/{userName}");
+                if (_signInManager.IsSignedIn(User))
+                {
+                    var userName = _signInManager.UserManager.GetUserName(User);
+                    if (userName == null)
+                    {
+                        return RedirectToAction(nameof(Error), new { mensagem = "Usuário não identificado.", isNotFound = true });
+                    }
+
+                    return RedirectToAction("Index", "Postagens", new { userName = userName });
+                    //return Redirect($"~/postagens/{userName}");
+                }
+                else
+                {
+                    return View();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return View();
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
             }
         }
 
@@ -36,9 +49,9 @@ namespace RecommenduWeb.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(string mensagem, bool isNotFound)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, Mensagem = mensagem, IsNotFound = isNotFound });
         }
     }
 }

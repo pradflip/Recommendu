@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RecommenduWeb.Models;
 using RecommenduWeb.Models.ViewModels;
 using RecommenduWeb.Services;
+using System.Diagnostics;
 
 namespace RecommenduWeb.Controllers
 {
@@ -21,55 +22,69 @@ namespace RecommenduWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> EnviarComentario(int postId, string cat, string userName, string imgPerfil, int Count, [Bind("Comentario")] string comentario)
         {
-            var referer = Request.Headers["Referer"].ToString();
-            ViewData["Count"] = Count + 1;
-            TempData["Count"] = ViewData["Count"];
-
-            if (postId == 0 || postId == null) { NotFound(); }
-
-            if (ModelState.IsValid)
+            try
             {
-                Postagem postagem;
+                var referer = Request.Headers["Referer"].ToString();
+                ViewData["Count"] = Count + 1;
+                TempData["Count"] = ViewData["Count"];
 
-                if (cat == "Produto")
+                if (postId == 0 || postId == null)
                 {
-                    postagem = await _postService.BuscarProdutosPorIdAsync(postId);
-                    if (postagem != null)
-                    {
-                        ComentarioPostagem cp = new ComentarioPostagem()
-                        {
-                            SubComentId = 0,
-                            Comentario = comentario,
-                            NomeUsuario = userName,
-                            ImgPerfil = imgPerfil,
-                            DtComentario = DateTime.Now,
-                            Postagem = postagem
-                        };
-                        await _comentarioService.PublicarComentario(cp);
-                    }
+                    return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
                 }
-                else if (cat == "Serviço")
-                {
-                    postagem = await _postService.BuscarServicosPorIdAsync(postId);
-                    if (postagem != null)
-                    {
-                        ComentarioPostagem cp = new ComentarioPostagem()
-                        {
-                            SubComentId = 0,
-                            Comentario = comentario,
-                            NomeUsuario = userName,
-                            ImgPerfil = imgPerfil,
-                            DtComentario = DateTime.Now,
-                            Postagem = postagem
-                        };
-                        await _comentarioService.PublicarComentario(cp);
-                    }
-                }
-                else { NotFound(); }
 
+                if (ModelState.IsValid)
+                {
+                    Postagem postagem;
+
+                    if (cat == "Produto")
+                    {
+                        postagem = await _postService.BuscarProdutosPorIdAsync(postId);
+                        if (postagem != null)
+                        {
+                            ComentarioPostagem cp = new ComentarioPostagem()
+                            {
+                                SubComentId = 0,
+                                Comentario = comentario,
+                                NomeUsuario = userName,
+                                ImgPerfil = imgPerfil,
+                                DtComentario = DateTime.Now,
+                                Postagem = postagem
+                            };
+                            await _comentarioService.PublicarComentario(cp);
+                        }
+                    }
+                    else if (cat == "Serviço")
+                    {
+                        postagem = await _postService.BuscarServicosPorIdAsync(postId);
+                        if (postagem != null)
+                        {
+                            ComentarioPostagem cp = new ComentarioPostagem()
+                            {
+                                SubComentId = 0,
+                                Comentario = comentario,
+                                NomeUsuario = userName,
+                                ImgPerfil = imgPerfil,
+                                DtComentario = DateTime.Now,
+                                Postagem = postagem
+                            };
+                            await _comentarioService.PublicarComentario(cp);
+                        }
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma categoria identificada.", isNotFound = true });
+                    }
+
+                }
+
+                return Redirect(referer);
             }
-
-            return Redirect(referer);
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
         }
+
     }
 }

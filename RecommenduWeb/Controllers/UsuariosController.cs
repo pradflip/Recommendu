@@ -28,43 +28,60 @@ namespace RecommenduWeb.Controllers
 
         public async Task<IActionResult> Index(string userName)
         {
-            var user = await _userManager.FindByNameAsync(userName);
-            var listaProd = await _postService.BuscarProdutoPorUsuarioAsync(user.Id);
-            var listaServ = await _postService.BuscarServicoPorUsuarioAsync(user.Id);
-            var vm = new UsuarioViewModel()
+            try
             {
-                UsuarioId = user.Id,
-                UserName = user.UserName,
-                NomeCompleto = user.NomeCompleto,
-                Reputacao = user.Reputacao,
-                FotoPerfil = user.ImagemPerfil,
-                PostagemProduto = listaProd,
-                PostagemServico = listaServ
-            };
+                var user = await _userManager.FindByNameAsync(userName);
+                if (user == null)
+                {
+                    return RedirectToAction("Error", "Home", new { mensagem = "Nenhum usuário identificada.", isNotFound = true });
+                }
+                //var listaProd = await _postService.BuscarProdutoPorUsuarioAsync(user.Id);
+                //var listaServ = await _postService.BuscarServicoPorUsuarioAsync(user.Id);
+                var vm = new UsuarioViewModel()
+                {
+                    UsuarioId = user.Id,
+                    UserName = user.UserName,
+                    NomeCompleto = user.NomeCompleto,
+                    Reputacao = user.Reputacao,
+                    FotoPerfil = user.ImagemPerfil
+                    //PostagemProduto = listaProd,
+                    //PostagemServico = listaServ
+                };
 
-            return View(vm);
-        }
-
-        // GET: Postagens/Servicos
-        public async Task<ActionResult> Usuarios(string? nomeUsuario)
-        {
-            ViewData["usuarioAtual"] = nomeUsuario;
-            if (nomeUsuario.IsNullOrEmpty())
-            {
-                return View();
-            }
-            var user = await _userManager.GetUserAsync(User);
-            var vm = new UsuarioViewModel();
-            vm.Usuario = await _usuarioService.BuscarUsuariosAsync(nomeUsuario, user);
-
-            if (vm.Usuario != null)
-            {
                 return View(vm);
             }
-            else
+            catch (Exception ex)
             {
-                return View();
-                //retornar nenhum dado encontrado.
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
+        }
+
+        public async Task<ActionResult> Usuarios(string? nomeUsuario)
+        {
+            try
+            {
+                ViewData["usuarioAtual"] = nomeUsuario;
+                if (nomeUsuario.IsNullOrEmpty())
+                {
+                    return View();
+                }
+                var user = await _userManager.GetUserAsync(User);
+                var vm = new UsuarioViewModel();
+                vm.Usuario = await _usuarioService.BuscarUsuariosAsync(nomeUsuario, user);
+
+                if (vm.Usuario != null)
+                {
+                    return View(vm);
+                }
+                else
+                {
+                    return View();
+                    //retornar nenhum dado encontrado.
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
             }
         }
 
@@ -72,24 +89,38 @@ namespace RecommenduWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AtualizarFoto([Bind("PerfilFile")] UsuarioViewModel vm)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                var webRoot = _environment.WebRootPath + @"\Resources\ProfileImages";
-                await _usuarioService.AtualizarFotoPerfilAsync(vm, user, webRoot);
+                if (ModelState.IsValid)
+                {
+                    var user = await _userManager.GetUserAsync(HttpContext.User);
+                    var webRoot = _environment.WebRootPath + @"\Resources\ProfileImages";
+                    await _usuarioService.AtualizarFotoPerfilAsync(vm, user, webRoot);
 
-                return RedirectToAction("Index", new { userName = user.UserName });
+                    return RedirectToAction("Index", new { userName = user.UserName });
+                }
+                return View(vm);
             }
-            return View(vm);
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
         }
 
         public async Task<IActionResult> DeletarFoto()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var webRoot = _environment.WebRootPath + @"\Resources\ProfileImages";
-            await _usuarioService.DeletarFotoPerfilAsync(user, webRoot);
+            try
+            {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                var webRoot = _environment.WebRootPath + @"\Resources\ProfileImages";
+                await _usuarioService.DeletarFotoPerfilAsync(user, webRoot);
 
-            return RedirectToAction("Index", new {userName = user.UserName});
+                return RedirectToAction("Index", new { userName = user.UserName });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
         }
     }
 }
