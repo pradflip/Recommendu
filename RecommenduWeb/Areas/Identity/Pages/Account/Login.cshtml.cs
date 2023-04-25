@@ -134,7 +134,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
                 }
 
                 // Tenta realizar o login
-                var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using RecommenduWeb.Models;
+using RecommenduWeb.Services;
 
 namespace RecommenduWeb.Areas.Identity.Pages.Account
 {
@@ -19,12 +20,12 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
     public class RegisterConfirmationModel : PageModel
     {
         private readonly UserManager<Usuario> _userManager;
-        private readonly IEmailSender _sender;
+        private readonly EnvioEmailService _envioEmailService;
 
-        public RegisterConfirmationModel(UserManager<Usuario> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(UserManager<Usuario> userManager, EnvioEmailService envioEmailService)
         {
             _userManager = userManager;
-            _sender = sender;
+            _envioEmailService = envioEmailService;
         }
 
         /// <summary>
@@ -72,6 +73,12 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
                     pageHandler: null,
                     values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                     protocol: Request.Scheme);
+                var mensagem = $"<h1>Seja bem-vindo!</h1><p>Caro usuário, <br><br><br> para finalizar sua inscrição você deve ativar sua conta.</p><a id=\"confirm-link\" href=\"{EmailConfirmationUrl}\">Clique aqui para confirmar sua conta.</a>";
+                var envio = _envioEmailService.EnvioEmail(Email, "Confirmação de registro", mensagem);
+                if (envio == false)
+                {
+                    return NotFound("Problemas ao tentar enviar email.");
+                }
             }
 
             return Page();

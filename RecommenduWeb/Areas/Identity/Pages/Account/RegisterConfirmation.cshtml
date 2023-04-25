@@ -1,11 +1,15 @@
 ﻿@page
 @model RegisterConfirmationModel
 @{
-    ViewData["Title"] = "Register confirmation";
+    ViewData["Title"] = "Confirmar cadastro";
 }
 
 <h1>@ViewData["Title"]</h1>
-@{
+
+<p>
+    Um link de confirmação foi enviado para o email cadastrado. Verifique sua caixa de entrada ou lixo eletrônico.
+</p>
+@*@{
     if (@Model.DisplayConfirmAccountLink)
     {
 <p>
@@ -19,5 +23,5 @@
         Please check your email to confirm your account.
 </p>
     }
-}
+}*@
 

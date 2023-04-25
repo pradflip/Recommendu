@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RecommenduWeb.Models;
+using RecommenduWeb.Models.ViewModels;
 using System.Diagnostics;
 
 namespace RecommenduWeb.Controllers

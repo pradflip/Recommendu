@@ -22,6 +22,7 @@ builder.Services.AddScoped<LocalidadeService>();
 builder.Services.AddScoped<PostService>();
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<ComentarioService>();
+builder.Services.AddScoped<EnvioEmailService>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

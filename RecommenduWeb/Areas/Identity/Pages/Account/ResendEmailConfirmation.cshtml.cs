@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using RecommenduWeb.Models;
+using RecommenduWeb.Services;
 
 namespace RecommenduWeb.Areas.Identity.Pages.Account
 {
@@ -21,12 +22,12 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
     public class ResendEmailConfirmationModel : PageModel
     {
         private readonly UserManager<Usuario> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly EnvioEmailService _envioEmailService;
 
-        public ResendEmailConfirmationModel(UserManager<Usuario> userManager, IEmailSender emailSender)
+        public ResendEmailConfirmationModel(UserManager<Usuario> userManager, EnvioEmailService envioEmailService)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _envioEmailService = envioEmailService;
         }
 
         /// <summary>
@@ -65,7 +66,13 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+                ModelState.AddModelError(string.Empty, "Email informado não foi encontrado.");
+                return Page();
+            }
+
+            if (user.EmailConfirmed)
+            {
+                ModelState.AddModelError(string.Empty, "Esta conta já foi confirmada.");
                 return Page();
             }
 
@@ -77,12 +84,14 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
                 pageHandler: null,
                 values: new { userId = userId, code = code },
                 protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
-                Input.Email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            var mensagem = $"<h1>Seja bem-vindo!</h1><p>Caro usuário, <br><br><br> para finalizar sua inscrição você deve ativar sua conta.</p><a id=\"confirm-link\" href=\"{callbackUrl}\">Clique aqui para confirmar sua conta.</a>";
+            var envio = _envioEmailService.EnvioEmail(Input.Email, "Confirmação de registro", mensagem);
+            if (envio == false)
+            {
+                return NotFound("Problemas ao tentar enviar email.");
+            }
 
-            ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+            ModelState.AddModelError(string.Empty, "Confirmação de email enviada. Favor verifique sua caixa de entrada ou lixo eletrônico.");
             return Page();
         }
     }
