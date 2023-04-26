@@ -372,33 +372,38 @@ namespace RecommenduWeb.Services
         {
             if (id == null)
             {
-                throw new Exception("Erro ao tentar reportar.");
+                throw new Exception("Postagem não identificada.");
             }
             else
             {
-                Postagem post;
+                var reportExist = _context.ReportPostagemNegativas.Where(p => p.PostagemId == id && p.Categoria == cat).Count() > 0 ? true : false;
 
-                if (cat.Equals("1") || cat.Equals("Produto"))
+                if (!reportExist)
                 {
-                    post = await BuscarProdutosPorIdAsync(id);
+                    Postagem post;
+
+                    if (cat.Equals("1") || cat.Equals("Produto"))
+                    {
+                        post = await BuscarProdutosPorIdAsync(id);
+                    }
+                    else if (cat.Equals("2") || cat.Equals("Serviço"))
+                    {
+                        post = await BuscarServicosPorIdAsync(id);
+                    }
+                    else { throw new Exception("Categoria não identificada."); }
+
+                    ReportPostagemNegativa report = new ReportPostagemNegativa()
+                    {
+                        UsuarioId = post.Usuario.Id,
+                        PostagemId = post.PostagemId,
+                        Categoria = post.Categoria,
+                        Descricao = post.Descricao,
+                        DtPostagem = post.DtPostagem
+                    };
+
+                    await _context.AddAsync(report);
+                    await _context.SaveChangesAsync();
                 }
-                else if (cat.Equals("2") || cat.Equals("Serviço"))
-                {
-                    post = await BuscarServicosPorIdAsync(id);
-                }
-                else { throw new Exception("Erro. Categoria não identificada."); }
-
-                ReportPostagemNegativa report = new ReportPostagemNegativa()
-                {
-                    UsuarioId = post.Usuario.Id,
-                    PostagemId = post.PostagemId,
-                    Categoria = post.Categoria,
-                    Descricao = post.Descricao,
-                    DtPostagem = post.DtPostagem
-                };
-
-                await _context.AddAsync(report);
-                await _context.SaveChangesAsync();
             }
         }
 

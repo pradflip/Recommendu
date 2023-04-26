@@ -102,6 +102,9 @@
                         <input type="submit" name="btnSubmit" value="Enviar" class="btn btn-primary" />
                     </form>
                 </div>
+                <div class="col-3">
+                    <a asp-action="Reportar" class="btn btn-danger" asp-route-postId="@Model.PostagemId" asp-route-cat="@Model.Categoria" asp-route-Count="@ViewData["Count"]">Não é uma recomendação</a>
+                </div>
             }
             else
             {

@@ -96,8 +96,11 @@ app.MapControllerRoute(name: "excluir-postagem",
                         pattern: "/postagens/minhas-postagens/excluir/{id}/{cat}",
                         defaults: new { controller = "Postagens", action = "Delete" });
 app.MapControllerRoute(name: "curtir-postagem",
-                        pattern: "/postagens/curtir/{postId}/{cat}/{userId}/{acao}/Count",
+                        pattern: "/postagens/curtir/{postId}/{cat}/{userId}/{acao}/{Count}",
                         defaults: new { controller = "Postagens", action = "Curtir" });
+app.MapControllerRoute(name: "reportar-postagem",
+                        pattern: "/postagens/reportar/{postId}/{cat}/{Count}",
+                        defaults: new { controller = "Postagens", action = "Reportar" });
 app.MapControllerRoute(name: "produtos",
                         pattern: "/encontrar/produtos",
                         defaults: new { controller = "Postagens", action = "Produtos" });

@@ -567,5 +567,23 @@ namespace RecommenduWeb.Controllers
             }
         }
 
+        public async Task<IActionResult> Reportar(int postId, string cat, int Count)
+        {
+            try
+            {
+                var referer = Request.Headers["Referer"].ToString();
+                ViewData["Count"] = Count + 1;
+                TempData["Count"] = ViewData["Count"];
+
+                await _postService.AddReportPostagemAsync(postId, cat);
+
+                return Redirect(referer);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
+        }
+
     }
 }
