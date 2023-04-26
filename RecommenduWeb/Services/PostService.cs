@@ -101,26 +101,20 @@ namespace RecommenduWeb.Services
             return servicos;
         }
 
-        public async Task<PostagemProduto> BuscarProdutosPorIdAsync(int postId)
+        public PostagemProduto BuscarProdutosPorIdAsync(int postId)
         {
-            PostagemProduto postagem = null;
-            var post = await _context.PostagemProduto.Include(p => p.Usuario).Where(p => p.PostagemId == postId).ToListAsync();
-            foreach (var item in post)
-            {
-                postagem = item;
-            }
-            return postagem;
+            var post = _context.PostagemProduto.Include(p => p.Usuario)
+                                               .Where(p => p.PostagemId == postId)
+                                               .FirstOrDefault();
+            return post;
         }
 
-        public async Task<PostagemServico> BuscarServicosPorIdAsync(int postId)
+        public PostagemServico BuscarServicosPorIdAsync(int postId)
         {
-            PostagemServico postagem = null;
-            var post = await _context.PostagemServico.Include(p => p.Usuario).Where(p => p.PostagemId == postId).ToListAsync();
-            foreach (var item in post)
-            {
-                postagem = item;
-            }
-            return postagem;
+            var post = _context.PostagemServico.Include(p => p.Usuario)
+                                                     .Where(p => p.PostagemId == postId)
+                                                     .FirstOrDefault();
+            return post;
         }
 
         public async Task<List<PostagemProduto>> BuscarProdutoPorUsuarioAsync(string userId)
@@ -384,11 +378,11 @@ namespace RecommenduWeb.Services
 
                     if (cat.Equals("1") || cat.Equals("Produto"))
                     {
-                        post = await BuscarProdutosPorIdAsync(id);
+                        post = BuscarProdutosPorIdAsync(id);
                     }
                     else if (cat.Equals("2") || cat.Equals("Serviço"))
                     {
-                        post = await BuscarServicosPorIdAsync(id);
+                        post = BuscarServicosPorIdAsync(id);
                     }
                     else { throw new Exception("Categoria não identificada."); }
 

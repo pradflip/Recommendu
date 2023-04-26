@@ -80,6 +80,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+// PostagensController
 app.MapControllerRoute(name: "postagens",
                         pattern: "/postagens/{userName}",
                         defaults: new { controller = "Postagens", action = "Index" });
@@ -107,6 +108,8 @@ app.MapControllerRoute(name: "produtos",
 app.MapControllerRoute(name: "servicos",
                         pattern: "/encontrar/servicos",
                         defaults: new { controller = "Postagens", action = "Servicos" });
+
+// UsuariosController
 app.MapControllerRoute(name: "usuarios",
                         pattern: "/encontrar/usuarios",
                         defaults: new { controller = "Usuarios", action = "Usuarios" });
@@ -119,6 +122,16 @@ app.MapControllerRoute(name: "perfil-usuarios",
 app.MapControllerRoute(name: "perfil-usuarios",
                         pattern: "usuarios/{userName}",
                         defaults: new { controller = "Usuarios", action = "Index" });
+
+// ComentariosController
+app.MapControllerRoute(name: "enviar-comentario",
+                        pattern: "/comentarios/enviar/{postId}/{cat}/{userId}/{Count}/{comentario}",
+                        defaults: new { controller = "Comentarios", action = "EnviarComentario" });
+app.MapControllerRoute(name: "excluir-comentario",
+                        pattern: "/comentarios/excluir/{comentId}/{Count}",
+                        defaults: new { controller = "Comentarios", action = "ExcluirComentario" });
+
+// HomeController
 app.MapControllerRoute(name: "default",
                        pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();

@@ -42,8 +42,7 @@ namespace RecommenduWeb.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SubComentId = table.Column<int>(type: "int", nullable: false),
                     Comentario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NomeUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImgPerfil = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UsuarioId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DtComentario = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PostagemId = table.Column<int>(type: "int", nullable: false)
                 },

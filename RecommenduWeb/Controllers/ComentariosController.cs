@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RecommenduWeb.Models;
 using RecommenduWeb.Models.ViewModels;
@@ -12,15 +13,17 @@ namespace RecommenduWeb.Controllers
     {
         private readonly PostService _postService;
         private readonly ComentarioService _comentarioService;
+        private readonly UserManager<Usuario> _userManager;
 
-        public ComentariosController(PostService postService, ComentarioService comentarioService)
+        public ComentariosController(PostService postService, ComentarioService comentarioService, UserManager<Usuario> userManager)
         {
             _postService = postService;
             _comentarioService = comentarioService;
+            _userManager = userManager;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EnviarComentario(int postId, string cat, string userName, string imgPerfil, int Count, [Bind("Comentario")] string comentario)
+        //[HttpPost]
+        public async Task<IActionResult> EnviarComentario(int postId, string cat, string userId, int Count, [Bind("Comentario")] string comentario)
         {
             try
             {
@@ -39,36 +42,34 @@ namespace RecommenduWeb.Controllers
 
                     if (cat == "Produto")
                     {
-                        postagem = await _postService.BuscarProdutosPorIdAsync(postId);
+                        postagem = _postService.BuscarProdutosPorIdAsync(postId);
                         if (postagem != null)
                         {
                             ComentarioPostagem cp = new ComentarioPostagem()
                             {
                                 SubComentId = 0,
                                 Comentario = comentario,
-                                NomeUsuario = userName,
-                                ImgPerfil = imgPerfil,
+                                UsuarioId = userId,
                                 DtComentario = DateTime.Now,
                                 Postagem = postagem
                             };
-                            await _comentarioService.PublicarComentario(cp);
+                            await _comentarioService.PublicarComentarioAsync(cp);
                         }
                     }
                     else if (cat == "Serviço")
                     {
-                        postagem = await _postService.BuscarServicosPorIdAsync(postId);
+                        postagem = _postService.BuscarServicosPorIdAsync(postId);
                         if (postagem != null)
                         {
                             ComentarioPostagem cp = new ComentarioPostagem()
                             {
                                 SubComentId = 0,
                                 Comentario = comentario,
-                                NomeUsuario = userName,
-                                ImgPerfil = imgPerfil,
+                                UsuarioId = userId,
                                 DtComentario = DateTime.Now,
                                 Postagem = postagem
                             };
-                            await _comentarioService.PublicarComentario(cp);
+                            await _comentarioService.PublicarComentarioAsync(cp);
                         }
                     }
                     else
@@ -86,5 +87,31 @@ namespace RecommenduWeb.Controllers
             }
         }
 
+        public async Task<IActionResult> ExcluirComentario(int comentId, int Count)
+        {
+            try
+            {
+                var referer = Request.Headers["Referer"].ToString();
+                ViewData["Count"] = Count + 1;
+                TempData["Count"] = ViewData["Count"];
+
+                if (comentId == 0 || comentId == null)
+                {
+                    return RedirectToAction("Error", "Home", new { mensagem = "Nenhum comentário identificada.", isNotFound = true });
+                }
+
+                if (ModelState.IsValid)
+                {
+                    var user = await _userManager.GetUserAsync(User);
+                    await _comentarioService.DeletarComentarioAsync(comentId, user.Id);
+                }
+
+                return Redirect(referer);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
+        }
     }
 }

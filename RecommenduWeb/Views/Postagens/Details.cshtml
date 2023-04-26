@@ -60,18 +60,25 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ComentarioPostagem)
         </dt>
-        @foreach (var item in Model.ComentarioPostagem)
-        {
-            <dd class="col-sm-10">
-                @Html.DisplayFor(itemModel => item.Comentario)
-            </dd>
-        }
 
         @{
             var user = await SignInManager.UserManager.GetUserAsync(User);
             RegistroCurtida rc = new RegistroCurtida();
             rc = await PostService.GetRegistroCurtidaAsync(user.Id, (int)Model.PostagemId);
 
+            foreach (var item in Model.ComentarioPostagem)
+            {
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(itemModel => item.Comentario)
+                    @if (user.Id == item.UsuarioId)
+                    {
+                        <div class="col-2">
+                            <a asp-action="ExcluirComentario" asp-controller="Comentarios" class="btn btn-danger" asp-route-comentId="@item.ComentId" asp-route-Count="@ViewData["Count"]">Excluir</a>
+                        </div>
+                    }
+                </dd>
+
+            }
             if (user.Id != ViewData["UserId"])
             {
                 <dt class="col-sm-2">
@@ -96,7 +103,7 @@
                     </dd>
                 }
                 <div class="form-group">
-                    <form asp-action="EnviarComentario" asp-controller="Comentarios" asp-route-postId="@Model.PostagemId" asp-route-cat="@Model.Categoria" asp-route-userName="@user.UserName" asp-route-imgPerfil="@user.ImagemPerfil" asp-route-Count="@ViewData["Count"]" method="post">
+                    <form asp-action="EnviarComentario" asp-controller="Comentarios" asp-route-postId="@Model.PostagemId" asp-route-cat="@Model.Categoria" asp-route-userId="@user.Id" asp-route-Count="@ViewData["Count"]" method="post">
                         <input asp-for="Comentario" class="form-control col-8" />
                         <span asp-validation-for="Comentario" class="text-danger"></span>
                         <input type="submit" name="btnSubmit" value="Enviar" class="btn btn-primary" />

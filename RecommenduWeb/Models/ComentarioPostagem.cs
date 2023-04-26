@@ -8,20 +8,18 @@ namespace RecommenduWeb.Models
         public int ComentId { get; set; }
         public int SubComentId { get; set; }
         public string Comentario { get; set; }
-        public string NomeUsuario { get; set; }
-        public string ImgPerfil { get; set; }
+        public string UsuarioId { get; set; }
         public DateTime DtComentario { get; set; }
         public Postagem Postagem { get; set; }
 
         public ComentarioPostagem() { }
 
-        public ComentarioPostagem(int comentId, int subComentId, string comentario, string nomeUsuario, string imgPerfil, DateTime dtComentario, Postagem postagem)
+        public ComentarioPostagem(int comentId, int subComentId, string comentario, string usuarioId, DateTime dtComentario, Postagem postagem)
         {
             ComentId = comentId;
             SubComentId = subComentId;
             Comentario = comentario;
-            NomeUsuario = nomeUsuario;
-            ImgPerfil = imgPerfil;
+            UsuarioId = usuarioId;
             DtComentario = dtComentario;
             Postagem = postagem;
         }

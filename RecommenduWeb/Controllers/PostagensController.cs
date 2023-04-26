@@ -140,8 +140,8 @@ namespace RecommenduWeb.Controllers
 
                 if (id != null && cat.Equals("Produto"))
                 {
-                    var prod = await _postService.BuscarProdutosPorIdAsync(id);
-                    prod.ComentariosPostagem = await _comentarioService.ListarComentarios(prod.PostagemId);
+                    var prod = _postService.BuscarProdutosPorIdAsync(id);
+                    prod.ComentariosPostagem = await _comentarioService.ListarComentariosAsync(prod.PostagemId);
 
                     if (prod == null)
                     {
@@ -167,8 +167,8 @@ namespace RecommenduWeb.Controllers
                 }
                 else if (id != null && cat.Equals("Serviço"))
                 {
-                    var serv = await _postService.BuscarServicosPorIdAsync(id);
-                    serv.ComentariosPostagem = await _comentarioService.ListarComentarios(serv.PostagemId);
+                    var serv = _postService.BuscarServicosPorIdAsync(id);
+                    serv.ComentariosPostagem = await _comentarioService.ListarComentariosAsync(serv.PostagemId);
 
                     if (serv == null)
                     {
@@ -266,7 +266,7 @@ namespace RecommenduWeb.Controllers
                 var user = await _userManager.GetUserAsync(HttpContext.User);
                 if (id != null && cat.Equals("Produto"))
                 {
-                    var prod = await _postService.BuscarProdutosPorIdAsync(id);
+                    var prod = _postService.BuscarProdutosPorIdAsync(id);
                     if (prod != null)
                     {
                         if (user.Id == prod.Usuario.Id)
@@ -297,7 +297,7 @@ namespace RecommenduWeb.Controllers
                 }
                 else if (id != null && cat.Equals("Serviço"))
                 {
-                    var serv = await _postService.BuscarServicosPorIdAsync(id);
+                    var serv = _postService.BuscarServicosPorIdAsync(id);
                     if (serv != null)
                     {
                         if (user.Id == serv.Usuario.Id)
@@ -358,7 +358,7 @@ namespace RecommenduWeb.Controllers
 
                     if (vm.Categoria.Equals("Produto"))
                     {
-                        var prod = await _postService.BuscarProdutosPorIdAsync(id);
+                        var prod = _postService.BuscarProdutosPorIdAsync(id);
                         if (prod != null)
                         {
                             if (user.Id != prod.Usuario.Id)
@@ -378,7 +378,7 @@ namespace RecommenduWeb.Controllers
                         ViewData["Estado"] = estados;
                         vm.Estado = estados.Where(p => p.Value == vm.Estado).First().Text;
 
-                        var serv = await _postService.BuscarServicosPorIdAsync(id);
+                        var serv = _postService.BuscarServicosPorIdAsync(id);
                         if (serv != null)
                         {
                             if (user.Id != serv.Usuario.Id)
@@ -418,7 +418,7 @@ namespace RecommenduWeb.Controllers
                 var user = await _userManager.GetUserAsync(HttpContext.User);
                 if (id != null && cat.Equals("Produto"))
                 {
-                    var prod = await _postService.BuscarProdutosPorIdAsync(id);
+                    var prod = _postService.BuscarProdutosPorIdAsync(id);
                     if (prod != null)
                     {
                         if (user.Id == prod.Usuario.Id)
@@ -443,7 +443,7 @@ namespace RecommenduWeb.Controllers
                 }
                 else if (id != null && cat.Equals("Serviço"))
                 {
-                    var serv = await _postService.BuscarServicosPorIdAsync(id);
+                    var serv = _postService.BuscarServicosPorIdAsync(id);
                     if (serv != null)
                     {
                         if (user.Id == serv.Usuario.Id)
@@ -494,7 +494,7 @@ namespace RecommenduWeb.Controllers
 
                 if (vm.Categoria.Equals("Produto"))
                 {
-                    var prod = await _postService.BuscarProdutosPorIdAsync((int)vm.PostagemId);
+                    var prod = _postService.BuscarProdutosPorIdAsync((int)vm.PostagemId);
                     if (prod != null)
                     {
                         if (user.Id != prod.Usuario.Id)
@@ -510,7 +510,7 @@ namespace RecommenduWeb.Controllers
                 }
                 else if (vm.Categoria.Equals("Serviço"))
                 {
-                    var serv = await _postService.BuscarServicosPorIdAsync((int)vm.PostagemId);
+                    var serv = _postService.BuscarServicosPorIdAsync((int)vm.PostagemId);
                     if (serv != null)
                     {
                         if (user.Id != serv.Usuario.Id)
@@ -525,7 +525,7 @@ namespace RecommenduWeb.Controllers
                     }
                 }
                 //return Redirect($"~/usuarios/{user.UserName}");
-                return RedirectToAction("Index", "Usuarios", new { userName = user.UserName });
+                return RedirectToAction("Index", "Postagens", new { userName = user.UserName });
             }
             catch (Exception ex)
             {
@@ -543,7 +543,7 @@ namespace RecommenduWeb.Controllers
 
                 if (cat == "Produto")
                 {
-                    var prod = await _postService.BuscarProdutosPorIdAsync(postId);
+                    var prod = _postService.BuscarProdutosPorIdAsync(postId);
                     if (prod != null)
                     {
                         await _postService.AtualizarCurtidasAsync(acao, userId, prod, null);
@@ -551,7 +551,7 @@ namespace RecommenduWeb.Controllers
                 }
                 else if (cat == "Serviço")
                 {
-                    var serv = await _postService.BuscarServicosPorIdAsync(postId);
+                    var serv = _postService.BuscarServicosPorIdAsync(postId);
                     if (serv != null)
                     {
                         await _postService.AtualizarCurtidasAsync(acao, userId, null, serv);
