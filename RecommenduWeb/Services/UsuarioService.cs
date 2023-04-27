@@ -126,5 +126,14 @@ namespace RecommenduWeb.Services
             }
             else { throw new Exception("Problemas ao tentar deletar imagem: Caminho ou arquivo não encontrado."); }
         }
+
+        public async Task<List<Usuario>> BuscarTopCem()
+        {
+            var top = await _userManager.Users.OrderByDescending(u => u.Reputacao)
+                                        .Take(100)
+                                        .ToListAsync();
+
+            return top;
+        }
     }
 }

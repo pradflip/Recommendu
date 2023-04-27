@@ -1,4 +1,6 @@
-﻿@model RecommenduWeb.Models.ViewModels.UsuarioViewModel
+﻿@using RecommenduWeb.Services;
+@inject UsuarioService UsuarioService
+@model RecommenduWeb.Models.ViewModels.UsuarioViewModel
 @{
     ViewData["Title"] = "Usuarios";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,6 +15,34 @@
             <input class="btn btn-primary" type="submit" value="Buscar" />
         </span>
     </form>
+</div>
+
+<div>
+    <table>
+        <tr>
+            <th>Foto</th>
+            <th>Usuario</th>
+            <th>Reputação</th>
+        </tr>
+        @{
+            var listaTop = await UsuarioService.BuscarTopCem();
+
+            foreach (var item in listaTop)
+            {
+                <tr>
+                    <td>
+                        <img src="~/Resources/ProfileImages/@item.ImagemPerfil" class="rounded-circle" width="50" height="50" asp-append-version="true" />
+                    </td>
+                    <td>
+                        <a asp-controller="Usuarios" asp-action="Index" asp-route-userName="@item.UserName">@Html.DisplayFor(modelItem => item.UserName)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Reputacao)
+                    </td>
+                </tr>
+            }
+        }
+    </table>
 </div>
 
 @if (Model != null && Model.Usuario.Count > 0)
