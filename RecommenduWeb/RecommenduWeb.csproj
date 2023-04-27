@@ -17,12 +17,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
     <PackageReference Include="TorchSharp-cpu" Version="0.98.3" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\Resources\PostImages\" />
-  </ItemGroup>
   <ItemGroup Label="AnaliseDescricao">
     <None Include="AnaliseDescricao.mlnet">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\Resources\PostImages\" />
   </ItemGroup>
 </Project>

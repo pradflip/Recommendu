@@ -42,7 +42,7 @@ namespace RecommenduWeb.Controllers
 
                     if (cat == "Produto")
                     {
-                        postagem = _postService.BuscarProdutosPorIdAsync(postId);
+                        postagem = _postService.BuscarProdutosPorId(postId);
                         if (postagem != null)
                         {
                             ComentarioPostagem cp = new ComentarioPostagem()
@@ -58,7 +58,7 @@ namespace RecommenduWeb.Controllers
                     }
                     else if (cat == "Serviço")
                     {
-                        postagem = _postService.BuscarServicosPorIdAsync(postId);
+                        postagem = _postService.BuscarServicosPorId(postId);
                         if (postagem != null)
                         {
                             ComentarioPostagem cp = new ComentarioPostagem()

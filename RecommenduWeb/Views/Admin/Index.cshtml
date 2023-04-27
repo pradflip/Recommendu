@@ -1,0 +1,83 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject UserManager<Usuario> UserManager
+@model ICollection<RecommenduWeb.Models.ReportPostagemNegativa>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <tr>
+        <th>
+            Id Report
+        </th>
+        <th>
+            Data Report
+        </th>
+        <th>
+            Usuario
+        </th>
+        <th>
+            Id Post
+        </th>
+        <th>
+            Categoria
+        </th>
+        <th>
+            Descrição
+        </th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        var user = await UserManager.FindByIdAsync(item.UsuarioId);
+        ViewData["PostId"] = item.PostagemId;
+        ViewData["Categoria"] = item.Categoria;
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReportId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DtReport)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => user.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostagemId) | link para post
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categoria)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                <a asp-action="EnviarReview" class="btn btn-sm btn-dark" asp-route-valor="0" asp-route-texto="@item.Descricao">Positivo</a>
+                <a asp-action="EnviarReview" class="btn btn-sm btn-outline-dark" asp-route-valor="1" asp-route-texto="@item.Descricao">Negativo</a>
+            </td>
+            <td>
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalConfirmDelete">Deletar</button>
+            </td>
+            <td>
+                <a asp-action="RemoverDaLista" class="btn btn-sm btn-warning" asp-route-reportId="@item.ReportId">Remover da lista</a>
+            </td>
+        </tr>
+    }
+</table>
+
+<div id="modalConfirmDelete" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <h2>Tem certeza que quer deletar a publicação?</h2>
+            <a asp-action="DeletarPostagem" class="btn btn-danger" asp-route-postId="@ViewData["PostId"]" asp-route-cat="@ViewData["Categoria"]">Deletar Publicação</a>
+            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button><br />
+        </div>
+    </div>
+</div>

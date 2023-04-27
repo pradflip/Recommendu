@@ -19,6 +19,12 @@
                 </button>
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav flex-grow-1 d-sm-inline-flex justify-content-end">
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@user.UserName">
                                 <img src="~/Resources/ProfileImages/@imgPerfil" class="rounded-circle avatar-circle" width="50" height="50" asp-append-version="true" />

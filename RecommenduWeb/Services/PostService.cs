@@ -101,7 +101,7 @@ namespace RecommenduWeb.Services
             return servicos;
         }
 
-        public PostagemProduto BuscarProdutosPorIdAsync(int postId)
+        public PostagemProduto BuscarProdutosPorId(int postId)
         {
             var post = _context.PostagemProduto.Include(p => p.Usuario)
                                                .Where(p => p.PostagemId == postId)
@@ -109,12 +109,12 @@ namespace RecommenduWeb.Services
             return post;
         }
 
-        public PostagemServico BuscarServicosPorIdAsync(int postId)
+        public PostagemServico BuscarServicosPorId(int postId)
         {
-            var post = _context.PostagemServico.Include(p => p.Usuario)
+            var serv = _context.PostagemServico.Include(p => p.Usuario)
                                                      .Where(p => p.PostagemId == postId)
                                                      .FirstOrDefault();
-            return post;
+            return serv;
         }
 
         public async Task<List<PostagemProduto>> BuscarProdutoPorUsuarioAsync(string userId)
@@ -378,11 +378,11 @@ namespace RecommenduWeb.Services
 
                     if (cat.Equals("1") || cat.Equals("Produto"))
                     {
-                        post = BuscarProdutosPorIdAsync(id);
+                        post = BuscarProdutosPorId(id);
                     }
                     else if (cat.Equals("2") || cat.Equals("Serviço"))
                     {
-                        post = BuscarServicosPorIdAsync(id);
+                        post = BuscarServicosPorId(id);
                     }
                     else { throw new Exception("Categoria não identificada."); }
 

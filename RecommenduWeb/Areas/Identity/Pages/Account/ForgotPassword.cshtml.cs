@@ -14,18 +14,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using RecommenduWeb.Models;
+using RecommenduWeb.Services;
 
 namespace RecommenduWeb.Areas.Identity.Pages.Account
 {
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<Usuario> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly EnvioEmailService _envioEmailService;
 
-        public ForgotPasswordModel(UserManager<Usuario> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<Usuario> userManager, EnvioEmailService envioEmailService)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _envioEmailService = envioEmailService;
         }
 
         /// <summary>
@@ -70,11 +71,12 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
                     pageHandler: null,
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
-
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                var mensagem = $"<h1>Redefinir senha</h1><p>Para redefinir sua senha <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clique aqui</a>.";
+                var envio = _envioEmailService.EnvioEmail(Input.Email, "Redefinição de senha", mensagem);
+                if (envio == false)
+                {
+                    return NotFound("Problemas ao tentar enviar email.");
+                }
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
