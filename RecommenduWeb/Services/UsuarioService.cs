@@ -29,6 +29,14 @@ namespace RecommenduWeb.Services
             return await query.ToListAsync();
         }
 
+        public Usuario BuscarUsuarioPorId(string userId)
+        {
+            var user = _userManager.Users.Where(u => u.Id == userId)
+                                         .FirstOrDefault();
+
+            return user;
+        }
+
         public string ListaReputacao(Usuario user)
         {
             string rep = user.Reputacao.ToString();

@@ -9,9 +9,9 @@
 
 <div class="bg-login">
 </div>
-<div class="container-fluid text-center my-5">
+<div class="container-fluid my-5">
     <div class="row">
-        <div class="col-sm-6 pe-5 text-white">
+        <div class="col-sm-6 pe-5 text-white text-center">
             <div>
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="/Resources/SiteImages/LogoReverso.png" class="img-login" alt="Imagem responsiva" />
@@ -30,8 +30,9 @@
                     <h1 class="text-start mb-6">Login</h1>
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                     <div class="row form-floating mb-3 d-flex justify-content-end">
+                        <span class="info-icon" style="color: #4684b0" title="Preencha corretamente com seu Usuário ou Email">&#x1F6C8;</span>
                         <input asp-for="Input.Login" class="form-control" autocomplete="login" aria-required="true" placeholder="Usuário ou Email" />
-                        <label asp-for="Input.Login" class="form-label">Login <span style="color: gray">(Usuário ou Email)</span></label>
+                        <label asp-for="Input.Login" class="form-label text-center ms-7 d-flex">Login</label>
                         <span asp-validation-for="Input.Login" class="text-danger col-6 text-start mt-1"></span>
                     </div>
                     <div class="row form-floating d-flex justify-content-end">

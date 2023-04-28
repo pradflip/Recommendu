@@ -11,7 +11,7 @@
 <h4>Postagem</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12 d-flex justify-content-center text-start">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control" />
+                <textarea asp-for="Descricao" class="form-control" cols="60" rows="8"></textarea>
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -65,7 +65,6 @@
                     <input asp-for="Cidade" class="form-control" id="ddlCidades" aria-required="true" placeholder="Nome da cidade" />
                     <label asp-for="Cidade">Cidade</label>
                     <span asp-validation-for="Cidade" class="text-danger"></span>
-                    <span style="color: #4684b0" title="Preencha corretamente para sua publicação ser encontrada com mais facilidade">&#9432 &#x1F6C8;</span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Endereco" class="control-label"></label>
@@ -79,7 +78,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" id="btnSubmit" value="Create" class="btn btn-primary" disabled="true" />
+                <input type="submit" id="btnSubmit" value="Create" class="btn btn-success" disabled="true" />
             </div>
         </form>
     </div>

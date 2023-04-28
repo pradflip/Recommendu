@@ -54,6 +54,13 @@ body {
     margin-left: 2rem;
 }
 
+.img-soma {
+    width: 1.5em;
+    height: 1.5em;
+    position: relative;
+    left: 1em;
+}
+
 .img-login {
     max-width: 100%;
     max-height: 100%;
@@ -104,9 +111,9 @@ body {
     font-size: small;
 }
 
-.link-primary-1:hover, .link-primary-1:focus {
+    .link-primary-1:hover, .link-primary-1:focus {
         color: #db924f;
-}
+    }
 
 .link-voltar {
     color: #f4f3f4;
@@ -118,9 +125,9 @@ body {
     right: 50%;
 }
 
-.link-voltar:hover, .link-voltar:focus {
-    color: #db924f;
-}
+    .link-voltar:hover, .link-voltar:focus {
+        color: #db924f;
+    }
 
 .bg-login {
     width: 50%;
@@ -134,22 +141,21 @@ body {
 }
 
 .card-pub {
-    max-width: 40%;
-    max-height: 50%;
+    min-width: 20%;
     width: 30em;
     height: 15em;
+    margin-bottom: 2em;
     background-color: #f4f3f4;
     border: 0.1em solid;
     box-shadow: 0.5em 0.5em 1em #888888;
     border-radius: 0.5em;
     position: relative;
-    bottom: 15em;
-    left: 45em;
+    bottom: 10em;
 }
 
 .card-pub-1 {
-    width: 50%;
-    height: 100%;
+    width: 15em;
+    height: 15em;
     background-color: #191919;
     border-radius: 0.5em 0em 0em 0.5em;
     z-index: 1;
@@ -176,10 +182,13 @@ body {
 }
 
 .card-img {
-    position: relative;
-    bottom: 25%;
-    max-width: 95%;
-    max-height: 85%;
+    position: absolute;
+    bottom: 2%;
+    left: 1%;
+    max-width: 48%;
+    max-height: 86%;
+    width: 15em;
+    height: 15em;
     z-index: 2;
 }
 
@@ -200,9 +209,89 @@ body {
     z-index: 1;
 }
 
-.sem-emblema {
-    width: 5em;
-    height: 5em;
-    border-radius: 50%;
-    background-color: #171717;
+.info-icon {
+    position: relative;
+    top: 1em;
+    left: 68%;
+    padding: 0em;
+    width: 20px;
+    height: 20px;
+}
+
+.btn-new-pub {
+    color: #fff;
+    background-color: #191919;
+    border-color: #f4f3f4;
+    border-radius: 0.7em;
+    width: 12em;
+    height: 2.5em;
+}
+
+    .btn-new-pub:hover {
+        color: #fff;
+        background-color: #db924f;
+    }
+
+.btn-filtro {
+    background-color: #db924f;
+    color: #191919;
+    border-radius: 0.7em;
+    width: 12em;
+    height: 2.5em;
+}
+
+    .btn-filtro:active + .btn-filtro, .btn-filtro:active {
+        color: #fff;
+        background-color: #d46500;
+        box-shadow: 0 0 0 0.25rem rgba(219, 146, 79, 0.5);
+    }
+
+.card-details {
+    min-width: 20%;
+    width: 50em;
+    height: 50em;
+    background-color: #191919;
+    border: 0.1em solid;
+    box-shadow: 0.5em 0.5em 1em #888888;
+    border-radius: 0.5em;
+    z-index: 0;
+}
+
+.details-img {
+    max-width: 100%;
+    max-height: 60%;
+    width: 30em;
+    height 30em;
+    z-index: 2;
+    position: relative;
+    border-radius: 0.5em;
+}
+
+.details-ava {
+    max-width: 10%;
+    max-height: 10%;
+    z-index: 2;
+}
+
+.details-title {
+    position: relative;
+    max-width: 100%;
+    max-height: 60%;
+    height 30em;
+    background-color: #db924f;
+    z-index: 3;
+}
+
+.details-comment {
+    position: relative;
+    background-color: #fff;
+    border: 0.1em solid;
+    box-shadow: 0.5em 0.5em 1em #888888;
+    border-radius: 1.5em;
+    font-size: 0.5em;
+    width: 80%;
+    height: 10%;
+    left: 2%;
+    bottom: 10%;
+    z-index: 2;
 }
