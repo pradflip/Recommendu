@@ -70,7 +70,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
             /// </summary>
             [Required]
             [EmailAddress]
-            [Display(Name = "New email")]
+            [Display(Name = "Novo email")]
             public string NewEmail { get; set; }
         }
 
@@ -92,7 +92,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Usuário não identificado por ID '{_userManager.GetUserId(User)}'.");
             }
 
             await LoadAsync(user);
@@ -104,7 +104,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Usuário não identificado por ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -129,11 +129,11 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
                     "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = "Link de alteração de email enviado. Favor, verifique a caixa de entrada ou lixo eletrônico.";
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = "Email alterado.";
             return RedirectToPage();
         }
 
@@ -142,7 +142,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Usuário não identificado por ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)

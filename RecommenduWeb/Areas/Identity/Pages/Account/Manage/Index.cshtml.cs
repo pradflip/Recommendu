@@ -57,20 +57,25 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Celular")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Nome Completo")]
+            public string NomeCompleto { get; set; }
         }
 
         private async Task LoadAsync(Usuario user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var nomeCompleto = user.NomeCompleto;
 
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                NomeCompleto = nomeCompleto
             };
         }
 
@@ -79,7 +84,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Usuário não identificado por ID '{_userManager.GetUserId(User)}'.");
             }
 
             await LoadAsync(user);
@@ -91,7 +96,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Usuário não identificado por ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -106,13 +111,24 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = "Erro inesperado ocorreu ao tentar salvar celular.";
+                    return RedirectToPage();
+                }
+            }
+            var nomeCompleto = user.NomeCompleto;
+            if (Input.NomeCompleto != nomeCompleto)
+            {
+                user.NomeCompleto = Input.NomeCompleto;
+                var setNomeResult = await _userManager.UpdateAsync(user);
+                if (!setNomeResult.Succeeded)
+                {
+                    StatusMessage = "Erro inesperado ocorreu ao tentar salvar celular.";
                     return RedirectToPage();
                 }
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Perfil atualizado.";
             return RedirectToPage();
         }
     }

@@ -40,7 +40,7 @@
             }
             else
             {
-                <a asp-action="Reportar" class="btn btn-danger" asp-route-postId="@Model.PostagemId" asp-route-cat="@Model.Categoria" asp-route-Count="@ViewData["Count"]">Não é uma recomendação</a>
+                <a asp-action="Reportar" class="btn btn-danger" asp-route-postId="@Model.PostagemId" asp-route-cat="@Model.Categoria" asp-route-Count="@ViewData["Count"]">Reportar publicação</a>
             }
         </div>
     </div>
@@ -56,13 +56,37 @@
             </div>
             <div class="text-white details-title text-center fs-4 p-3"><b>@Html.DisplayFor(model => model.Titulo)</b></div>
             <div class="d-flex justify-content-center   ">
-                <img src="/Resources/PostImages/@Html.DisplayFor(model => model.ImgPostagem)" class="details-img mb-2"/>
+                <img src="/Resources/PostImages/@Html.DisplayFor(model => model.ImgPostagem)" class="details-img mb-2" />
             </div>
-            <div class="text-white text-start d-flex flex-column fs-7 px-3">
-                <h5>Publico alvo: @Html.DisplayFor(model => model.PublicoAlvo) </h5>
-                <h5>Fabricante: @Html.DisplayFor(model => model.Fabricante)</h5>
-                <a href="@Html.DisplayFor(model => model.LinkProduto)" class="link-primary-1 text-white fs-5 d-flex justify-content-start  ">Acessar o produto</a>
-            </div>
+            @if (Model.Categoria == "Produto")
+            {
+                <div class="text-white text-start d-flex flex-column fs-7 px-3">
+                    <h5>Publico alvo: @Html.DisplayFor(model => model.PublicoAlvo) </h5>
+                    <h5>Fabricante: @Html.DisplayFor(model => model.Fabricante)</h5>
+                    <a href="@Html.DisplayFor(model => model.LinkProduto)" class="link-primary-1 text-white fs-5 d-flex justify-content-start  ">Acessar o produto</a>
+                </div>
+            }
+            else if (Model.Categoria == "Serviço")
+            {
+                <div class="text-white text-start d-flex flex-column fs-7 px-3">
+                    @if (!Model.Estado.Contains("Selecione"))
+                    {
+                        <h5>Estado: @Html.DisplayFor(model => model.Estado)</h5>
+                    }
+                    @if (Model.Cidade != null)
+                    {
+                        <h5>Cidade: @Html.DisplayFor(model => model.Cidade)</h5>
+                    }
+                    @if (Model.Endereco != null)
+                    {
+                        <h5>Endereço: @Html.DisplayFor(model => model.Endereco)</h5>
+                    }
+                    @if (Model.Contato != null)
+                    {
+                        <h5>Contato: @Html.DisplayFor(model => model.Contato)</h5>
+                    }
+                </div>
+            }
         </div>
     </div>
 
@@ -123,7 +147,7 @@
             else
             {
                 <div class="fs-6 details-likes">
-                <img src="/Resources/SiteImages/star.svg" class="img-fluid fs-7"/>
+                    <img src="/Resources/SiteImages/star.svg" class="img-fluid fs-7" />
                     @Html.DisplayFor(model => model.Curtidas)
                 </div>
             }

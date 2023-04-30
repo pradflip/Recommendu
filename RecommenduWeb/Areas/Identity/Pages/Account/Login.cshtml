@@ -40,12 +40,6 @@
                         <label asp-for="Input.Password" class="form-label text-center ms-7 d-flex">Senha</label>
                         <span asp-validation-for="Input.Password" class="text-danger col-6 text-start mt-1"></span>
                     </div>
-                    <div class="checkbox mb-1 text-center me-6">
-                        <label asp-for="Input.RememberMe" class="form-label">
-                            <input class="form-check-input" asp-for="Input.RememberMe" />
-                            @Html.DisplayNameFor(m => m.Input.RememberMe)
-                        </label>
-                    </div>
                     <div>
                         <p class="text-end me-5">
                             <a id="forgot-password" class="link-primary-1" asp-page="./ForgotPassword">Esqueceu sua senha?</a>

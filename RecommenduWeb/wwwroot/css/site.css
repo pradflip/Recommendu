@@ -398,5 +398,35 @@ body {
     width: 7em;
     height: 7em;
     border-radius: 50%;
+    position: relative;
+    top: 10%;
     background-color: #191919;
+}
+
+.emblema-group{
+    width: 12em;
+    height: 15em;
+}
+
+.emblema-img{
+    width: 10em;
+    height: 10em;
+    margin: 0%;
+    display: flex;
+    justify-content: center;
+}
+
+.emblema-desc{
+    width: 10em;
+    height: 5em;
+    text-align: center;
+}
+
+.btn-filtro {
+  color: #000;
+  background-color: #db924f;
+  border-color: #db924f;
+}
+.btn-check:checked + .btn-filtro:focus, .btn-check:active + .btn-filtro:focus, .btn-filtro:active:focus, .btn-filtro.active:focus, .show > .btn-filtro.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.25rem rgba(217, 164, 6, 0.5);
 }

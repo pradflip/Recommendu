@@ -28,8 +28,13 @@ namespace RecommenduWeb.Services
         {
             if (ml == null) throw new ArgumentNullException(nameof(ml));
 
-            await _context.TreinoML.AddAsync(ml);
-            await _context.SaveChangesAsync();
+            var obj = _context.TreinoML.Where(o => o.Valor == ml.Valor && o.Texto == ml.Texto)
+                                       .FirstOrDefault();
+            if (obj == null)
+            {
+                await _context.TreinoML.AddAsync(ml);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task DeletarPostAsync(PostagemProduto? prod, PostagemServico? serv)

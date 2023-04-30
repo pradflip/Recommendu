@@ -43,7 +43,7 @@
                 }
             }
         </div>
-        <div class="col-8">
+        <div class="col-lg-8 col-md-5">
             <div class="index-user-title text-start">
                 <h1>@Model.NomeCompleto</h1>
                 <h2>@@@Model.UserName</h2>
@@ -51,69 +51,81 @@
             </div>
             <div class="index-user-emblemas">
                 <h1>Emblemas</h1>
-                <div class="row">
-                    <div class="col-4 d-flex justify-content-between">
-                        <div class="col-4 text-center">
-                            @if (Model.Reputacao >= 500)
-                            {
-                                <div class="col-4">
-                                    <img src="~/Resources/SiteImages/emblema-1.png" class="rounded-circle" width="150" height="150" asp-append-version="true" />
-                                    <h5>Estreante</h5>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="col-4">
-                                    <div class="sem-emblema row"></div>
-                                    <p>Reputação 500 para obter a conquista</p>
-                                </div>
-                            }
-                        </div>
-                        <div class="col-4">
-                            @if (Model.Reputacao >= 5000)
-                            {
-                                <div class="col-4">
-                                    <img src="~/Resources/SiteImages/emblema-2.png" class="rounded-circle" width="150" height="150" asp-append-version="true" />
-                                    <h5>Engajado</h5>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="col-4">
-                                    <div class="sem-emblema row"></div>
-                                    <p>Reputação 5.000 para obter a conquista</p>
-                                </div>
-                            }
-                        </div>
-                        <div class="col-4">
-                            @if (Model.Reputacao >= 50000)
-                            {
-                                <div class="col-4">
-                                    <img src="~/Resources/SiteImages/emblema-3.png" class="rounded-circle" width="150" height="150" asp-append-version="true" />
-                                    <h5>Referência</h5>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="col-4">
-                                    <div class="sem-emblema row"></div>
-                                    <p>Reputação 50.000 para obter a conquista</p>
-                                </div>
-                            }
-                        </div>
+                <div class="row d-flex justify-content-evenly align-content-center mt-5">
+
+                    <div class="emblema-group col-4">
+                        @if (Model.Reputacao >= 500)
+                        {
+                            <div class="emblema-img">
+                                <img src="~/Resources/SiteImages/emblema-1.png" class="rounded-circle" width="150" height="150" asp-append-version="true" />
+                            </div>
+                            <div class="emblema-desc">
+                                <h5>Estreante</h5>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="emblema-img">
+                                <div class="sem-emblema"></div>
+                            </div>
+                            <div class="emblema-desc">
+                                <p>Reputação 500 para obter a conquista</p>
+                            </div>
+                        }
+                    </div>
+                    <div class="emblema-group col-4">
+                        @if (Model.Reputacao >= 5000)
+                        {
+                            <div class="emblema-img">
+                                <img src="~/Resources/SiteImages/emblema-2.png" class="rounded-circle" width="150" height="150" asp-append-version="true" />
+                            </div>
+                            <div class="emblema-desc">
+                                <h5>Engajado</h5>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="emblema-img">
+                                <div class="sem-emblema"></div>
+                            </div>
+                            <div class="emblema-desc">
+                                <p>Reputação 5.000 para obter a conquista</p>
+                            </div>
+                        }
+                    </div>
+                    <div class="emblema-group col-4">
+                        @if (Model.Reputacao >= 50000)
+                        {
+                            <div class="emblema-img">
+                                <img src="~/Resources/SiteImages/emblema-3.png" class="rounded-circle" width="150" height="150" asp-append-version="true" />
+                            </div>
+                            <div class="emblema-desc">
+                                <h5>Referência</h5>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="emblema-img">
+                                <div class="sem-emblema"></div>
+                            </div>
+                            <div class="emblema-desc">
+                                <p>Reputação 50.000 para obter a conquista</p>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div id="modalLogout" class="modal fade">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
-                    <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
-                    <button type="button" class="btn btn-outline-dark float-end" data-bs-dismiss="modal">Cancelar</button><br />
-                </form>
-            </div>
+</div>
+<div id="modalLogout" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
+                <button type="button" class="btn btn-outline-dark float-end" data-bs-dismiss="modal">Cancelar</button><br />
+            </form>
         </div>
     </div>
+</div>
 </div>

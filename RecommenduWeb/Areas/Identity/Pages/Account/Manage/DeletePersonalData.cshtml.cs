@@ -3,6 +3,7 @@
 #nullable disable
 
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -46,7 +47,8 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Campo Senha é obrigatório")]
+            [DisplayName("Senha")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
         }
@@ -82,7 +84,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
             {
                 if (!await _userManager.CheckPasswordAsync(user, Input.Password))
                 {
-                    ModelState.AddModelError(string.Empty, "Incorrect password.");
+                    ModelState.AddModelError(string.Empty, "Senha incorreta.");
                     return Page();
                 }
             }

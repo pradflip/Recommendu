@@ -123,7 +123,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
                         var user = await _signInManager.UserManager.FindByEmailAsync(Input.Login);
                         if (user == null)
                         {
-                            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                            ModelState.AddModelError(string.Empty, "Login inválido.");
                             return Page();
                         }
                         userName = await _signInManager.UserManager.GetUserNameAsync(user);
@@ -146,12 +146,12 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    _logger.LogWarning("Conta bloqueada temporariamente.");
                     return RedirectToPage("./Lockout");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Login inválido.");
                     return Page();
                 }
             }

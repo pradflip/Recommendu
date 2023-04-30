@@ -11,7 +11,7 @@
     <h1>Encontrar usuários</h1>
     <form asp-action="Usuarios" method="get">
         <span class="btn-group align-items-center">
-            <input class="form-control" type="search" name="nomeUsuario" placeholder="Procure pelo nome do usuario" />
+            <input class="form-control" type="search" name="nomeUsuario" placeholder="Nome do usuario" />
             <input class="btn-search" type="submit" />
         </span>
     </form>
@@ -22,7 +22,7 @@
         <div class="col-2">
             <div>
                 <table class="table-user border-0">
-                    <h3 class="text-center">Top 10</h3>
+                    <h3 class="text-center">Top 10 reputação</h3>
                     @{
                         var listaTop = await UsuarioService.BuscarTopDez();
 
