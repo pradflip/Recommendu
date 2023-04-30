@@ -6,88 +6,65 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Encontrar usuários</h1>
 
 <div>
+    <h1>Encontrar usuários</h1>
     <form asp-action="Usuarios" method="get">
-        <span class="btn-group">
+        <span class="btn-group align-items-center">
             <input class="form-control" type="search" name="nomeUsuario" placeholder="Procure pelo nome do usuario" />
-            <input class="btn btn-primary" type="submit" value="Buscar" />
+            <input class="btn-search" type="submit" />
         </span>
     </form>
 </div>
 
-<div>
-    <table>
-        <tr>
-            <th>Foto</th>
-            <th>Usuario</th>
-            <th>Reputação</th>
-        </tr>
-        @{
-            var listaTop = await UsuarioService.BuscarTopCem();
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-2">
+            <div>
+                <table class="table-user border-0">
+                    <h3 class="text-center">Top 10</h3>
+                    @{
+                        var listaTop = await UsuarioService.BuscarTopDez();
 
-            foreach (var item in listaTop)
-            {
-                <tr>
-                    <td>
-                        <img src="~/Resources/ProfileImages/@item.ImagemPerfil" class="rounded-circle" width="50" height="50" asp-append-version="true" />
-                    </td>
-                    <td>
-                        <a asp-controller="Usuarios" asp-action="Index" asp-route-userName="@item.UserName">@Html.DisplayFor(modelItem => item.UserName)</a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Reputacao)
-                    </td>
-                </tr>
-            }
-        }
-    </table>
-</div>
+                        foreach (var item in listaTop)
+                        {
+                            <tr class="fs-6">
+                                <td class="p-2">
+                                    <a class="cor-destaque" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@item.UserName">@Html.DisplayFor(modelItem => item.UserName)</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Reputacao)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
 
-@if (Model != null && Model.Usuario.Count > 0)
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Imagem
-                </th>
-                <th>
-                    Nome do usuário
-                </th>
-                <th>
-                    Nome completo
-                </th>
-                <th>
-                    Reputação
-                </th>
-            </tr>
-        </thead>
-        <tbody>
+        @if (Model != null && Model.Usuario.Count > 0)
+        {
             @foreach (var item in Model.Usuario)
             {
-                <tr>
-                    <td>
-                        <img src="~/Resources/ProfileImages/@item.ImagemPerfil" class="rounded-circle" width="50" height="50" asp-append-version="true" />
-                    </td>
-                    <td>
-                        <a asp-controller="Usuarios" asp-action="Index" asp-route-userName="@item.UserName">@Html.DisplayFor(modelItem => item.UserName)</a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NomeCompleto)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Reputacao)
-                    </td>
-                </tr>
+                <div class="col d-flex justify-content-center">
+                    <div class="card-user my-2">
+                        <div class="cubo">
+                            <img src="~/Resources/ProfileImages/@item.ImagemPerfil" class="rounded-circle avatar-circle user-ava" />
+                        </div>
+                        <div class="user-info p-2 d-flex align-content-between flex-wrap">
+                            <a class="cor-destaque fs-3 pe-4" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@item.UserName">@Html.DisplayFor(modelItem => item.UserName)</a>
+                            <h3 class="fs-5">@Html.DisplayFor(modelItem => item.NomeCompleto)</h3>
+                            <h3 class="fs-5">Reputação: @Html.DisplayFor(modelItem => item.Reputacao)</h3>
+                        </div>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
-}
-@if (Model != null && Model.Usuario.Count == 0)
-{
-    <div class="bg-info" style="height: 50px; width: 300px;">
-        <p>Nenhum resultado encontrado.</p>
+        }
+        @if (Model != null && Model.Usuario.Count == 0)
+        {
+            <div class="bg-info" style="height: 50px; width: 300px;">
+                <p>Nenhum resultado encontrado.</p>
+            </div>
+        }
     </div>
-}
+</div>

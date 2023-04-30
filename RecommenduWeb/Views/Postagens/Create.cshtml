@@ -1,91 +1,87 @@
 ﻿@model RecommenduWeb.Models.ViewModels.PostagemViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nova publicação";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Nova publicação:</h1>
-<h2 style="color: red">Slide 9</h2>
 
-<h4>Postagem</h4>
-<hr />
-<div class="row">
-    <div class="col-md-12 d-flex justify-content-center text-start">
+<div class="container text-center">
+    <h1 class="m-5">@ViewData["Title"]</h1>
+    <div class="d-flex justify-content-center">
         <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Categoria" id="lblCategoria" class="control-label"></label>
-                <select asp-for="Categoria" id="slcCategoria" class="form-control" onchange="CarregaForm()">
+            <div asp-validation-summary="ModelOnly" class="text-danger row"></div>
+            <div class="form-group row mb-3">
+                <label asp-for="Categoria" id="lblCategoria" class="control-label col text-end fw-bold"></label>
+                <select asp-for="Categoria" id="slcCategoria" class="form-control col-lg-6" onchange="CarregaForm()">
                     <option value="0" style="color: gray" selected>Selecione...</option>
                     <option value="1">Produto</option>
                     <option value="2">Serviço</option>
                 </select>
                 <span asp-validation-for="Categoria" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Titulo" class="control-label" id="lblTitulo"></label>
-                <input asp-for="Titulo" class="form-control" />
+            <div class="form-group row mb-3">
+                <label asp-for="Titulo" class="control-label col text-end fw-bold" id="lblTitulo"></label>
+                <input asp-for="Titulo" class="form-control col-lg-6" />
                 <span asp-validation-for="Titulo" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
-                <textarea asp-for="Descricao" class="form-control" cols="60" rows="8"></textarea>
+            <div class="form-group row mb-3">
+                <label asp-for="Descricao" class="control-label col text-end fw-bold"></label>
+                <textarea asp-for="Descricao" class="form-control col-lg-6" cols="60" rows="8"></textarea>
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PublicoAlvo" class="control-label"></label>
-                <input asp-for="PublicoAlvo" class="form-control" />
+            <div class="form-group row mb-3">
+                <label asp-for="PublicoAlvo" class="control-label col text-end fw-bold"></label>
+                <input asp-for="PublicoAlvo" class="form-control col-lg-6" />
                 <span asp-validation-for="PublicoAlvo" class="text-danger"></span>
             </div>
-            <div class="form-control">
-                <label asp-for="PostFile" class="control-label"></label>
-                <input asp-for="PostFile" class="form-control" />
+            <div class="form-group row mb-3">
+                <label class="control-label col text-end fw-bold">Imagem</label>
+                <input asp-for="PostFile" class="form-control col-lg-6" />
                 <span asp-validation-for="PostFile" class="text-danger"></span>
             </div>
             <div id="formProduto" hidden="true">
-                <div class="form-group">
-                    <label asp-for="Fabricante" class="control-label"></label>
-                    <input asp-for="Fabricante" class="form-control" />
+                <hr />
+                <div class="form-group row mb-3">
+                    <label asp-for="Fabricante" class="control-label col text-end fw-bold"></label>
+                    <input asp-for="Fabricante" class="form-control col-lg-6" />
                     <span asp-validation-for="Fabricante" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="LinkProduto" class="control-label"></label>
-                    <input asp-for="LinkProduto" class="form-control" />
+                <div class="form-group row mb-3">
+                    <label asp-for="LinkProduto" class="control-label col text-end fw-bold"></label>
+                    <input asp-for="LinkProduto" class="form-control col-lg-6" />
                     <span asp-validation-for="LinkProduto" class="text-danger"></span>
                 </div>
             </div>
             <div id="formServico" hidden="true">
-                <div class="form-floating mb-3">
-                    @Html.DropDownListFor(model => model.Estado, ViewData["Estado"] as SelectList, new {@class="form-control", @id="ddlEstado"})
-                    <label asp-for="Estado"></label>
+                <hr />
+                <div class="form-group row mb-3">
+                    <label asp-for="Estado" class="control-label col text-end fw-bold"></label>
+                    @Html.DropDownListFor(model => model.Estado, ViewData["Estado"] as SelectList, new {@class="form-control col-lg-6", @id="ddlEstado"})
                     <span asp-validation-for="Estado" class="text-danger"></span>
                 </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Cidade" class="form-control" id="ddlCidades" aria-required="true" placeholder="Nome da cidade" />
-                    <label asp-for="Cidade">Cidade</label>
+                <div class="form-group row mb-3">
+                    <label asp-for="Cidade" class="control-label col text-end fw-bold">Cidade</label>
+                    <input asp-for="Cidade" class="form-control col-lg-6" id="ddlCidades" aria-required="true" placeholder="Nome da cidade" />
                     <span asp-validation-for="Cidade" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Endereco" class="control-label"></label>
-                    <input asp-for="Endereco" class="form-control" />
+                <div class="form-group row mb-3">
+                    <label asp-for="Endereco" class="control-label col text-end fw-bold"></label>
+                    <input asp-for="Endereco" class="form-control col-lg-6" />
                     <span asp-validation-for="Endereco" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Contato" class="control-label"></label>
-                    <input asp-for="Contato" class="form-control" />
+                <div class="form-group row mb-3">
+                    <label asp-for="Contato" class="control-label col text-end fw-bold"></label>
+                    <input asp-for="Contato" class="form-control col-lg-6" />
                     <span asp-validation-for="Contato" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <input type="submit" id="btnSubmit" value="Create" class="btn btn-success" disabled="true" />
+            <div class="form-group row justify-content-evenly">
+                <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary col-lg-3">Voltar</a>
+                <input type="submit" id="btnSubmit" value="Publicar" class="btn btn-success col-lg-5" disabled="true" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index" asp-controller="Home" class="btn btn-light">Voltar</a>
 </div>
 
 @section Scripts {

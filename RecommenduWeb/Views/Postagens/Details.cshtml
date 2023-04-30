@@ -24,19 +24,19 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="d-flex justify-content-between mb-4">
+        <div class="d-flex justify-content-around mb-3">
             @if (Convert.ToInt32(ViewData["Count"]) != 0)
             {
-                <input type="button" class="btn btn-light" onclick="history.go(-@ViewData["Count"])" value="Voltar" />
+                <input type="button" class="btn btn-outline-secondary" onclick="history.go(-@ViewData["Count"])" value="Voltar" />
             }
             else
             {
-                <a type="button" class="btn btn-light" asp-action="Index" asp-controller="Home">Voltar</a>
+                <a type="button" class="btn btn-outline-secondary" asp-action="Index" asp-controller="Home">Voltar</a>
             }
             @if (user.Id == post.Usuario.Id)
             {
-                <a class="btn btn-primary" asp-action="Edit" asp-route-cat="@Model.Categoria" asp-route-id="@Model.PostagemId">Edit</a>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-cat="@Model.Categoria" asp-route-id="@Model.PostagemId">Delete</a>
+                <a class="btn btn-primary p-2" asp-action="Edit" asp-route-cat="@Model.Categoria" asp-route-id="@Model.PostagemId">Editar</a>
+                <a class="btn btn-danger px-3 pt-2" asp-action="Delete" asp-route-cat="@Model.Categoria" asp-route-id="@Model.PostagemId">Delete</a>
             }
             else
             {
@@ -49,22 +49,24 @@
             <div class="text-white text-start">
                 <img src="/Resources/ProfileImages/@Html.DisplayFor(model => post.Usuario.ImagemPerfil)" class="rounded-circle avatar-circle details-ava" />
                 <b class="fs-5">@Html.DisplayFor(model => post.Usuario.UserName)</b>
-                <h4 class="float-end me-2 mt-4 fs-5">@Html.DisplayFor(model => tempo)</h4>
+                <h4 class="float-end me-2 mt-3 fs-5">@Html.DisplayFor(model => tempo)</h4>
                 <h6>
                     @Html.DisplayFor(model => model.Descricao)
                 </h6>
             </div>
             <div class="text-white details-title text-center fs-4 p-3"><b>@Html.DisplayFor(model => model.Titulo)</b></div>
             <div class="d-flex justify-content-center   ">
-                <img src="/Resources/PostImages/@Html.DisplayFor(model => model.ImgPostagem)" class="details-img"/>
+                <img src="/Resources/PostImages/@Html.DisplayFor(model => model.ImgPostagem)" class="details-img mb-2"/>
             </div>
-            <div class="text-white text-start fs-5">
-                Publico alvo: @Html.DisplayFor(model => model.PublicoAlvo)
+            <div class="text-white text-start d-flex flex-column fs-7 px-3">
+                <h5>Publico alvo: @Html.DisplayFor(model => model.PublicoAlvo) </h5>
+                <h5>Fabricante: @Html.DisplayFor(model => model.Fabricante)</h5>
+                <a href="@Html.DisplayFor(model => model.LinkProduto)" class="link-primary-1 text-white fs-5 d-flex justify-content-start  ">Acessar o produto</a>
             </div>
         </div>
     </div>
 
-    <div class="details-comment">
+    <div class="details-comment p-2">
         @{
 
             RegistroCurtida rc = new RegistroCurtida();
@@ -76,8 +78,8 @@
                 var tempoComent = PostService.TempoPostagem(item.DtComentario);
 
                 <div class="text-black text-start">
-                    <img src="/Resources/ProfileImages/@userComent.ImagemPerfil" class="rounded-circle avatar-circle details-ava" />
-                    <b>@userComent.UserName</b>
+                    <img src="/Resources/ProfileImages/@userComent.ImagemPerfil" class="rounded-circle avatar-circle details-ava-1" />
+                    <b class="fs-6">@userComent.UserName</b>
                     <h4 class="float-end mt-4 fs-6">@tempoComent</h4>
                     <h6>
                         @item.Comentario
@@ -120,8 +122,9 @@
             }
             else
             {
-                <div>
-                    @Html.DisplayFor(model => model.Curtidas) Curtidas
+                <div class="fs-6 details-likes">
+                <img src="/Resources/SiteImages/star.svg" class="img-fluid fs-7"/>
+                    @Html.DisplayFor(model => model.Curtidas)
                 </div>
             }
         }

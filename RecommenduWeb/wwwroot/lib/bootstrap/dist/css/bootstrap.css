@@ -2223,13 +2223,13 @@ progress {
 .form-control[type=file]:not(:disabled):not([readonly]) {
   cursor: pointer;
 }
-.form-control:focus {
+/*.form-control:focus {
   color: #212529;
   background-color: #fff;
   border-color: #db924f;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
+}*/
 .form-control::-webkit-date-and-time-value {
   height: 1.5em;
 }
@@ -3028,7 +3028,7 @@ textarea.form-control-lg {
 .btn-secondary:hover {
   color: #fff;
   background-color: #db924f;
-  border-color: #191919;
+  border-color: none;
 }
 .btn-check:focus + .btn-secondary, .btn-secondary:focus {
   color: #fff;
@@ -3054,6 +3054,9 @@ textarea.form-control-lg {
   color: #fff;
   background-color: #198754;
   border-color: #198754;
+  border-radius: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .btn-success:hover {
   color: #fff;
@@ -3144,6 +3147,7 @@ textarea.form-control-lg {
   color: #fff;
   background-color: #dc3545;
   border-color: #dc3545;
+  border-radius: 5em;
 }
 .btn-danger:hover {
   color: #fff;
