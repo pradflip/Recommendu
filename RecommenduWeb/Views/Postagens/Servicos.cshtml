@@ -5,14 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div>
+<div class="position-absolute col-4">
     <h1>Buscar serviços</h1>
     <form asp-action="Servicos" id="formServicos" method="get">
-        <div class="row col-3">
+        <div class="row col-6">
             <input class="form-control" type="search" value="@ViewData["tituloAtual"]" id="srcTitulo" name="titulo" placeholder="Nome do serviço" />
             <input class="btn-search" type="submit" />
         </div>
-        <div class="shadow col-2 mt-4">
+        <div class="shadow col-4 mt-4">
             <table class="w-100 mt-2">
                 <tr>
                     <th class="bg-dark p-2 text-light text-center">Buscar por região</th>
@@ -32,7 +32,7 @@
             </table>
         </div>
     </form>
-    <div class="dropdown show mt-4">
+    <div class="dropdown show mt-4 col-4">
         <a class="btn btn-filtro dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Ordenar por
         </a>
@@ -43,14 +43,14 @@
     </div>
 </div>
 
-<div class="col-10 d-flex justify-content-center ms-7">
+<div class="col-8 d-flex justify-content-center ms-7">
     @if (Model != null && Model.PostagemServico.Count > 0)
     {
         @foreach (var item in Model.PostagemServico)
         {
             string tempo = PostService.TempoPostagem(item.DtPostagem);
 
-            <div class="card-pub">
+            <div class="card-pub mt-8">
                 <div class="card-pub-1 text-light">
                     <div class="card-title text-center">@Html.DisplayFor(modelItem => item.Titulo)</div>
                     <div class="card-seta"></div>
@@ -85,7 +85,7 @@
 
     @if (Model != null && Model.PostagemServico.Count == 0)
     {
-        <div class="bg-light p-2 fw-bold border shadow-sm" style="height: 50px; width: 300px;">
+        <div class="bg-light p-2 fw-bold border shadow-sm mb-5 not-result">
             <p>Nenhum resultado encontrado.</p>
         </div>
     }

@@ -288,9 +288,9 @@ body {
     box-shadow: 0.5em 0.5em 1em #888888;
     border-radius: 1.5em;
     font-size: 0.5em;
-    width: 80%;
+    width: 60.5%;
     height: 10%;
-    left: 10%;
+    left: 19.8%;
     bottom: 10%;
     z-index: 2;
 }
@@ -430,3 +430,77 @@ body {
 .btn-check:checked + .btn-filtro:focus, .btn-check:active + .btn-filtro:focus, .btn-filtro:active:focus, .btn-filtro.active:focus, .show > .btn-filtro.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.25rem rgba(217, 164, 6, 0.5);
 }
+
+.btn-view-post {
+    color: #fff;
+    background-color: #191919;
+    border-color: #f4f3f4;
+    border-radius: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 200px;
+    height: 50px;
+}
+
+    .btn-view-post:hover {
+        color: #fff;
+        background-color: #db924f;
+        border-color: none;
+    }
+
+.index-view-user {
+    background-color: #191919;
+    box-shadow: 0.5em 0.5em 1em #888888;
+    border-radius: 1.5em;
+    width: 25em;
+    height: 15em;
+    position: relative;
+    left: 20%;
+}
+
+.index-view-opt {
+    width: 25em;
+    height: 7em;
+    position: relative;
+    left: 20%;
+    top: 7%;
+}
+
+.not-result {
+    width: 300px;
+    height: 50px;
+    position: absolute;
+    bottom: 70%;
+}
+
+.not-result-1 {
+    width: 300px;
+    height: 50px;
+    position: relative;
+    left: 20%;
+}
+
+.btn-like {
+    width: 1em;
+    height: 2em;
+    position: relative;
+    top: 95%;
+    right: 6%;
+}
+
+.btn-del {
+    color: #fff;
+    background-color: #dc3545;
+    background-image: url(/Resources/SiteImages/trash-2.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-color: #dc3545;
+    width: auto;
+    height: 1.7em;
+}
+
+    .btn-del:hover {
+        color: #fff;
+        background-color: #bb2d3b;
+        border-color: #b02a37;
+    }

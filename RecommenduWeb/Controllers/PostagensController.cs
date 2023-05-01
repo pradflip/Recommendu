@@ -413,76 +413,9 @@ namespace RecommenduWeb.Controllers
             }
         }
 
-        public async Task<IActionResult> Delete(int id, string cat)
-        {
-            try
-            {
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                if (id != null && cat.Equals("Produto"))
-                {
-                    var prod = _postService.BuscarProdutosPorId(id);
-                    if (prod != null)
-                    {
-                        if (user.Id == prod.Usuario.Id)
-                        {
-                            var vm = new PostagemViewModel
-                            {
-                                PostagemId = prod.PostagemId,
-                                Categoria = prod.Categoria
-                            };
-
-                            return View(vm);
-                        }
-                        else
-                        {
-                            return RedirectToAction("Error", "Home", new { mensagem = "Você não possui permissão para excluir essa postagem.", isNotFound = false });
-                        }
-                    }
-                    else
-                    {
-                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
-                    }
-                }
-                else if (id != null && cat.Equals("Serviço"))
-                {
-                    var serv = _postService.BuscarServicosPorId(id);
-                    if (serv != null)
-                    {
-                        if (user.Id == serv.Usuario.Id)
-                        {
-                            var vm = new PostagemViewModel
-                            {
-                                PostagemId = serv.PostagemId,
-                                Categoria = serv.Categoria
-                            };
-
-                            return View(vm);
-                        }
-                        else
-                        {
-                            return RedirectToAction("Error", "Home", new { mensagem = "Você não possui permissão para excluir essa postagem.", isNotFound = false });
-                        }
-                    }
-                    else
-                    {
-                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
-                    }
-
-                }
-                else
-                {
-                    return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem ou categoria identificada.", isNotFound = true });
-                }
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
-            }
-        }
-
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed([Bind("PostagemId,Categoria")] PostagemViewModel vm)
+        public async Task<IActionResult> Delete([Bind("PostagemId,Categoria")] PostagemViewModel vm)
         {
             try
             {

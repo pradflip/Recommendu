@@ -13,7 +13,7 @@
             <input class="btn-search" type="submit" />
         </div>
     </form>
-    <div class="dropdown show mt-4">
+    <div class="dropdown show mt-4 col-4">
         <a class="btn btn-filtro dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Ordenar por
         </a>
@@ -24,14 +24,14 @@
     </div>
 </div>
 
-<div class="col-10 d-flex justify-content-center ms-7">
+<div class="col-8 d-flex justify-content-center ms-7">
     @if (Model != null && Model.PostagemProduto.Count > 0)
     {
         @foreach (var item in Model.PostagemProduto)
         {
             string tempo = PostService.TempoPostagem(item.DtPostagem);
 
-            <div class="card-pub">
+            <div class="card-pub mt-6">
                 <div class="card-pub-1 text-light">
                     <div class="card-title text-center">@Html.DisplayFor(modelItem => item.Titulo)</div>
                     <div class="card-seta"></div>
@@ -65,7 +65,7 @@
     }
     @if (Model != null && Model.PostagemProduto.Count == 0)
     {
-        <div class="bg-light p-2 fw-bold border shadow-sm" style="height: 50px; width: 300px;">
+        <div class="bg-light p-2 fw-bold border shadow-sm not-result">
             <p>Nenhum resultado encontrado.</p>
         </div>
     }

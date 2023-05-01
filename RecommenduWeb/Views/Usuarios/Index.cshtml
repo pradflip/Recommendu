@@ -39,7 +39,14 @@
                 }
                 else
                 {
-                    <a class="btn btn-secondary" asp-controller="Postagens" asp-action="Index" asp-route-userName="@Model.UserName">Ver postagens</a>
+                    <div class="index-view-user">
+                        <img src="~/Resources/ProfileImages/@Model.FotoPerfil" class="rounded-circle avatar-circle" width="60%" height="100%" asp-append-version="true" />
+                        <div class="d-flex flex-column">
+                        </div>
+                    </div>
+                    <div class =" index-view-opt d-flex align-items-center flex-column justify-content-between">
+                    <a class="btn btn-view-post fs-6 w-100" asp-controller="Postagens" asp-action="Index" asp-route-userName="@Model.UserName">Ver postagens</a>
+                    </div>
                 }
             }
         </div>
@@ -119,13 +126,22 @@
     </div>
 </div>
 <div id="modalLogout" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
-                <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
-                <button type="button" class="btn btn-outline-dark float-end" data-bs-dismiss="modal">Cancelar</button><br />
-            </form>
+            <div class="modal-header">
+                <h5 class="modal-title">Sair da conta</h5>
+                    <button type="button" class="btn btn-close float-end" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body flex-column row text-center">
+                <img src="~/Resources/SiteImages/alert-triangle.svg" class="emblema-img align-self-center"/>
+                <h5>Tem certeza que deseja sair da sua conta?</h5>
+            </div>
+            <div class="row p-3">
+                <form class="form-inline d-flex justify-content-between" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                    <button type="button" class="btn btn-outline-secondary col-4" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger text-white col-3">Sair</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 </div>

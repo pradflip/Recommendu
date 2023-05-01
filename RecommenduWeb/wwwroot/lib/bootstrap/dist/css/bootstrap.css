@@ -3115,24 +3115,24 @@ textarea.form-control-lg {
 
 .btn-warning {
   color: #000;
-  background-color: #ffc107;
-  border-color: #ffc107;
+  background-color: #db924f;
+  border-color: #db924f;
 }
 .btn-warning:hover {
   color: #000;
-  background-color: #ffca2c;
-  border-color: #ffc720;
+  background-color: #e1a974;
+  border-color: #e1a974;
 }
 .btn-check:focus + .btn-warning, .btn-warning:focus {
   color: #000;
-  background-color: #ffca2c;
-  border-color: #ffc720;
+  background-color: #db924f;
+  border-color: #e1a974;
   box-shadow: 0 0 0 0.25rem rgba(217, 164, 6, 0.5);
 }
 .btn-check:checked + .btn-warning, .btn-check:active + .btn-warning, .btn-warning:active, .btn-warning.active, .show > .btn-warning.dropdown-toggle {
   color: #000;
-  background-color: #ffcd39;
-  border-color: #ffc720;
+  background-color: #db924f;
+  border-color: #e1a974;
 }
 .btn-check:checked + .btn-warning:focus, .btn-check:active + .btn-warning:focus, .btn-warning:active:focus, .btn-warning.active:focus, .show > .btn-warning.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.25rem rgba(217, 164, 6, 0.5);
@@ -3747,7 +3747,7 @@ textarea.form-control-lg {
 .dropdown-item.active, .dropdown-item:active {
   color: #fff;
   text-decoration: none;
-  background-color: #0d6efd;
+  background-color: #db924f;
 }
 .dropdown-item.disabled, .dropdown-item:disabled {
   color: #adb5bd;
@@ -5503,7 +5503,7 @@ textarea.form-control-lg {
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
+  border-radius: 1rem;
   outline: 0;
 }
 
@@ -6925,6 +6925,10 @@ textarea.form-control-lg {
   width: 75% !important;
 }
 
+.w-90 {
+    width: 90% !important;
+}
+
 .w-100 {
   width: 100% !important;
 }
@@ -7318,6 +7322,10 @@ textarea.form-control-lg {
     margin-top: 12rem !important;
 }
 
+.mt-8 {
+    margin-top: 16rem !important;
+}
+
 .mt-auto {
   margin-top: auto !important;
 }
@@ -7424,6 +7432,10 @@ textarea.form-control-lg {
 
 .ms-7 {
     margin-left: 13rem !important;
+}
+
+.ms-8 {
+    margin-left: 77% !important;
 }
 
 .ms-auto {

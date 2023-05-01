@@ -96,7 +96,7 @@ app.MapControllerRoute(name: "editar-postagem",
                         pattern: "/postagens/minhas-postagens/editar/{id}/{cat}",
                         defaults: new { controller = "Postagens", action = "Edit" });
 app.MapControllerRoute(name: "excluir-postagem",
-                        pattern: "/postagens/minhas-postagens/excluir/{id}/{cat}",
+                        pattern: "/postagens/minhas-postagens/excluir/{PostagemId}/{Categoria}",
                         defaults: new { controller = "Postagens", action = "Delete" });
 app.MapControllerRoute(name: "curtir-postagem",
                         pattern: "/postagens/curtir/{postId}/{cat}/{userId}/{acao}/{Count}",
