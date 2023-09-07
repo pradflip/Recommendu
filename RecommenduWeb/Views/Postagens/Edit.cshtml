@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-group row mb-3">
                     <label asp-for="PostFile" class="control-label col text-end fw-bold"></label>
-                    <input asp-for="PostFile" class="form-control col-lg-6" />
+                    <input asp-for="PostFile" onchange="ValidarArquivo()" id="fileInput" accept=".png, .jpg, .jpeg" class="form-control col-lg-6" />
                     <span asp-validation-for="PostFile" class="text-danger"></span>
                 </div>
                 @if (Model.Categoria.Equals("Produto"))

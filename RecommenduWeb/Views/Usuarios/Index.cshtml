@@ -18,7 +18,7 @@
                         <img src="~/Resources/ProfileImages/@Model.FotoPerfil" class="rounded-circle avatar-circle" width="250" height="250" asp-append-version="true" />
                         <div class="d-flex flex-column">
                             <form asp-action="AtualizarFoto" enctype="multipart/form-data">
-                                <input asp-for="PerfilFile" class="form-control mt-4-5 w-100" />
+                                <input asp-for="PerfilFile" onchange="ValidarArquivo()" id="fileInput" accept=".png, .jpg, .jpeg" class="form-control mt-4-5 w-100" />
                                 <span asp-validation-for="PerfilFile" class="text-danger"></span>
                                 <input type="submit" id="btnSubmit" value="Atualizar Foto" class="btn btn-primary my-5 w-100" />
                             </form>
@@ -145,3 +145,10 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    @{
+        <script scr="~/js/site.js"></script>
+    }
+}

@@ -52,3 +52,13 @@ function MostrarPost(cat) {
         }
     }
 }
+
+function ValidarArquivo() {
+    const fileInput = document.getElementById('fileInput');
+    const extensoes = /(\.jpg|\.jpeg|\.png)$/i;
+
+    if (!extensoes.test(fileInput.value)) {
+        alert('Por favor, selecione um arquivo JPG, JPEG ou PNG.');
+        fileInput.value = '';
+    }
+}
