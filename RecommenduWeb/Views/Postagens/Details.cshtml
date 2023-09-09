@@ -107,7 +107,7 @@
                     <h4 class="float-end fs-6 pt-2">@tempoComent</h4>
                     <h6>
                         @item.Comentario
-                        @if (user.Id == item.UsuarioId)
+                        @if (user.Id == item.UsuarioId || user.Id == post.Usuario.Id)
                         {
                             <div class="position-relative col-2">
                                 <a asp-action="ExcluirComentario" asp-controller="Comentarios" class="btn btn-del" asp-route-comentId="@item.ComentId" asp-route-Count="@ViewData["Count"]"></a>

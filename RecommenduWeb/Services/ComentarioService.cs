@@ -33,7 +33,7 @@ namespace RecommenduWeb.Services
             var comentario = _context.ComentarioPostagem.Include(p => p.Postagem)
                                                         .Where(c => c.ComentId == comentId)
                                                         .FirstOrDefault();
-            if (userId == comentario.UsuarioId)
+            if (userId == comentario.UsuarioId || userId == comentario.Postagem.Usuario.Id)
             {
                 if (comentario != null)
                 {
