@@ -131,17 +131,16 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Sair da conta</h5>
+                <h5 class="modal-title">Encerrar sessão</h5>
                     <button type="button" class="btn btn-close float-end" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body flex-column row text-center">
-                <img src="~/Resources/SiteImages/alert-triangle.svg" class="emblema-img align-self-center"/>
                 <h5>Tem certeza que deseja sair da sua conta?</h5>
             </div>
             <div class="row p-3">
-                <form class="form-inline d-flex justify-content-between" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                <form class="form-inline d-flex justify-content-evenly" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
                     <button type="button" class="btn btn-outline-secondary col-4" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger text-white col-3">Sair</button>
+                    <button type="submit" class="btn btn-danger text-white col-4">Sair</button>
                 </form>
             </div>
         </div>
