@@ -31,24 +31,24 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                     <div class="row form-floating mb-3 d-flex justify-content-end">
                         <span class="info-icon" style="color: #4684b0" title="Preencha corretamente com seu Usuário ou Email">&#x1F6C8;</span>
-                        <input asp-for="Input.Login" class="form-control" autocomplete="login" aria-required="true" placeholder="Usuário ou Email" />
-                        <label asp-for="Input.Login" class="form-label text-center ms-7 d-flex">Login</label>
+                        <input asp-for="Input.Login" class="form-control shadow-sm" autocomplete="login" aria-required="true" placeholder="Usuário ou Email" />
+                        <label asp-for="Input.Login" class="form-label mx-8 d-flex">Login</label>
                         <span asp-validation-for="Input.Login" class="text-danger col-6 text-start mt-1"></span>
                     </div>
                     <div class="row form-floating d-flex justify-content-end">
-                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                        <label asp-for="Input.Password" class="form-label text-center ms-7 d-flex">Senha</label>
+                        <input asp-for="Input.Password" class="form-control shadow-sm" autocomplete="current-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.Password" class="form-label mx-8 d-flex">Senha</label>
                         <span asp-validation-for="Input.Password" class="text-danger col-6 text-start mt-1"></span>
                     </div>
                     <div>
-                        <p class="text-end me-5">
+                        <p class="text-sm-center text-md-end me-5">
                             <a id="forgot-password" class="link-primary-1" asp-page="./ForgotPassword">Esqueceu sua senha?</a>
                             <a id="resend-confirmation" class="link-primary-1" asp-page="./ResendEmailConfirmation">Reenviar email de confirmação</a>
                         </p>
                     </div>
                     <div class="row justify-content-end">
-                        <a class="col-sm-6 btn btn-outline-secondary w-20 me-6" onclick="location.href='@Url.Action("Index", "Home")'">Voltar</a>
-                        <button id="login-submit" type="submit" class="col-sm-6 w-35 btn btn-primary me-0">Entrar</button>
+                        <a class="col-sm-6 btn btn-outline-secondary w-20 me-6 shadow" onclick="location.href='@Url.Action("Index", "Home")'">Voltar</a>
+                        <button id="login-submit" type="submit" class="col-sm-6 w-35 btn btn-primary me-0 shadow">Entrar</button>
                     </div>
                 </form>
             </section>

@@ -5,45 +5,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="position-absolute col-4">
-    <h1>Buscar serviços</h1>
+<div class="col-3 card-busca">
+    <h2 class="text-white pb-2">Encontrar serviço</h2>
     <form asp-action="Servicos" id="formServicos" method="get">
-        <div class="row col-6">
-            <input class="form-control" type="search" value="@ViewData["tituloAtual"]" id="srcTitulo" name="titulo" placeholder="Nome do serviço" />
-            <input class="btn-search" type="submit" />
+        <div class="d-flex justify-content-center">
+            <input class="form-control-1" type="search" value="@ViewData["tituloAtual"]" id="srcTitulo" name="titulo" placeholder="Nome do serviço"/>
+            <input class="btn-search align-self-center" type="submit" />
         </div>
-        <div class="shadow col-4 mt-4">
-            <table class="w-100 mt-2">
+        <div class="mt-4 bg-light rounded-3">
+            <table class="text-black w-100 mt-2 text-center">
                 <tr>
-                    <th class="bg-dark p-2 text-light text-center">Buscar por região</th>
+                    <th class="text-white bg-orange py-2 px-0 rounded-2">Buscar por região</th>
                 </tr>
                 <tr>
-                    <td class="p-2">
+                    <td class="p-2 text-start">
                         <label for="ddlEstados">Estado:</label>
-                        @Html.DropDownList("GetEstados", (IEnumerable<SelectListItem>)ViewBag.GetEstados, new {@class="form-control", id="ddlEstados", @onChange="ListarCidades()"})
+                        @Html.DropDownList("GetEstados", (IEnumerable<SelectListItem>)ViewBag.GetEstados, new {@class="form-control-1", id="ddlEstados", @onChange="ListarCidades()"})
                     </td>
                 </tr>
                 <tr>
-                    <td class="p-2">
+                    <td class="p-2 text-start form-control-color">
                         <label for="ddlCidades">Cidade:</label>
-                        @Html.DropDownList("GetCidades", (IEnumerable<SelectListItem>)ViewBag.GetCidade, new {@class="form-control", id="ddlCidades", @name="GetCidades"})
+                        @Html.DropDownList("GetCidades", (IEnumerable<SelectListItem>)ViewBag.GetCidade, new {@class="form-control-1", id="ddlCidades", @name="GetCidades"})
                     </td>
                 </tr>
             </table>
         </div>
     </form>
-    <div class="dropdown show mt-4 col-4">
+    <div class="dropdown show mt-5">
         <a class="btn btn-filtro dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Ordenar por
         </a>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <div class="dropdown-menu text-center mx-3" aria-labelledby="dropdownMenuLink">
             <a class="dropdown-item" asp-action="Servicos" asp-route-titulo="@ViewData["tituloAtual"]" asp-route-GetEstados="@ViewData["estadoAtual"]" asp-route-GetCidade="@ViewData["cidadeAtual"]" asp-route-filtro="recentes">Mais recentes</a>
             <a class="dropdown-item" asp-action="Servicos" asp-route-titulo="@ViewData["tituloAtual"]" asp-route-GetEstados="@ViewData["estadoAtual"]" asp-route-GetCidade="@ViewData["cidadeAtual"]" asp-route-filtro="relevantes">Mais relevantes</a>
         </div>
     </div>
 </div>
 
-<div class="col-8 d-flex justify-content-center ms-7">
+<div class="col-9 d-flex justify-content-center ms-7">
     @if (Model != null && Model.PostagemServico.Count > 0)
     {
         @foreach (var item in Model.PostagemServico)

@@ -5,26 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div>
-    <h1>Buscar produtos</h1>
+<div class="col-3 card-busca">
+    <h2 class="text-white pb-2">Buscar produtos</h2>
     <form asp-action="Produtos" method="get">
-        <div class="row col-3">
-            <input class="form-control" type="search" value="@ViewData["tituloAtual"]" name="titulo" placeholder="Nome do produto" />
+        <div class="d-flex justify-content-center">
+            <input class="form-control-1" type="search" value="@ViewData["tituloAtual"]" name="titulo" placeholder="Nome do produto" />
             <input class="btn-search" type="submit" />
         </div>
     </form>
-    <div class="dropdown show mt-4 col-4">
+    <div class="dropdown show mt-4">
         <a class="btn btn-filtro dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Ordenar por
         </a>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <div class="dropdown-menu text-center mx-3" aria-labelledby="dropdownMenuLink">
             <a class="dropdown-item" asp-action="Produtos" asp-route-titulo="@ViewData["tituloAtual"]" asp-route-filtro="recentes">Mais recentes</a>
             <a class="dropdown-item" asp-action="Produtos" asp-route-titulo="@ViewData["tituloAtual"]" asp-route-filtro="relevantes">Mais relevantes</a>
         </div>
     </div>
 </div>
 
-<div class="col-8 d-flex justify-content-center ms-7">
+<div class="col-9 d-flex justify-content-center ms-7">
     @if (Model != null && Model.PostagemProduto.Count > 0)
     {
         @foreach (var item in Model.PostagemProduto)
@@ -33,12 +33,11 @@
 
             <div class="card-pub mt-6">
                 <div class="card-pub-1 text-light">
-                    <div class="card-title text-center">@Html.DisplayFor(modelItem => item.Titulo)</div>
-                    <div class="card-seta"></div>
+                    <div class="text-center py-1">@Html.DisplayFor(modelItem => item.Titulo)</div>
                     <img src="~/Resources/PostImages/@item.ImgPostagem" class="card-img" asp-append-version="true" />
                 </div>
                 <div class="card-pub-2 p-2">
-                    <div class="text-black">
+                    <div class="text-black justify-content-around">
                         <div class="text-start">
                             <img src="~/Resources/ProfileImages/@item.Usuario.ImagemPerfil" class="rounded-circle avatar-circle card-ava" asp-append-version="true" />
                             <b>@Html.DisplayFor(modelItem => item.Usuario.UserName)</b>
@@ -52,11 +51,12 @@
                         <h6 class="p-1 fs-6">
                             Categoria: @Html.DisplayFor(modelItem => item.Categoria)
                         </h6>
-                        <h6 class="p-1 fs-6">
-                            Curtidas: @Html.DisplayFor(modelItem => item.Curtidas)
+                        <h6 class="float-start p-1 fs-6 mt-5">
+                            <img src="~/Resources/SiteImages/StarCompleta.png" class="star-icon" asp-append-version="true" />
+                            <b class="mt-2">@Html.DisplayFor(modelItem => item.Curtidas)</b>
                         </h6>
                     </div>
-                    <div class="my-4 mx-1">
+                    <div class="text-end mx-2 mt-5-6">
                         <a class="link-primary-1 fs-6" asp-controller="Postagens" asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Ver completo</a>
                     </div>
                 </div>

@@ -26,32 +26,32 @@
                 <h1 class="text-start mb-6">Criar uma nova conta</h1>
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="row form-floating mb-3 d-flex justify-content-end">
-                    <input asp-for="Input.NomeCompleto" class="form-control" autocomplete="name" aria-required="true" placeholder="Informe seu nome" />
+                    <input asp-for="Input.NomeCompleto" class="form-control shadow" autocomplete="name" aria-required="true" placeholder="Informe seu nome" />
                     <label asp-for="Input.NomeCompleto" class="form-label text-center ms-7 d-flex">Nome Completo</label>
                     <span asp-validation-for="Input.NomeCompleto" class="text-danger col-6 mt-1 text-start"></span>
                 </div>
                 <div class="row form-floating mb-3 d-flex justify-content-end">
-                    <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="Nome de usuário" />
+                    <input asp-for="Input.UserName" class="form-control shadow" autocomplete="username" aria-required="true" placeholder="Nome de usuário" />
                     <label asp-for="Input.UserName" class="form-label text-center ms-7 d-flex">Usuário</label>
                     <span asp-validation-for="Input.UserName" class="text-danger col-6 mt-1 text-start"></span>
                 </div>
                 <div class="row form-floating mb-3 d-flex justify-content-end">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="email" aria-required="true" placeholder="name@example.com" />
+                    <input asp-for="Input.Email" class="form-control shadow" autocomplete="email" aria-required="true" placeholder="name@example.com" />
                     <label asp-for="Input.Email" class="form-label text-center ms-7 d-flex">Email</label>
                     <span asp-validation-for="Input.Email" class="text-danger col-6 mt-1 text-start"></span>
                 </div>
                 <div class="row form-floating mb-3 d-flex justify-content-end">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <input asp-for="Input.Password" class="form-control shadow" autocomplete="new-password" aria-required="true" placeholder="password" />
                     <label asp-for="Input.Password" class="form-label text-center ms-7 d-flex">Senha</label>
                     <span asp-validation-for="Input.Password" class="text-danger col-6 mt-1 text-start"></span>
                 </div>
                 <div class="row form-floating mb-3 d-flex justify-content-end">
-                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <input asp-for="Input.ConfirmPassword" class="form-control shadow" autocomplete="new-password" aria-required="true" placeholder="password" />
                     <label asp-for="Input.ConfirmPassword" class="form-label text-center ms-7 d-flex">Confirmar Senha</label>
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
                 <div class="row justify-content-end">
-                    <a class="col-sm-6 btn btn-outline-secondary w-20 me-6" onclick="location.href='@Url.Action("Index", "Home")'">Voltar</a>
+                    <a class="col-sm-6 btn btn-outline-secondary w-20 me-6 shadow" onclick="location.href='@Url.Action("Index", "Home")'">Voltar</a>
                     <button id="registerSubmit" type="submit" class="col-sm-6 w-35 btn btn-primary me-0">Register</button>
                 </div>               
             </form>

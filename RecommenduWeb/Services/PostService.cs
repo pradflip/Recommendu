@@ -353,7 +353,7 @@ namespace RecommenduWeb.Services
             var diferencaDt = DateTime.Now.Subtract(dt);
             string tempo;
 
-            if (diferencaDt.Days > 30) { tempo = dt.ToString("dd/MM/yyyy HH:mm:ss"); }
+            if (diferencaDt.Days > 30) { tempo = dt.ToString("dd/MM/yyyy"); }
             else if (diferencaDt.Days >= 1) { tempo = $"Há {diferencaDt.Days}d"; }
             else if (diferencaDt.Hours >= 1) { tempo = $"Há {diferencaDt.Hours}h"; }
             else if (diferencaDt.Minutes >= 1) { tempo = $"Há {diferencaDt.Minutes}m"; }

@@ -10,34 +10,34 @@
     var imgPerfil = user.ImagemPerfil;
 
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent">
-            <div class="container-fluid mx-5">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/Resources/SiteImages/Logo.png" class="img-logo" alt="Imagem responsiva" /></a>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-black pb-1">
+            <div class="container-fluid mx-3">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/Resources/SiteImages/LReverso.png" class="img-logo ms-6" alt="Imagem responsiva" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse">
-                    <ul class="navbar-nav flex-grow-1 d-sm-inline-flex justify-content-evenly mt-3 fs-5">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Postagens" asp-action="Produtos">Produtos</a>
+                    <ul class="navbar-nav flex-grow-1 d-sm-inline-flex mt-2 fs-5">
+                        <li class="nav-item mx-4">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Postagens" asp-action="Produtos">Produtos</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Postagens" asp-action="Servicos">Servicos</a>
+                        <li class="nav-item mx-4">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Postagens" asp-action="Servicos">Servicos</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Usuarios">Usuarios</a>
+                        <li class="nav-item mx-4">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Usuarios" asp-action="Usuarios">Usuarios</a>
                         </li>
                         @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
                             </li>
                         }
                     </ul>
                     <ul class="navbar-nav flex-grow-1 d-sm-inline-flex justify-content-end fs-5">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@user.UserName">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@user.UserName">
                                 <img src="~/Resources/ProfileImages/@imgPerfil" class="rounded-circle avatar-circle" width="60" height="60" asp-append-version="true" />
                                 @User.Identity?.Name
                             </a>
