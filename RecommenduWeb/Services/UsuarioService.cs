@@ -92,17 +92,23 @@ namespace RecommenduWeb.Services
             // Salva nova imagem e deleta anterior
             if (imagem != null)
             {
-                string diretorio = webRoot;
-                nomeImagem = Guid.NewGuid().ToString() + "-" + imagem.FileName;
-                string path = Path.Combine(diretorio, nomeImagem);
-                using (var fileStream = new FileStream(path, FileMode.Create))
+                if (imagem.ContentType == "image/png" || imagem.ContentType == "image/jpeg")
                 {
-                    imagem.CopyTo(fileStream);
-                }
-                if (nomeAntigo != null && !nomeAntigo.Contains("default-profile-image-"))
-                {
-                    string pathDelete = Path.Combine(diretorio, nomeAntigo);
-                    File.Delete(pathDelete);
+                    string diretorio = webRoot;
+                    var splitExtensao = imagem.FileName.Split('.');
+                    int indexExtensao = splitExtensao.Count() - 1;
+                    nomeImagem = Guid.NewGuid().ToString() + "." + splitExtensao[indexExtensao];
+                    string path = Path.Combine(diretorio, nomeImagem);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        imagem.CopyTo(fileStream);
+                    }
+                    if (nomeAntigo != null && !nomeAntigo.Contains("default-profile-image-"))
+                    {
+                        string pathDelete = Path.Combine(diretorio, nomeAntigo);
+                        File.Delete(pathDelete);
+                    }
+
                 }
             }
             return nomeImagem;

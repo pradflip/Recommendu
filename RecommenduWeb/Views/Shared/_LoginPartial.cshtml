@@ -37,9 +37,9 @@
                     </ul>
                     <ul class="navbar-nav flex-grow-1 d-sm-inline-flex justify-content-end fs-5">
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@user.UserName">
-                                <img src="~/Resources/ProfileImages/@imgPerfil" class="rounded-circle avatar-circle" width="60" height="60" asp-append-version="true" />
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@user.UserName">
                                 @User.Identity?.Name
+                                <img src="~/Resources/ProfileImages/@imgPerfil" class="rounded-circle avatar-circle" width="60" height="60" asp-append-version="true" />
                             </a>
                         </li>
                     </ul>
