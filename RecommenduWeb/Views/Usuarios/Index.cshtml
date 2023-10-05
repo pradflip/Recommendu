@@ -29,7 +29,7 @@
                             </div>
                             <div class="mt-5">
                                 <a class="nav-link d-flex justify-content-center text-white btn btn-secondary my-3 w-100" asp-area="Identity" asp-page="/Account/Manage/Index">Configurações</a>
-                                <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalLogout">Sair</button>
+                                <button class="btn btn-logout w-100" data-bs-toggle="modal" data-bs-target="#modalLogout">Sair</button>
                             </div>
 
                             <form style="display: none;" asp-action="AtualizarFoto" enctype="multipart/form-data">
@@ -139,8 +139,8 @@
             </div>
             <div class="row p-3">
                 <form class="form-inline d-flex justify-content-evenly" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
-                    <button type="button" class="btn btn-outline-secondary col-4" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger text-white col-4">Sair</button>
+                    <button type="button" class="btn btn-outline-secondary col-4 shadow" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger text-white col-4 shadow">Sair</button>
                 </form>
             </div>
         </div>

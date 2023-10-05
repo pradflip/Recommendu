@@ -520,6 +520,21 @@ body {
     right: 6%;
 }
 
+.btn-logout {
+    color: #fff;
+    background-color: #191919;
+    border-color: #dc3545;
+    border-radius: 50px;
+    width: 260px;
+    height: 50px;
+    font-size: larger;
+}
+    .btn-logout:hover {
+    color: #fff;
+    background-color: #bb2d3b;
+    border-color: #b02a37;
+}
+
 .btn-del {
     color: #fff;
     background-color: #dc3545;
