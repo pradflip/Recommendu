@@ -358,7 +358,7 @@ namespace RecommenduWeb.Services
             var diferencaDt = DateTime.Now.Subtract(dt);
             string tempo;
 
-            if (diferencaDt.Days > 30) { tempo = dt.ToString("dd/MM/yyyy HH:mm:ss"); }
+            if (diferencaDt.Days > 30) { tempo = dt.ToString("dd/MM/yyyy"); }
             else if (diferencaDt.Days >= 1) { tempo = $"Há {diferencaDt.Days}d"; }
             else if (diferencaDt.Hours >= 1) { tempo = $"Há {diferencaDt.Hours}h"; }
             else if (diferencaDt.Minutes >= 1) { tempo = $"Há {diferencaDt.Minutes}m"; }
@@ -413,6 +413,17 @@ namespace RecommenduWeb.Services
             rc = await _context.RegistroCurtida.FirstOrDefaultAsync(r => r.UsuarioId == userId && r.PostagemId == postId);
 
             return rc;
+        }
+
+        public async Task<List<RegistroCurtida>> GetPostagensCurtidasAsync(string userId)
+        {
+            List<RegistroCurtida> curtidas = new List<RegistroCurtida>();
+
+            curtidas = await _context.RegistroCurtida.Where(c => c.UsuarioId == userId).ToListAsync();
+
+            curtidas = curtidas.OrderByDescending(c => c.DtCurtida).ToList();
+
+            return curtidas;
         }
     }
 }

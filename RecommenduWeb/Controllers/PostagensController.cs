@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using RecommenduWeb.Models;
 using RecommenduWeb.Models.ViewModels;
 using RecommenduWeb.Services;
+using System.Collections.Generic;
 using System.Diagnostics;
 using static RecommenduWeb.AnaliseDescricao;
 using static TorchSharp.torch.nn;
@@ -25,7 +26,8 @@ namespace RecommenduWeb.Controllers
         private readonly IWebHostEnvironment _environment;
         private readonly PredictionEnginePool<ModelInput, ModelOutput> _predictionEnginePool;
 
-        public PostagensController(PostService postagemService, LocalidadeService localidadeService, ComentarioService comentarioService, UserManager<Usuario> userManager, IWebHostEnvironment environment, PredictionEnginePool<ModelInput, ModelOutput> predictionEnginePool)
+        public PostagensController(PostService postagemService, LocalidadeService localidadeService, ComentarioService comentarioService, UserManager<Usuario> userManager,
+                                   IWebHostEnvironment environment, PredictionEnginePool<ModelInput, ModelOutput> predictionEnginePool)
         {
             _postService = postagemService;
             _localidadeService = localidadeService;
@@ -46,6 +48,32 @@ namespace RecommenduWeb.Controllers
                 vm.PostagemServico = await _postService.BuscarServicoPorUsuarioAsync(user.Id);
 
                 return View(vm);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }
+        }
+
+        public async Task<IActionResult> MinhasCurtidas()
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var registrosCurtidas = await _postService.GetPostagensCurtidasAsync(user.Id);
+                List<Postagem> postagensCurtidas = new List<Postagem>();
+
+                foreach (var item in  registrosCurtidas)
+                {
+                    Postagem post = _postService.BuscarProdutosPorId(item.PostagemId);
+                    if (post == null)
+                    {
+                        post = _postService.BuscarServicosPorId(item.PostagemId);
+                    }
+                    postagensCurtidas.Add(post);
+                }
+
+                return View(postagensCurtidas);
             }
             catch (Exception ex)
             {

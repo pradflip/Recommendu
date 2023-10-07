@@ -12,12 +12,12 @@
         <div class="col-4">
             @{
                 var userName = SignInManager.UserManager.GetUserName(User);
-                if (userName == Model.UserName)
-                {
                     <div class="index-user p-4">
                         <img src="~/Resources/ProfileImages/@Model.FotoPerfil" class="rounded-circle avatar-circle" width="250" height="250" asp-append-version="true" />
                         <div class="d-flex flex-column">
-                            <div class="btn-group dropup mt-5">
+                        @if (userName == Model.UserName)
+                        {
+                            <div class="btn-group dropend mt-5">
                                 <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">Alterar foto</button>
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-item" style="cursor: pointer" id="liSelecionarFoto" onclick="EnviarImagem()">Selecionar foto...</li>
@@ -27,29 +27,16 @@
                                     }
                                 </ul>
                             </div>
-                            <div class="mt-5">
-                                <a class="nav-link d-flex justify-content-center text-white btn btn-secondary my-3 w-100" asp-area="Identity" asp-page="/Account/Manage/Index">Configurações</a>
-                                <button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#modalLogout">Sair</button>
-                            </div>
+                            <a class="btn btn-secondary mt-3 w-100" asp-controller="Postagens" asp-action="MinhasCurtidas">Postagens curtidas</a>
 
                             <form style="display: none;" asp-action="AtualizarFoto" enctype="multipart/form-data">
                                 <input asp-for="PerfilFile" onchange="ValidarArquivo()" id="fileInput" accept=".png, .jpg, .jpeg" class="form-control mt-4-5 w-100" />
                                 <input type="submit" id="btnSubmit" value="Atualizar Foto" class="btn btn-primary my-5 w-100" />
                             </form>
+                        }
+                        <a class="btn btn-secondary mt-3 w-100" asp-controller="Postagens" asp-action="Index" asp-route-userName="@Model.UserName">Ver postagens</a>
                         </div>
                     </div>
-                }
-                else
-                {
-                    <div class="index-view-user">
-                        <img src="~/Resources/ProfileImages/@Model.FotoPerfil" class="rounded-circle avatar-circle" width="60%" height="100%" asp-append-version="true" />
-                        <div class="d-flex flex-column">
-                        </div>
-                    </div>
-                    <div class =" index-view-opt d-flex align-items-center flex-column justify-content-between">
-                    <a class="btn btn-view-post fs-6 w-100" asp-controller="Postagens" asp-action="Index" asp-route-userName="@Model.UserName">Ver postagens</a>
-                    </div>
-                }
             }
         </div>
         <div class="col-lg-8 col-md-5">
@@ -123,25 +110,6 @@
                         }
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="modalLogout" class="modal fade">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Encerrar sessão</h5>
-                    <button type="button" class="btn btn-close float-end" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body flex-column row text-center">
-                <h5>Tem certeza que deseja sair da sua conta?</h5>
-            </div>
-            <div class="row p-3">
-                <form class="form-inline d-flex justify-content-evenly" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
-                    <button type="button" class="btn btn-outline-secondary col-4" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger text-white col-4">Sair</button>
-                </form>
             </div>
         </div>
     </div>

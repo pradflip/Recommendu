@@ -110,6 +110,9 @@ app.MapControllerRoute(name: "produtos",
 app.MapControllerRoute(name: "servicos",
                         pattern: "/encontrar/servicos",
                         defaults: new { controller = "Postagens", action = "Servicos" });
+app.MapControllerRoute(name: "minhas-curtidas",
+                        pattern: "/minhas-curtidas",
+                        defaults: new { controller = "Postagens", action = "MinhasCurtidas" });
 
 // UsuariosController
 app.MapControllerRoute(name: "usuarios",
