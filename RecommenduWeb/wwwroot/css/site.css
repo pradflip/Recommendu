@@ -1,8 +1,20 @@
 html {
-    font-size: 14px;
+    font-size: 12px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 576px) {
+    html {
+        font-size: 11px;
+    }
+}
+
+@media (min-width: 992px) {
+    html {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 1200px) {
     html {
         font-size: 16px;
     }
@@ -46,6 +58,10 @@ body {
     color: #db924f;
 }
 
+.bg-orange {
+    background-color: #db924f;
+}
+
 .img-logo {
     max-width: 200px;
     max-height: 50px;
@@ -63,13 +79,14 @@ body {
 
 .avatar-circle {
     z-index: 10;
+    border: 0.2em solid #191919;
 }
 
 .circles-0 {
     position: relative;
     background-color: #d4863e;
-    width: 300px;
-    height: 300px;
+    width: 21em;
+    height: 21em;
     left: 9em;
     top: 3em;
     z-index: -2;
@@ -79,8 +96,8 @@ body {
 .circles-1 {
     position: relative;
     background-color: #db924f;
-    width: 240px;
-    height: 240px;
+    width: 15em;
+    height: 15em;
     left: 6em;
     top: -6em;
     z-index: -3;
@@ -90,13 +107,14 @@ body {
 .circles-2 {
     position: relative;
     background-color: #f1ad6f;
-    width: 225px;
-    height: 225px;
+    width: 13em;
+    height: 13em;
     left: 12em;
     top: -14em;
     z-index: -1;
     opacity: 0.8;
 }
+
 
 .link-primary-1 {
     color: #191919;
@@ -153,26 +171,6 @@ body {
     z-index: 1;
 }
 
-.card-seta {
-    border-top: 1.25em solid transparent;
-    border-left: 2.5em solid #db924f;
-    border-bottom: 1.25em solid transparent;
-    position: relative;
-    left: 82%;
-    bottom: 16%;
-    z-index: 3;
-}
-
-.card-title {
-    position: relative;
-    top: 4%;
-    left: 0%;
-    width: 82%;
-    background-color: #db924f;
-    padding: 0.5em 0 0.5em;
-    z-index: 3;
-}
-
 .card-img {
     position: absolute;
     bottom: 2%;
@@ -201,6 +199,14 @@ body {
     z-index: 1;
 }
 
+.card-busca {
+    background-color: black;
+    margin-top: 2.5em;
+    text-align: center;
+    padding: 1em 2em;
+    border-radius: 1em;
+}
+
 .info-icon {
     position: relative;
     top: 1em;
@@ -208,6 +214,13 @@ body {
     padding: 0em;
     width: 20px;
     height: 20px;
+}
+
+.star-icon {
+    padding: 0em;
+    width: 1.5em;
+    height: 1.5em;
+    margin-bottom: 0.3em;
 }
 
 .btn-new-pub {
@@ -304,14 +317,33 @@ body {
 
 .btn-search {
     color: transparent;
-    background-image: url(/Resources/SiteImages/search.svg);
-    background-repeat: no-repeat;
+    background-color: #db924f;
+    background-image: url(/Resources/SiteImages/icons8-search.svg);
+    background-repeat: round;
     background-size: cover;
-    border-radius: 0.7em;
-    border:none;
-    width: 2em;
-    height: 2em;
+    border-radius: 0.5em;
+    border: none;
+    width: 2.8em;
+    height: 2.2em;
     margin-left: 0.5em;
+}
+
+.form-control-1 {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 0.1em solid black;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.7rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .card-user {
@@ -402,12 +434,12 @@ body {
     background-color: #191919;
 }
 
-.emblema-group{
+.emblema-group {
     width: 12em;
     height: 15em;
 }
 
-.emblema-img{
+.emblema-img {
     width: 10em;
     height: 10em;
     margin: 0%;
@@ -415,20 +447,21 @@ body {
     justify-content: center;
 }
 
-.emblema-desc{
+.emblema-desc {
     width: 10em;
     height: 5em;
     text-align: center;
 }
 
 .btn-filtro {
-  color: #000;
-  background-color: #db924f;
-  border-color: #db924f;
+    color: #000;
+    background-color: #db924f;
+    border-color: #db924f;
 }
-.btn-check:checked + .btn-filtro:focus, .btn-check:active + .btn-filtro:focus, .btn-filtro:active:focus, .btn-filtro.active:focus, .show > .btn-filtro.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(217, 164, 6, 0.5);
-}
+
+    .btn-check:checked + .btn-filtro:focus, .btn-check:active + .btn-filtro:focus, .btn-filtro:active:focus, .btn-filtro.active:focus, .show > .btn-filtro.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.25rem rgba(217, 164, 6, 0.5);
+    }
 
 .btn-view-post {
     color: #fff;
@@ -487,6 +520,21 @@ body {
     right: 6%;
 }
 
+.btn-logout {
+    color: #fff;
+    background-color: #191919;
+    border-color: #dc3545;
+    border-radius: 50px;
+    width: 260px;
+    height: 50px;
+    font-size: larger;
+}
+    .btn-logout:hover {
+    color: #fff;
+    background-color: #bb2d3b;
+    border-color: #b02a37;
+}
+
 .btn-del {
     color: #fff;
     background-color: #dc3545;
@@ -503,3 +551,87 @@ body {
         background-color: #bb2d3b;
         border-color: #b02a37;
     }
+
+@media (max-width: 1200px) {
+    .img-fluid {
+        width: auto;
+        height: 19em;
+    }
+
+    .circles-0 {
+        width: 15em;
+        height: 15em;
+        left: 9em;
+        top: 4em;
+    }
+
+    .circles-1 {
+        width: 12em;
+        height: 12em;
+        left: 6em;
+        top: -3em;
+    }
+
+    .circles-2 {
+        width: 11em;
+        height: 11em;
+        left: 11em;
+        top: -10em;
+    }
+}
+
+@media (max-width: 992px) {
+    .img-fluid {
+        width: auto;
+        height: 18em;
+    }
+
+    .circles-0 {
+        width: 14em;
+        height: 14em;
+        left: 7em;
+        top: 5em;
+    }
+
+    .circles-1 {
+        width: 11em;
+        height: 11em;
+        left: 5em;
+        top: -2em;
+    }
+
+    .circles-2 {
+        width: 9em;
+        height: 9em;
+        left: 9em;
+        top: -8em;
+    }
+}
+
+@media (max-width: 768px) {
+    .img-fluid {
+        width: auto;
+        height: 15em;
+    }
+
+    .circles-0 {
+        width: 12em;
+        height: 12em;
+        left: 4em;
+        top: 6em;
+    }
+
+    .circles-1 {
+        width: 9em;
+        height: 9em;
+        left: 2em;
+        top: 0em;
+    }
+
+    .circles-2 {
+        width: 7em;
+        height: 7em;
+        left: 7em;
+        top: -4em;
+    }
+}
