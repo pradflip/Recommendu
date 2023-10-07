@@ -10,11 +10,13 @@ namespace RecommenduWeb.Controllers
     {
         private readonly AdminService _adminService;
         private readonly PostService _postService;
+        private readonly IWebHostEnvironment _environment;
 
-        public AdminController(AdminService adminService, PostService postService)
+        public AdminController(AdminService adminService, PostService postService, IWebHostEnvironment environment)
         {
             _adminService = adminService;
             _postService = postService;
+            _environment = environment;
         }
 
         public async Task<IActionResult> Index()
@@ -42,24 +44,6 @@ namespace RecommenduWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> DeletarPostagem(int postId, string cat)
-        {
-            if (postId != 0 && cat != null)
-            {
-                if (cat == "Produto")
-                {
-                    var prod = _postService.BuscarProdutosPorId(postId);
-                    await _adminService.DeletarPostAsync(prod, null);
-                }
-                else if (cat == "Serviço")
-                {
-                    var serv = _postService.BuscarServicosPorId(postId);
-                    await _adminService.DeletarPostAsync(null, serv);
-                }
-            }
-            return RedirectToAction(nameof(Index));
-        }
-
         public async Task<IActionResult> RemoverDaLista(int reportId)
         {
             if (reportId != 0)
@@ -67,6 +51,51 @@ namespace RecommenduWeb.Controllers
                 await _adminService.RemoverDaListaAsync(reportId);
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> DeletarPostagem(int reportId, int postId, string cat)
+        {
+            try
+            {
+                if (postId == null || cat == null)
+                {
+                    return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem ou categoria identificada.", isNotFound = true });
+                }
+
+                var webRoot = _environment.WebRootPath + @"\Resources\PostImages";
+
+                if (cat.Equals("Produto"))
+                {
+                    var prod = _postService.BuscarProdutosPorId((int)postId);
+                    if (prod != null)
+                    {
+                        await _postService.DeletarPostagemAsync(prod.Categoria, webRoot, prod, null);
+                        await _adminService.RemoverDaListaAsync(reportId);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
+                    }
+                }
+                else if (cat.Equals("Serviço"))
+                {
+                    var serv = _postService.BuscarServicosPorId((int)postId);
+                    if (serv != null)
+                    {
+                        await _postService.DeletarPostagemAsync(serv.Categoria, webRoot, null, serv);
+                        await _adminService.RemoverDaListaAsync(reportId);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Home", new { mensagem = "Nenhuma postagem identificada.", isNotFound = true });
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mensagem = ex.Message, isNotFound = false });
+            }            
         }
     }
 }

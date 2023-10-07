@@ -39,8 +39,10 @@
                 <div class="card-pub-2 p-2">
                     <div class="text-black justify-content-around">
                         <div class="text-start">
-                            <img src="~/Resources/ProfileImages/@item.Usuario.ImagemPerfil" class="rounded-circle avatar-circle card-ava" asp-append-version="true" />
-                            <b>@Html.DisplayFor(modelItem => item.Usuario.UserName)</b>
+                            <img src="~/Resources/ProfileImages/@item.Usuario.ImagemPerfil" class="rounded-circle card-ava" asp-append-version="true" />
+                            <a class="link-primary-1 text-decoration-none" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@item.Usuario.UserName">
+                                <b>@Html.DisplayFor(modelItem => item.Usuario.UserName)</b>
+                            </a>
                             <div class="float-end me-2 mt-2 fs-6">@Html.DisplayFor(modelItem => tempo)</div>
                         </div>
                     </div>

@@ -25,6 +25,7 @@
     @foreach (var item in Model)
     {
         var user = await UserManager.FindByIdAsync(item.UsuarioId);
+        ViewData["ReportId"] = item.ReportId;
         ViewData["PostId"] = item.PostagemId;
         ViewData["Categoria"] = item.Categoria;
 
@@ -43,10 +44,10 @@
                 <a asp-action="EnviarReview" class="btn btn-sm btn-outline-dark" asp-route-valor="1" asp-route-texto="@item.Descricao">Negativo</a>
             </td>
             <td>
-                <a class="text-danger" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#modalConfirmDelete">Deletar publicação</a>
+                <a asp-action="RemoverDaLista" class="text-warning" asp-route-reportId="@item.ReportId">Remover da lista de report</a>
             </td>
             <td>
-                <a asp-action="RemoverDaLista" class="text-warning" asp-route-reportId="@item.ReportId">Remover da lista de report</a>
+                <a class="text-danger" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#modalConfirmDelete">Deletar publicação</a>
             </td>
         </tr>
     }
@@ -62,7 +63,7 @@
             <div class="row p-3">
                 <div class="col d-flex justify-content-evenly">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <a asp-action="DeletarPostagem" class="btn btn-danger py-2" asp-route-postId="@ViewData["PostId"]" asp-route-cat="@ViewData["Categoria"]">Deletar Publicação</a>
+                    <a asp-action="DeletarPostagem" class="btn btn-danger py-2" asp-route-reportId="@ViewData["ReportId"]" asp-route-postId="@ViewData["PostId"]" asp-route-cat="@ViewData["Categoria"]">Deletar Publicação</a>
                 </div>
             </div>
         </div>

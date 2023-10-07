@@ -47,8 +47,10 @@
     <div class="row d-flex justify-content-center mb-4">
         <div class="card-details p-3">
             <div class="text-white text-start">
-                <img src="/Resources/ProfileImages/@Html.DisplayFor(model => post.Usuario.ImagemPerfil)" class="rounded-circle avatar-circle details-ava" />
-                <b class="fs-5">@Html.DisplayFor(model => post.Usuario.UserName)</b>
+                <img src="/Resources/ProfileImages/@Html.DisplayFor(model => post.Usuario.ImagemPerfil)" class="rounded-circle details-ava" />
+                <a class="link-light text-decoration-none" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@post.Usuario.UserName">
+                    <b class="fs-5">@Html.DisplayFor(model => post.Usuario.UserName)</b>
+                </a>
                 <h4 class="float-end fs-6 pt-2">@Html.DisplayFor(model => tempo)</h4>
                 <h6>
                     @Html.DisplayFor(model => model.Descricao)
@@ -102,8 +104,8 @@
                 var tempoComent = PostService.TempoPostagem(item.DtComentario);
 
                 <div class="text-black text-start">
-                    <img src="/Resources/ProfileImages/@userComent.ImagemPerfil" class="rounded-circle avatar-circle details-ava-1" />
-                    <b class="fs-6">@userComent.UserName</b>
+                    <img src="/Resources/ProfileImages/@userComent.ImagemPerfil" class="rounded-circle details-ava-1" />
+                    <a class="link-primary-1 text-decoration-none" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@userComent.UserName"><b class="fs-6">@userComent.UserName</b></a>
                     <h4 class="float-end fs-6 pt-2">@tempoComent</h4>
                     <h6>
                         @item.Comentario
