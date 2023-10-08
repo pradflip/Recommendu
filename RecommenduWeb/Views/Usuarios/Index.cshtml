@@ -31,7 +31,7 @@
 
                             <form style="display: none;" asp-action="AtualizarFoto" enctype="multipart/form-data">
                                 <input asp-for="PerfilFile" onchange="ValidarArquivo()" id="fileInput" accept=".png, .jpg, .jpeg" class="form-control mt-4-5 w-100" />
-                                <input type="submit" id="btnSubmit" value="Atualizar Foto" class="btn btn-primary my-5 w-100" />
+                                <input type="submit" id="btnPerfilSubmit" value="Atualizar Foto" class="btn btn-primary my-5 w-100" />
                             </form>
                         }
                         <a class="btn btn-secondary mt-3 w-100" asp-controller="Postagens" asp-action="Index" asp-route-userName="@Model.UserName">Ver postagens</a>

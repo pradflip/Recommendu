@@ -60,7 +60,7 @@ function ValidarArquivo() {
     const extensoes = /(\.jpg|\.jpeg|\.png)$/i;
 
     if (extensoes.test(fileInput.value)) {
-        btnSubmit.click();
+        btnPerfilSubmit.click();
     }
     else {
         alert('Por favor, selecione um arquivo JPG, JPEG ou PNG.');

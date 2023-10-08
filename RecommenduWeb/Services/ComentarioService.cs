@@ -30,7 +30,7 @@ namespace RecommenduWeb.Services
 
         public async Task DeletarComentarioAsync(int comentId, string userId)
         {
-            var comentario = _context.ComentarioPostagem.Include(p => p.Postagem)
+            var comentario = _context.ComentarioPostagem.Include(c => c.Postagem)
                                                         .Where(c => c.ComentId == comentId)
                                                         .FirstOrDefault();
             if (userId == comentario.UsuarioId || userId == comentario.Postagem.Usuario.Id)
@@ -44,6 +44,18 @@ namespace RecommenduWeb.Services
             else
             {
                 throw new Exception("Você não tem permissão de deletar esse comentário.");
+            }
+        }
+
+        public async Task RemoverComentariosPostDelAsync(int postId)
+        {
+            var query = await _context.ComentarioPostagem.Include(c => c.Postagem)
+                                                        .Where(c => c.Postagem.PostagemId == postId)
+                                                        .ToListAsync();
+            foreach (var comentario in query)
+            {
+                _context.ComentarioPostagem.Remove(comentario);
+                await _context.SaveChangesAsync();
             }
         }
     }

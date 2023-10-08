@@ -14,11 +14,13 @@ namespace RecommenduWeb.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly UsuarioService _usuarioService;
+        private readonly ComentarioService _comentarioService;
 
-        public PostService(ApplicationDbContext context, UsuarioService usuarioService)
+        public PostService(ApplicationDbContext context, UsuarioService usuarioService, ComentarioService comentarioService)
         {
             _context = context;
             _usuarioService = usuarioService;
+            _comentarioService = comentarioService;
         }
 
         public async Task<List<PostagemProduto>> BuscarProdutosAsync(string? titulo, string? filtro, Usuario usuario)
@@ -177,20 +179,42 @@ namespace RecommenduWeb.Services
             if (cat.Equals("Produto") && prod != null)
             {
                 nomeImagem = prod.ImgPostagem;
+
+                // remove reputação do usuario de acordo com as curtidas do post
+                await _usuarioService.RemoverReputacaoPorPostagem(prod.Usuario.Id, prod.Curtidas);
+
+                // remove registros de curtidas de outros usuarios nessa publicação
+                await RemoverCurtidasPostDelAsync(prod.PostagemId);
+
+                // remove todos comentarios da publicação
+                await _comentarioService.RemoverComentariosPostDelAsync(prod.PostagemId);
+
+                // remove publicação
                 _context.Remove(prod);
+
+                // remove imagem da publicação
                 DeletarImagem(webRoot, nomeImagem);
                 await _context.SaveChangesAsync();
-
-                await _usuarioService.RemoverReputacaoPorPostagem(prod.Usuario.Id, prod.Curtidas);
             }
             else if (cat.Equals("Serviço") && serv != null)
             {
                 nomeImagem = serv.ImgPostagem;
+
+                // remove reputação do usuario de acordo com as curtidas do post
+                await _usuarioService.RemoverReputacaoPorPostagem(serv.Usuario.Id, serv.Curtidas);
+
+                // remove registros de curtidas de outros usuarios nessa publicação
+                await RemoverCurtidasPostDelAsync(serv.PostagemId);
+
+                // remove todos comentarios da publicação
+                await _comentarioService.RemoverComentariosPostDelAsync(serv.PostagemId);
+
+                // remove publicação
                 _context.Remove(serv);
+
+                // remove imagem da publicação
                 DeletarImagem(webRoot, nomeImagem);
                 await _context.SaveChangesAsync();
-
-                await _usuarioService.RemoverReputacaoPorPostagem(serv.Usuario.Id, serv.Curtidas);
             }
             else { throw new Exception("Problemas ao tentar deletar a publicação: categoria ou publicação não identificada."); }
         }
@@ -424,6 +448,16 @@ namespace RecommenduWeb.Services
             curtidas = curtidas.OrderByDescending(c => c.DtCurtida).ToList();
 
             return curtidas;
+        }
+
+        public async Task RemoverCurtidasPostDelAsync(int postId)
+        {
+            var query = await _context.RegistroCurtida.Where(r => r.PostagemId == postId).ToListAsync();
+            foreach (var curtida in query)
+            {
+                _context.RegistroCurtida.Remove(curtida);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

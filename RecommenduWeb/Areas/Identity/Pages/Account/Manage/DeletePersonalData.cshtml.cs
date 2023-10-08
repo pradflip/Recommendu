@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using RecommenduWeb.Models;
+using RecommenduWeb.Services;
 
 namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
 {
@@ -19,15 +19,21 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
+        private readonly IWebHostEnvironment _environment;
+        private readonly PostService _postService;
 
         public DeletePersonalDataModel(
             UserManager<Usuario> userManager,
             SignInManager<Usuario> signInManager,
-            ILogger<DeletePersonalDataModel> logger)
+            ILogger<DeletePersonalDataModel> logger,
+            IWebHostEnvironment environment,
+            PostService postService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _environment = environment;
+            _postService = postService;
         }
 
         /// <summary>
@@ -64,7 +70,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"ID não encontrado '{_userManager.GetUserId(User)}'.");
             }
 
             RequirePassword = await _userManager.HasPasswordAsync(user);
@@ -76,7 +82,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"ID não encontrado '{_userManager.GetUserId(User)}'.");
             }
 
             RequirePassword = await _userManager.HasPasswordAsync(user);
@@ -89,16 +95,37 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            var produtos = await _postService.BuscarProdutoPorUsuarioAsync(user.Id);
+            var servicos = await _postService.BuscarServicoPorUsuarioAsync(user.Id);
+
+            // deletar todas publicações de produtos
+            if (produtos.Count > 0)
+            {
+                foreach (var prod in produtos)
+                {
+                    await _postService.DeletarPostagemAsync(prod.Categoria, _environment.WebRootPath, prod, null);
+                }
+            }
+
+            // deletar todas publicações de serviços
+            if (servicos.Count > 0)
+            {
+                foreach (var serv in servicos)
+                {
+                    await _postService.DeletarPostagemAsync(serv.Categoria, _environment.WebRootPath, null, serv);
+                }
+            }
+
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
             if (!result.Succeeded)
             {
-                throw new InvalidOperationException($"Unexpected error occurred deleting user.");
+                throw new InvalidOperationException($"Erro inesperado.");
             }
 
             await _signInManager.SignOutAsync();
 
-            _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
+            _logger.LogInformation("Usuario ID: '{UserId}' deletou a conta.", userId);
 
             return Redirect("~/");
         }
