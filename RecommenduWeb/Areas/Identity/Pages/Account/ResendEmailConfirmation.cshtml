@@ -1,24 +1,30 @@
 ﻿@page
 @model ResendEmailConfirmationModel
 @{
-    ViewData["Title"] = "Resend email confirmation";
+    ViewData["Title"] = "Reenviar confirmação de email";
 }
 
-<h1>@ViewData["Title"]</h1>
-<h2>Informe o email.</h2>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container d-flex justify-content-center my-5 ms-xxl-0 ms-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="py-3">@ViewData["Title"]</h1>
+            <h2 class="fw-normal">Informe o email.</h2>
+            <hr />
+        </div>
         <form method="post">
-            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control" aria-required="true" placeholder="name@example.com" />
+                        <label asp-for="Input.Email" class="form-label ms-3"></label>
+                        <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-outline-preto py-3 px-5">Voltar</a>
+                    <button type="submit" class="btn btn-preto py-3 px-5 ms-3">Reenviar</button>
+                </div>
             </div>
-            <button type="submit" class="w-100 btn btn-primary">Reenviar</button>
-            <br /><br />
-            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">Voltar</a>
         </form>
     </div>
 </div>

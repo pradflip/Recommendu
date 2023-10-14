@@ -1,7 +1,70 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Políticas de Privacidade e Termos de Uso";
 }
 <partial name="_HomePartial" />
-<h1>@ViewData["Title"]</h1>
-
-<p>Use this page to detail your site's privacy policy.</p>
+<section>
+    <div class="container">
+        <h1 class="h1 py-5">@ViewData["Title"]</h1>
+        <div class="row g-5">
+            <div class="col-6">
+                <h2 class="h5">Política de Privacidade</h2>
+                <p class="fst-italic"><small>Última atualização: 12/10/2023</small></p>
+                <p>Nesta Política de Privacidade, explicamos como coletamos e usamos informações pessoais em nosso sistema.</p>
+                <ul>
+                    <li><strong>Informações que Coletamos:</strong> Coletamos informações que você nos fornece ao se cadastrar em nosso site, como nome, endereço de e-mail e informações de perfil.</li>
+                    <li><strong>Como Usamos Suas Informações:</strong> Usamos suas informações para fornecer os serviços que você solicitou, como a criação e manutenção do seu perfil em nosso site.</li>
+                    <li><strong>Compartilhamento de Informações:</strong> Não compartilhamos suas informações com terceiros, a menos que seja necessário para fornecer um serviço que você solicitou ou a menos que exigido por lei.</li>
+                    <li><strong>Cookies e Tecnologias de Rastreamento:</strong> Usamos cookies para melhorar a experiência do usuário em nosso site. Você pode gerenciar as configurações de cookies em seu navegador.</li>
+                    <li><strong>Segurança das Informações:</strong> Implementamos medidas de segurança para proteger suas informações contra acesso não autorizado ou divulgação.</li>
+                    <li><strong>Seus Direitos:</strong> Você tem o direito de acessar, corrigir, atualizar ou excluir suas informações pessoais a qualquer momento. Para exercer esses direitos ou fazer perguntas sobre nossa política de privacidade, entre em contato conosco em [Inserir endereço de e-mail de contato].</li>
+                    <li><strong>Alterações na Política de Privacidade:</strong> Reservamo-nos o direito de atualizar esta política a qualquer momento. Recomendamos que você revise periodicamente para estar ciente de quaisquer alterações.</li>
+                </ul>
+            </div>
+            <div class="col-6">
+                <h2 class="h5">Termos de Uso</h2>
+                <p class="fst-italic"><small>Última atualização: 12/10/2023</small></p>
+                <p>Ao usar a Recommendu, você concorda com os seguintes termos:</p>
+                <ul>
+                    <li>
+                        <strong>Uso Responsável:</strong>
+                        <ol>
+                            <li>Você concorda em usar nosso site de maneira responsável, respeitando as leis e regulamentos aplicáveis.</li>
+                            <li>Você é responsável por manter a confidencialidade de suas credenciais de acesso e informações da conta.</li>
+                            <li>Você concorda em não realizar atividades que possam prejudicar a segurança ou a integridade do nosso site.</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <strong>Conteúdo de Usuário:</strong>
+                        <ol>
+                            <li>Não é permitido publicar conteúdo que seja difamatório, abusivo, ilegal ou que viole os direitos de privacidade de terceiros.</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <strong>Privacidade e Segurança:</strong>
+                        <ol>
+                            <li>Você concorda em respeitar a privacidade e a segurança de outros usuários e a não coletar ou divulgar informações pessoais sem permissão.</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <strong>Encerramento de Conta:</strong>
+                        <ol>
+                            <li>Reservamo-nos o direito de encerrar contas de usuários que violem estes termos ou que pratiquem condutas inadequadas no site.</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <strong>Isenção de Responsabilidade:</strong>
+                        <ol>
+                            <li>Não somos responsáveis por quaisquer danos ou perdas decorrentes do uso do site. O uso do site é por conta e risco do usuário.</li>
+                            <li>O site pode conter links para sites de terceiros, mas não endossamos ou somos responsáveis pelo conteúdo desses sites.</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row my-5">
+            <div class="col d-flex justify-content-center">
+                <a class="btn btn-lg btn-preto py-3 px-5" asp-controller="Home" asp-action="Index">Entendi</a>
+            </div>
+        </div>
+    </div>
+</section>

@@ -4,42 +4,29 @@
 
 @if (!SignInManager.IsSignedIn(User))
 {
-    var ano = DateTime.Now.ToString("yyyy");
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent">
-            <div class="container-fluid p-0">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/Resources/SiteImages/Logo.png" class="img-logo" alt="Imagem responsiva" /></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-md navbar-light bg-transparent">
+            <div class="container-fluid px-5 px-lg-0 ps-lg-5">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse">
-                    <ul class="navbar-nav flex-grow-1 d-sm-inline-flex justify-content-end">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="/Resources/SiteImages/Logo.png" class="img-logo" alt="Imagem responsiva" />
+                </a>
+                <div class="navbar-collapse collapse justify-content-end">
+                    <ul class="navbar-nav align-items-lg-center">
                         <li class="nav-item">
                             <a class="nav-link text-dark me-3 box-shadow" asp-area="Identity" asp-page="/Account/Login">Entrar</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white btn btn-primary me-4" asp-area="Identity" asp-page="/Account/Register">Registrar-se</a>
+                        <li class="nav-item d-block d-lg-none">
+                            <a class="nav-link text-dark me-3 box-shadow" asp-area="Identity" asp-page="/Account/Register">Registrar-se</a>
+                        </li>
+                        <li class="nav-item d-lg-block d-none">
+                            <a class="nav-link text-white btn btn-laranja py-3 px-5 me-5" asp-area="Identity" asp-page="/Account/Register">Registrar-se</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <footer>
-        <div class="container-fluid position-absolute bottom-0 start-0 mt-4">
-            <div class="row">
-                <div class="col-8 align-self-center">
-                    <p class="fw-bold fs-5">
-                        <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-light pe-3">Políticas de privacidade</a>
-                    </p>
-                </div>
-                <div class="col-4 d-flex justify-content-end align-self-center">
-                    <p class="text-light fw-bold fs-5">
-                        &copy; @ano - Recommendu
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
 }

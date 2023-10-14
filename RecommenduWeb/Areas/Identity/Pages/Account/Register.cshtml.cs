@@ -81,7 +81,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             /// <summary>
             /// Nome Completo
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Preencha o campo {0}.")]
             [StringLength(100, ErrorMessage = "O usuário deve ter entre {2} a {1} caracteres.", MinimumLength = 10)]
             [DataType(DataType.Text)]
             [Display(Name = "Nome Completo")]
@@ -91,7 +91,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             /// Username
             /// </summary>
             //[Required (ErrorMessage = "{0} requerido;")]
-            [Required]
+            [Required(ErrorMessage = "Preencha o campo {0}.")]
             [StringLength(20, ErrorMessage = "O usuário deve ter entre {2} a {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Text)]
             [Display(Name = "Usuário")]
@@ -101,8 +101,8 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Preencha o campo {0}.")]
+            [EmailAddress(ErrorMessage = "O campo de e-mail não é um endereço de e-mail válido.")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
@@ -110,8 +110,8 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [StringLength(50, ErrorMessage = "A senha deve ter entre {2} a {1} caracteres.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Preencha o campo {0}.")]
+            [StringLength(30, ErrorMessage = "A senha deve ter entre {2} a {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Senha")]
             public string Password { get; set; }
@@ -124,6 +124,17 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             [Display(Name = "Confirmar Senha")]
             [Compare("Password", ErrorMessage = "A senha verificada não combina.")]
             public string ConfirmPassword { get; set; }
+
+            [IsChecked(ErrorMessage = "Você deve concordar com os termos de uso.")]
+            public bool AgreesToTerms { get; set; }
+        }
+
+        public class IsChecked : ValidationAttribute
+        {
+            public override bool IsValid(object value)
+            {
+                return value is bool && (bool)value;
+            }
         }
 
 
@@ -163,8 +174,8 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirmar email",
+                        $"Confirme sua conta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicando aqui</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

@@ -1,0 +1,20 @@
+﻿@{
+    var ano = DateTime.Now.ToString("yyyy");
+}
+
+<footer>
+    <div class="container-fluid position-absolute bottom-0 start-0 mt-4">
+        <div class="row g-0">
+            <div class="col-4 align-self-center">
+                <p class="text-light fw-bold fs-5">
+                    &copy; @ano - Recommendu
+                </p>
+            </div>
+            <div class="col-8 d-flex justify-content-end align-self-center">
+                <p class="fw-bold fs-5">
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-light pe-3">Políticas de privacidade</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
