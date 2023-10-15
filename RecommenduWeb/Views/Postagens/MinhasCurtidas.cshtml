@@ -6,42 +6,74 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<div class="container-fluid mt-4">
-    <div class="row">
-        <div class="col-10 d-flex justify-content-center ms-7">
+<div class="container">
+    <h1 class="fw-normal text-center mt-5 ms-5 ps-5">Publicações curtidas</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-11 ms-md-0 ms-3">
             @if (Model.Count > 0)
             {
                 foreach (var item in Model)
                 {
                     string tempo = PostService.TempoPostagem(item.DtPostagem);
-                    <div class="card-pub">
-                        <div class="card-pub-1 text-light">
-                            <div class="card-title text-center">@Html.DisplayFor(modelItem => item.Titulo)</div>
-                            <div class="card-seta"></div>
-                            <img src="~/Resources/PostImages/@item.ImgPostagem" class="card-img" asp-append-version="true" />
-                        </div>
-                        <div class="card-pub-2 p-2">
-                            <div class="text-black">
-                                <div class="text-start">
-                                    <img src="~/Resources/ProfileImages/@item.Usuario.ImagemPerfil" class="rounded-circle avatar-circle card-ava" asp-append-version="true" />
-                                    <b>@Html.DisplayFor(modelItem => item.Usuario.UserName)</b>
-                                    <div class="float-end me-2 mt-2 fs-6">@Html.DisplayFor(modelItem => tempo)</div>
+                    <div class="card shadow-sm my-5 m-md-5 p-3 w-100 mx-3 overflow-hidden h-card">
+                        <div class="row">
+                            <div class="col-6 text-light">
+                                <div class="row">
+                                    <div class="col-12 card-titulo text-center text-truncate p-3">
+                                        <h5>@Html.DisplayFor(modelItem => item.Titulo)</h5>
+                                    </div>
+                                    <div class="col-12">
+                                        <img src="~/Resources/PostImages/@item.ImgPostagem" class="img-card" asp-append-version="true" />
+                                    </div>
                                 </div>
                             </div>
-                            <div class="text-start my-3">
-                                <h6 class="p-1 fs-6">
-                                    Público Alvo: @Html.DisplayFor(modelItem => item.PublicoAlvo)
-                                </h6>
-                                <h6 class="p-1 fs-6">
-                                    Categoria: @Html.DisplayFor(modelItem => item.Categoria)
-                                </h6>
-                                <h6 class="p-1 fs-6">
-                                    Curtidas obtidas: @Html.DisplayFor(modelItem => item.Curtidas)
-                                </h6>
-                            </div>
-                            <div class="my-4 mx-1">
-                                <a class="link-primary-1 fs-6" asp-controller="Postagens" asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Ver completo</a>
+                            <div class="col-6">
+                                <div class="card-body text-black">
+                                    <div class="row">
+                                        <div class="col-4 text-center">
+                                            <img src="~/Resources/ProfileImages/@item.Usuario.ImagemPerfil" class="rounded-circle w-100" asp-append-version="true" />
+                                        </div>
+                                        <div class="col-8 align-self-center">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <a class="link-preto text-decoration-none" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@item.Usuario.UserName">
+                                                        <h4 class="card-title">@Html.DisplayFor(modelItem => item.Usuario.UserName)</h4>
+                                                    </a>
+                                                </div>
+                                                <div class="col-12">
+                                                    <small>@Html.DisplayFor(modelItem => tempo)</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-text text-start my-3">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h6 class="p-1 fs-6">
+                                                    <strong>Público Alvo:</strong> @Html.DisplayFor(modelItem => item.PublicoAlvo)
+                                                </h6>
+                                            </div>
+                                            <div class="col-12">
+                                                <h6 class="p-1 fs-6">
+                                                    <strong>Categoria:</strong> @Html.DisplayFor(modelItem => item.Categoria)
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h6 class="fs-6 position-absolute bottom-0 pb-3">
+                                                    <img src="~/Resources/SiteImages/StarCompleta.png" class="star-icon" asp-append-version="true" />
+                                                    @Html.DisplayFor(modelItem => item.Curtidas)
+                                                </h6>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="position-absolute bottom-0 pb-4">
+                                                    <a class="link-laranja fs-6" asp-controller="Postagens" asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Ver completo</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -61,3 +93,36 @@
             <script scr="~/js/site.js"></script>
         }
     }
+
+@* 
+    <div class="row">
+        <div class="card-pub-1 text-light">
+            <div class="card-title text-center">@Html.DisplayFor(modelItem => item.Titulo)</div>
+            <div class="card-seta"></div>
+            <img src="~/Resources/PostImages/@item.ImgPostagem" class="card-img" asp-append-version="true" />
+        </div>
+        <div class="card-pub-2 p-2">
+            <div class="text-black">
+                <div class="text-start">
+                    <img src="~/Resources/ProfileImages/@item.Usuario.ImagemPerfil" class="rounded-circle avatar-circle card-ava" asp-append-version="true" />
+                    <b>@Html.DisplayFor(modelItem => item.Usuario.UserName)</b>
+                    <div class="float-end me-2 mt-2 fs-6">@Html.DisplayFor(modelItem => tempo)</div>
+                </div>
+            </div>
+            <div class="text-start my-3">
+                <h6 class="p-1 fs-6">
+                    Público Alvo: @Html.DisplayFor(modelItem => item.PublicoAlvo)
+                </h6>
+                <h6 class="p-1 fs-6">
+                    Categoria: @Html.DisplayFor(modelItem => item.Categoria)
+                </h6>
+                <h6 class="p-1 fs-6">
+                    Curtidas obtidas: @Html.DisplayFor(modelItem => item.Curtidas)
+                </h6>
+            </div>
+            <div class="my-4 mx-1">
+                <a class="link-primary-1 fs-6" asp-controller="Postagens" asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Ver completo</a>
+            </div>
+        </div>
+    </div>
+ *@

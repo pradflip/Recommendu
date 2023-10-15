@@ -18,10 +18,14 @@
                     </span>
                 </form>
                 <div class="d-flex justify-content-center my-3">
-                    <div class="row">
-                        <h3 class="text-center text-light pb-2">Top 10</h3>
+                    <div class="row w-100">
                         <div class="col">
                             <table class="table-user border-0 w-100 text-start">
+                                <tr>
+                                    <th colspan="2">
+                                        <h3 class="text-center text-light pb-2 bg-laranja">Top 10</h3>
+                                    </th>
+                                </tr>
                                 @{
                                     var listaTop = await UsuarioService.BuscarTopDez();
                                     foreach (var item in listaTop)
@@ -47,7 +51,7 @@
             {
                 @foreach (var item in Model.Usuario)
                 {
-                    <div class="card border-0 shadow my-5 m-md-5 p-3 w-75 mx-auto overflow-hidden" style="min-height: 50%;">
+                    <div class="card shadow-sm my-5 m-md-5 p-3 w-75 mx-auto overflow-hidden" style="min-height: 50%;">
                         <div class="row flex-grow-1 align-items-center mx-auto">
                             <div class="col-4 text-center">
                                 <img src="~/Resources/ProfileImages/@item.ImagemPerfil" class="rounded-circle w-100" asp-append-version="true" />
