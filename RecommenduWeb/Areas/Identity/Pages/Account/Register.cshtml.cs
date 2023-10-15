@@ -82,7 +82,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             /// Nome Completo
             /// </summary>
             [Required(ErrorMessage = "Preencha o campo {0}.")]
-            [StringLength(100, ErrorMessage = "O usuário deve ter entre {2} a {1} caracteres.", MinimumLength = 10)]
+            [StringLength(30, ErrorMessage = "O nome deve ter entre {2} a {1} caracteres.", MinimumLength = 3)]
             [DataType(DataType.Text)]
             [Display(Name = "Nome Completo")]
             public string NomeCompleto { get; set; }
@@ -92,7 +92,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account
             /// </summary>
             //[Required (ErrorMessage = "{0} requerido;")]
             [Required(ErrorMessage = "Preencha o campo {0}.")]
-            [StringLength(20, ErrorMessage = "O usuário deve ter entre {2} a {1} caracteres.", MinimumLength = 6)]
+            [StringLength(15, ErrorMessage = "O usuário deve ter entre {2} a {1} caracteres.", MinimumLength = 5)]
             [DataType(DataType.Text)]
             [Display(Name = "Usuário")]
             public string UserName { get; set; }

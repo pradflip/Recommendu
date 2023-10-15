@@ -4,5 +4,8 @@
     ViewData["Title"] = "Bloqueado";
 }
 
-<h1 class="text-danger">@ViewData["Title"]</h1>
-<p class="text-danger">Essa conta foi bloqueada temporariamente. Por favor, tente novamente em alguns instantes.</p>
+<div class="m-3">
+    <h1 class="text-danger">@ViewData["Title"]</h1>
+    <p class="text-danger">Essa conta foi bloqueada temporariamente. Por favor, tente novamente em alguns instantes.</p>
+    <a asp-action="Index" asp-controller="Home" class="btn btn-outline-preto py-3 px-5">Entendi</a>
+</div>

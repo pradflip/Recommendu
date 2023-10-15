@@ -7,18 +7,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid text-center">
-    <div class="row mt-5">
-        <div class="col-4">
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-4 d-flex">
             @{
                 var userName = SignInManager.UserManager.GetUserName(User);
-                    <div class="index-user p-4">
-                        <img src="~/Resources/ProfileImages/@Model.FotoPerfil" class="rounded-circle avatar-circle" width="250" height="250" asp-append-version="true" />
-                        <div class="d-flex flex-column">
+                <div class="card bg-preto flex-fill p-5">
+                    <img src="~/Resources/ProfileImages/@Model.FotoPerfil" class="rounded-circle" asp-append-version="true" />
+                    <div class="card-body d-flex flex-column">
+                        <a class="btn btn-laranja mt-3 w-100" asp-controller="Postagens" asp-action="Index" asp-route-userName="@Model.UserName">Ver postagens</a>
                         @if (userName == Model.UserName)
                         {
-                            <div class="btn-group dropend mt-5">
-                                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">Alterar foto</button>
+                            <a class="btn btn-laranja mt-3 w-100" asp-controller="Postagens" asp-action="MinhasCurtidas">Postagens curtidas</a>
+                            <div class="btn-group dropend d-md-flex d-none mt-3">
+                                <button type="button" class="btn btn-laranja dropdown-toggle" data-bs-toggle="dropdown">Alterar foto</button>
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-item" style="cursor: pointer" id="liSelecionarFoto" onclick="EnviarImagem()">Selecionar foto...</li>
                                     @if (!Model.FotoPerfil.Contains("default-profile-image"))
@@ -27,87 +29,100 @@
                                     }
                                 </ul>
                             </div>
-                            <a class="btn btn-secondary mt-3 w-100" asp-controller="Postagens" asp-action="MinhasCurtidas">Postagens curtidas</a>
-
+                            <div class="btn-group d-flex d-md-none mt-3">
+                                <button type="button" class="btn btn-laranja dropdown-toggle" data-bs-toggle="dropdown">Alterar foto</button>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item" style="cursor: pointer" id="liSelecionarFoto" onclick="EnviarImagem()">Selecionar foto...</li>
+                                    @if (!Model.FotoPerfil.Contains("default-profile-image"))
+                                    {
+                                        <li class="dropdown-item" style="cursor: pointer" id="liDeletarFoto" onclick="location.href='@Url.Action("DeletarFoto", "Usuarios")'">Deletar foto</li>
+                                    }
+                                </ul>
+                            </div>
                             <form style="display: none;" asp-action="AtualizarFoto" enctype="multipart/form-data">
                                 <input asp-for="PerfilFile" onchange="ValidarArquivo()" id="fileInput" accept=".png, .jpg, .jpeg" class="form-control mt-4-5 w-100" />
                                 <input type="submit" id="btnPerfilSubmit" value="Atualizar Foto" class="btn btn-primary my-5 w-100" />
                             </form>
                         }
-                        <a class="btn btn-secondary mt-3 w-100" asp-controller="Postagens" asp-action="Index" asp-route-userName="@Model.UserName">Ver postagens</a>
-                        </div>
                     </div>
+                </div>
             }
-        </div>
-        <div class="col-lg-8 col-md-5">
-            <div class="index-user-title text-start">
-                <h1>@Model.NomeCompleto</h1>
-                <h2>@@@Model.UserName</h2>
-                <h2 class="text-success">Reputação: @Model.Reputacao</h2>
-            </div>
-            <div class="index-user-emblemas">
-                <h1>Emblemas</h1>
-                <div class="row d-flex justify-content-evenly align-content-center mt-5">
-
-                    <div class="emblema-group col-4">
-                        @if (Model.Reputacao >= 500)
-                        {
-                            <div class="emblema-img">
-                                <img src="~/Resources/SiteImages/emblema-1.png" class="rounded-circle" width="150" height="150" asp-append-version="true" />
+        </div>        
+        <div class="col-md-8 d-flex my-5 my-md-0">
+            <div class="card flex-fill">
+                <div class="card-body">
+                    <div class="row my-2 ps-3">
+                        <div class="col">
+                            <h2 class="fs-2">@@@Model.UserName</h2>
+                            <h2 class="fw-normal fs-3 my-3">@Model.NomeCompleto</h2>
+                            <h2 class="fs-3 fw-normal">Reputação <span class="text-laranja">@Model.Reputacao</span></h2>
+                        </div>
+                        <hr class="my-5" />
+                        <div class="col">
+                            <h1 class="fw-normal fs-1 text-center">Emblemas</h1>
+                            <div class="row my-5">
+                                <div class="col-4">
+                                    @if (Model.Reputacao >= 500)
+                                    {
+                                        <div class="d-flex justify-content-center">
+                                            <img src="~/Resources/SiteImages/emblema-1.png" class="rounded-circle" width="150" height="150" asp-append-version="true" />
+                                        </div>
+                                        <div class="text-center">
+                                            <h5>Estreante</h5>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex justify-content-center">
+                                            <div class="sem-emblema"></div>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <p>Reputação 500 para obter a conquista</p>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-4">
+                                    @if (Model.Reputacao >= 5000)
+                                    {
+                                        <div class="d-flex justify-content-center">
+                                            <img src="~/Resources/SiteImages/emblema-2.png" class="rounded-circle" width="150" height="150" asp-append-version="true" />
+                                        </div>
+                                        <div class="text-center">
+                                            <h5>Engajado</h5>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex justify-content-center">
+                                            <div class="sem-emblema"></div>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <p>Reputação 5.000 para obter a conquista</p>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-4">
+                                    @if (Model.Reputacao >= 50000)
+                                    {
+                                        <div class="d-flex justify-content-center">
+                                            <img src="~/Resources/SiteImages/emblema-3.png" class="rounded-circle" width="150" height="150" asp-append-version="true" />
+                                        </div>
+                                        <div class="text-center">
+                                            <h5>Referência</h5>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex justify-content-center">
+                                            <div class="sem-emblema"></div>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <p>Reputação 50.000 para obter a conquista</p>
+                                        </div>
+                                    }
+                                </div>
                             </div>
-                            <div class="emblema-desc">
-                                <h5>Estreante</h5>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="emblema-img">
-                                <div class="sem-emblema"></div>
-                            </div>
-                            <div class="emblema-desc">
-                                <p>Reputação 500 para obter a conquista</p>
-                            </div>
-                        }
-                    </div>
-                    <div class="emblema-group col-4">
-                        @if (Model.Reputacao >= 5000)
-                        {
-                            <div class="emblema-img">
-                                <img src="~/Resources/SiteImages/emblema-2.png" class="rounded-circle" width="150" height="150" asp-append-version="true" />
-                            </div>
-                            <div class="emblema-desc">
-                                <h5>Engajado</h5>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="emblema-img">
-                                <div class="sem-emblema"></div>
-                            </div>
-                            <div class="emblema-desc">
-                                <p>Reputação 5.000 para obter a conquista</p>
-                            </div>
-                        }
-                    </div>
-                    <div class="emblema-group col-4">
-                        @if (Model.Reputacao >= 50000)
-                        {
-                            <div class="emblema-img">
-                                <img src="~/Resources/SiteImages/emblema-3.png" class="rounded-circle" width="150" height="150" asp-append-version="true" />
-                            </div>
-                            <div class="emblema-desc">
-                                <h5>Referência</h5>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="emblema-img">
-                                <div class="sem-emblema"></div>
-                            </div>
-                            <div class="emblema-desc">
-                                <p>Reputação 50.000 para obter a conquista</p>
-                            </div>
-                        }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -116,7 +131,7 @@
 </div>
 
 @section Scripts
-{
+    {
     @{
         <script scr="~/js/site.js"></script>
     }

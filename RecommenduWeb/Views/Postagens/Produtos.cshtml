@@ -5,15 +5,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container-fluid">
-    <div class="row">
+<div class="container">
+    <div class="row g-0">
         <div class="col-md-4 p-2">
             <div class="card-busca">
                 <h3 class="text-white pb-2">Buscar produtos</h3>
                 <form asp-action="Produtos" method="get">
                     <div class="input-group d-flex justify-content-center">
                         <input class="form-control w-75" type="search" value="@ViewData["tituloAtual"]" name="titulo" placeholder="Nome do produto" />
-                        <input class="form-control btn-search" type="submit" />
+                        <input class="form-control btn-buscar" type="submit" value="" />
                     </div>
                 </form>
                 <div class="dropdown show my-4">
@@ -28,14 +28,14 @@
             </div>
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-8 col-11 ms-md-0 ms-3">
             @if (Model != null && Model.PostagemProduto.Count > 0)
             {
                 @foreach (var item in Model.PostagemProduto)
                 {
                     string tempo = PostService.TempoPostagem(item.DtPostagem);
 
-                    <div class="card border-0 shadow my-5 m-md-5 p-3 w-100 overflow-hidden" style="min-height: 50%;">
+                    <div class="card border-0 shadow my-5 m-md-5 p-3 w-100 mx-3 overflow-hidden h-card">
                         <div class="row">
                             <div class="col-6 text-light">
                                 <div class="row">
@@ -43,12 +43,12 @@
                                         <h5>@Html.DisplayFor(modelItem => item.Titulo)</h5>
                                     </div>
                                     <div class="col-12">
-                                        <img src="~/Resources/PostImages/@item.ImgPostagem" class="img-fluid" asp-append-version="true" />
+                                        <img src="~/Resources/PostImages/@item.ImgPostagem" class="img-card" asp-append-version="true" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="card-body h-100 text-black">
+                                <div class="card-body text-black">
                                     <div class="row">
                                         <div class="col-4 text-center">
                                             <img src="~/Resources/ProfileImages/@item.Usuario.ImagemPerfil" class="rounded-circle w-100" asp-append-version="true" />
@@ -56,7 +56,7 @@
                                         <div class="col-8 align-self-center">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <a class="link-primary-1 text-decoration-none" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@item.Usuario.UserName">
+                                                    <a class="link-preto text-decoration-none" asp-controller="Usuarios" asp-action="Index" asp-route-userName="@item.Usuario.UserName">
                                                         <h4 class="card-title">@Html.DisplayFor(modelItem => item.Usuario.UserName)</h4>
                                                     </a>
                                                 </div>
@@ -88,7 +88,7 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="position-absolute bottom-0 pb-4">
-                                                    <a class="link-primary-1 fs-6" asp-controller="Postagens" asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Ver completo</a>
+                                                    <a class="link-laranja fs-6" asp-controller="Postagens" asp-action="Details" asp-route-cat="@item.Categoria" asp-route-id="@item.PostagemId">Ver completo</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -101,7 +101,7 @@
             }
             @if (Model != null && Model.PostagemProduto.Count == 0)
             {
-                <div class="bg-light p-2 fw-bold border shadow-sm not-result">
+                <div class="bg-light p-2 fw-bold border shadow-sm ms-4 mt-3">
                     <p>Nenhum resultado encontrado.</p>
                 </div>
             }
