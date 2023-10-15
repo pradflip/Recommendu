@@ -263,14 +263,6 @@ footer div {
     z-index: 2;
 }
 
-.details-likes {
-    width: 2em;
-    height: 3em;
-    border: 0.1em solid #191919;
-    border-radius: 0.5em;
-    text-align: center;
-}
-
 .btn-buscar {
     color: transparent;
     background-color: #db924f;

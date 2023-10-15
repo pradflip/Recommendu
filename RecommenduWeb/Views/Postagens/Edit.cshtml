@@ -1,89 +1,156 @@
 ﻿@model RecommenduWeb.Models.ViewModels.PostagemViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Postagem";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container text-center">
-    <h1 class="m-5">Editar Postagem</h1>
-    <div class="row">
-        <div class="d-flex justify-content-center">
+<div class="container">
+    <h1 class="text-md-center ms-md-0 ms-5 my-5">@ViewData["Title"]</h1>
+    <div class="row mb-5">
+        <div class="col">
             <form asp-action="Edit" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="PostagemId" />
-                <div class="form-group row mb-3">
-                    <label asp-for="Categoria" class="control-label col text-end fw-bold"></label>
-                    <input asp-for="Categoria" class="form-control" readonly />
-                    <span asp-validation-for="Categoria" class="text-danger"></span>
-                </div>
-                <div class="form-group row mb-3">
-                    @if (Model.Categoria == "Produto")
+                <div class="row gx-md-5 g-2 ms-md-0 ms-5">
+                    <div class="col-md-4 text-md-end text-start">
+                        <label asp-for="Categoria" id="lblCategoria" class="control-label fw-bold"></label><span class="text-danger">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-3">
+                            <input asp-for="Categoria" class="form-control" readonly />
+                            <span asp-validation-for="Categoria" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end text-start">
+                        @if (Model.Categoria == "Produto")
+                        {
+                            <label asp-for="Titulo" class="control-label text-end fw-bold">Nome do produto</label>
+                        }
+                        else if (Model.Categoria == "Serviço")
+                        {
+                            <label asp-for="Titulo" class="control-label text-end fw-bold">Nome do serviço</label>
+                        }
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="form-group mb-3">
+                            <input asp-for="Titulo" class="form-control shadow-sm w-50" />
+                            <span asp-validation-for="Titulo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end text-start">
+                        <label asp-for="Descricao" class="control-label text-end fw-bold"></label><span class="text-danger">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-3">
+                            <textarea asp-for="Descricao" class="form-control shadow-sm w-50" cols="60" rows="8"></textarea>
+                            <span asp-validation-for="Descricao" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end text-start">
+                        <label asp-for="PublicoAlvo" class="control-label text-end fw-bold"></label><span class="text-danger">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-3">
+                            <input asp-for="PublicoAlvo" class="form-control shadow-sm w-50" />
+                            <span asp-validation-for="PublicoAlvo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end text-start">
+                        <label class="control-label text-end fw-bold">Imagem</label><span class="text-danger">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-3" id="btnImg">
+                            <button class="btn-quadrado-form" style="font-size: 5em" type="button" id="btnNovoPost" onclick="EnviarImagem()">+</button>
+                            <div class="img-new-container" id="divClose" style="display: none;">
+                                <img id="imgNovoPost" src="#" alt="Imagem Enviada" class="img-new" style="display: none;">
+                                <div class="img-new-overlay" id="imgContainer" onclick="RemoverImagemForm()">
+                                    <div class="texto-overlay fs-1 btn-close"></div>
+                                </div>
+
+                            </div>
+                            <input asp-for="PostFile" onchange="ValidarArquivo()" id="fileInput" accept=".png, .jpg, .jpeg" class="form-control shadow-sm w-50 d-none" />
+                            <span asp-validation-for="PostFile" class="text-danger"></span>
+                        </div>
+                    </div>
+                    @if (Model.Categoria.Equals("Produto"))
                     {
-                        <label asp-for="Titulo" class="control-label col text-end fw-bold">Nome do produto</label>
+                        <div class="col" id="formProduto">
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-4 text-md-end text-start">
+                                    <label asp-for="Fabricante" class="control-label text-end fw-bold"></label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group mb-3">
+                                        <input asp-for="Fabricante" class="form-control shadow-sm w-50" />
+                                        <span asp-validation-for="Fabricante" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-md-end text-start">
+                                    <label asp-for="LinkProduto" class="control-label text-end fw-bold"></label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group mb-3">
+                                        <input asp-for="LinkProduto" class="form-control shadow-sm w-50" />
+                                        <span asp-validation-for="LinkProduto" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
-                    else if (Model.Categoria == "Serviço")
+                    else if (Model.Categoria.Equals("Serviço"))
                     {
-                        <label asp-for="Titulo" class="control-label col text-end fw-bold">Nome do serviço</label>
+                        <div class="col" id="formServico">
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-4 text-md-end text-start">
+                                    <label asp-for="Estado" class="control-label text-end fw-bold"></label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group mb-3">
+                                        @Html.DropDownListFor(model => model.Estado, ViewData["Estado"] as SelectList, new {@class="form-control shadow-sm w-50", @id="ddlEstado"})
+                                        <span asp-validation-for="Estado" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-md-end text-start">
+                                    <label asp-for="Cidade" class="control-label text-end fw-bold">Cidade</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group mb-3">
+                                        <input asp-for="Cidade" class="form-control shadow-sm w-50" id="ddlCidades" aria-required="true" placeholder="Nome da cidade" />
+                                        <span asp-validation-for="Cidade" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-md-end text-start">
+                                    <label asp-for="Endereco" class="control-label text-end fw-bold"></label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group mb-3">
+                                        <input asp-for="Endereco" class="form-control shadow-sm w-50" />
+                                        <span asp-validation-for="Endereco" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-md-end text-start">
+                                    <label asp-for="Contato" class="control-label text-end fw-bold"></label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group mb-3">
+                                        <input asp-for="Contato" class="form-control shadow-sm w-50" />
+                                        <span asp-validation-for="Contato" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
-                    <input asp-for="Titulo" class="form-control col-lg-6" />
-                    <span asp-validation-for="Titulo" class="text-danger"></span>
-                </div>
-                <div class="form-group row mb-3">
-                    <label asp-for="Descricao" class="control-label col text-end fw-bold"></label>
-                    <textarea asp-for="Descricao" class="form-control col-lg-6" cols="60" rows="6"></textarea>
-                    <span asp-validation-for="Descricao" class="text-danger"></span>
-                </div>
-                <div class="form-group row mb-3">
-                    <label asp-for="PublicoAlvo" class="control-label col text-end fw-bold"></label>
-                    <input asp-for="PublicoAlvo" class="form-control col-lg-6" />
-                    <span asp-validation-for="PublicoAlvo" class="text-danger"></span>
-                </div>
-                <div class="form-group row mb-3">
-                    <label asp-for="PostFile" class="control-label col text-end fw-bold"></label>
-                    <input asp-for="PostFile" onchange="ValidarArquivo()" id="fileInput" accept=".png, .jpg, .jpeg" class="form-control col-lg-6" />
-                    <span asp-validation-for="PostFile" class="text-danger"></span>
-                </div>
-                @if (Model.Categoria.Equals("Produto"))
-                {
-                    <div class="form-group row mb-3">
-                        <label asp-for="Fabricante" class="control-label col text-end fw-bold"></label>
-                        <input asp-for="Fabricante" class="form-control col-lg-6" />
-                        <span asp-validation-for="Fabricante" class="text-danger"></span>
+                    <div class="row my-5">
+                        <div class="col form-group d-flex justify-content-md-end">
+                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-preto py-3 px-5">Voltar</a>
+                        </div>
+                        <div class="col form-group d-flex justify-content-md-start ">
+                            <input type="submit" id="btnSubmit" value="Publicar" class="btn btn-laranja py-3 px-5" />
+                        </div>
                     </div>
-                    <div class="form-group row mb-3">
-                        <label asp-for="LinkProduto" class="control-label col text-end fw-bold"></label>
-                        <input asp-for="LinkProduto" class="form-control col-lg-6" />
-                        <span asp-validation-for="LinkProduto" class="text-danger"></span>
-                    </div>
-                }
-                else if (Model.Categoria.Equals("Serviço"))
-                {
-                    <div class="form-floating mb-3">
-                        @Html.DropDownListFor(model => model.Estado, ViewData["Estado"] as SelectList, new {@class="form-control", @id="ddlEstado"})
-                        <label asp-for="Estado"></label>
-                        <span asp-validation-for="Estado" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="Cidade" class="form-control" aria-required="true" placeholder="Nome da cidade" />
-                        <label asp-for="Cidade">Cidade</label>
-                        <span asp-validation-for="Cidade" class="text-danger"></span>
-                        <span style="color: #4684b0" title="Preencha corretamente para sua publicação ser encontrada com mais facilidade">&#x1F6C8;</span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Endereco" class="control-label"></label>
-                        <input asp-for="Endereco" class="form-control" />
-                        <span asp-validation-for="Endereco" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Contato" class="control-label"></label>
-                        <input asp-for="Contato" class="form-control" />
-                        <span asp-validation-for="Contato" class="text-danger"></span>
-                    </div>
-                }
-                <div class="form-group row justify-content-evenly">
-                    <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary col-lg-3">Voltar</a>
-                    <input type="submit" value="Save" class="btn btn-success col-lg-6" />
                 </div>
             </form>
         </div>
