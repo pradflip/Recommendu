@@ -539,28 +539,6 @@ footer div {
         border-color: #191919;
     }
 
-/*.btn-link-laranja {
-    font-weight: 400;
-    color: #db924f;
-    text-decoration: underline
-}
-
-    .btn-link-laranja:hover {
-        color: #d4863e
-    }
-
-    .btn-link-laranja.disabled, .btn-link-laranja:disabled {
-        color: #f1ad6f
-    }*/
-
-/*.navbar-dark .navbar-nav .nav-link {
-    color: #191919ed;
-}
-
-.nav-link:focus, .nav-link:hover {
-    color: #f4f3f4;
-}*/
-
 .navbar-dark .navbar-nav .nav-link {
     color: #212529;
 }
@@ -572,6 +550,10 @@ footer div {
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #f1ad6f;
+}
+
+.btn.btn-nav:focus, .btn.btn-sticky:active:focus {
+    box-shadow: none;
 }
 
 .form-floating > .form-control {

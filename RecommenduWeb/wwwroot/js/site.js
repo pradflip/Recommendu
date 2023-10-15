@@ -34,27 +34,6 @@ function CarregaForm() {
     }
 }
 
-function MostrarPost(cat) {
-    if (cat === 1) {
-        if (document.getElementById("divProdutos").hidden === true) {
-            document.getElementById("divProdutos").hidden = false;
-            document.getElementById("divServicos").hidden = true;
-        }
-        else {
-            document.getElementById("divProdutos").hidden = true;
-        }
-    }
-    else {
-        if (document.getElementById("divServicos").hidden === true) {
-            document.getElementById("divServicos").hidden = false;
-            document.getElementById("divProdutos").hidden = true;
-        }
-        else {
-            document.getElementById("divServicos").hidden = true;
-        }
-    }
-}
-
 function ValidarArquivo() {
     const fileInput = document.getElementById('fileInput');
     const extensoes = /(\.jpg|\.jpeg|\.png)$/i;
