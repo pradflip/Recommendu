@@ -5,7 +5,7 @@
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<h3>@ViewData["Title"]</h3>
+<h3 class="my-3">@ViewData["Title"]</h3>
 
 <div class="alert alert-warning" role="alert">
     <p>
@@ -24,7 +24,7 @@
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
         }
-        <button class="w-100 btn btn-danger" type="submit">Deletar dados e conta permanentente</button>
+        <button class="btn btn-danger text-dark fw-bold py-3 px-5" type="submit">Deletar dados e conta permanentente</button>
     </form>
 </div>
 

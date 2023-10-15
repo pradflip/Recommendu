@@ -572,6 +572,11 @@ footer div {
     height: 100%;
 }
 
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #191919;
+}
+
 @media (min-width: 768px) {
     .circles-1 {
         top: -15%;

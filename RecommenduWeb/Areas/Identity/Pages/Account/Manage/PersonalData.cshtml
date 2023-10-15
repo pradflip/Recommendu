@@ -5,7 +5,7 @@
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<h3>@ViewData["Title"]</h3>
+<h3 class="my-3">@ViewData["Title"]</h3>
 
 <div class="row">
     <div class="col-md-6">
@@ -13,11 +13,8 @@
         <p>
             <strong>Deletar sua conta é uma ação irreversível.</strong>
         </p>
-        @*<form id="download-data" asp-page="DownloadPersonalData" method="post">
-            <button class="btn btn-primary" type="submit">Download</button>
-        </form>*@
         <p>
-            <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Deletar conta</a>
+            <a id="delete" asp-page="DeletePersonalData" class="btn btn-preto text-danger py-3 px-5">Deletar conta</a>
         </p>
     </div>
 </div>

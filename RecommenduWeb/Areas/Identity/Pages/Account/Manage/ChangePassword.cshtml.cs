@@ -113,7 +113,7 @@ namespace RecommenduWeb.Areas.Identity.Pages.Account.Manage
             {
                 foreach (var error in changePasswordResult.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(string.Empty, "Senha inválida.");
                 }
                 return Page();
             }
