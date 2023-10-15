@@ -1,86 +1,149 @@
 ﻿@model RecommenduWeb.Models.ViewModels.PostagemViewModel
 
 @{
-    ViewData["Title"] = "Nova publicação:";
+    ViewData["Title"] = "Nova postagem";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<div class="container text-center">
-    <h1 class="m-5">@ViewData["Title"]</h1>
-    <div class="d-flex justify-content-center">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger row"></div>
-            <div class="form-group row mb-3">
-                <label asp-for="Categoria" id="lblCategoria" class="control-label col text-end fw-bold"></label>
-                <select asp-for="Categoria" id="slcCategoria" class="form-control col-lg-6 shadow-sm" onchange="CarregaForm()">
-                    <option value="0" style="color: gray" selected>Selecione...</option>
-                    <option value="1">Produto</option>
-                    <option value="2">Serviço</option>
-                </select>
-                <span asp-validation-for="Categoria" class="text-danger"></span>
-            </div>
-            <div class="form-group row mb-3">
-                <label asp-for="Titulo" class="control-label col text-end fw-bold" id="lblTitulo"></label>
-                <input asp-for="Titulo" class="form-control col-lg-6 shadow-sm" />
-                <span asp-validation-for="Titulo" class="text-danger"></span>
-            </div>
-            <div class="form-group row mb-3">
-                <label asp-for="Descricao" class="control-label col text-end fw-bold"></label>
-                <textarea asp-for="Descricao" class="form-control col-lg-6 shadow-sm" cols="60" rows="8"></textarea>
-                <span asp-validation-for="Descricao" class="text-danger"></span>
-            </div>
-            <div class="form-group row mb-3">
-                <label asp-for="PublicoAlvo" class="control-label col text-end fw-bold"></label>
-                <input asp-for="PublicoAlvo" class="form-control col-lg-6 shadow-sm" />
-                <span asp-validation-for="PublicoAlvo" class="text-danger"></span>
-            </div>
-            <div class="form-group row mb-3">
-                <label class="control-label col text-end fw-bold">Imagem</label>
-                <input asp-for="PostFile" onchange="ValidarArquivo()" id="fileInput" accept=".png, .jpg, .jpeg" class="form-control col-lg-6 shadow-sm" />
-                <span asp-validation-for="PostFile" class="text-danger"></span>
-            </div>
-            <div id="formProduto" hidden="true">
-                <hr />
-                <div class="form-group row mb-3">
-                    <label asp-for="Fabricante" class="control-label col text-end fw-bold"></label>
-                    <input asp-for="Fabricante" class="form-control col-lg-6 shadow-sm" />
-                    <span asp-validation-for="Fabricante" class="text-danger"></span>
+<div class="container">
+    <h1 class="text-md-center ms-md-0 ms-5 my-5">@ViewData["Title"]</h1>
+    <div class="row mb-5">
+        <div class="col">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div class="row gx-md-5 g-2 ms-md-0 ms-5">
+                    <div class="col-md-4 text-md-end text-start">
+                        <label asp-for="Categoria" id="lblCategoria" class="control-label fw-bold"></label><span class="text-danger">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-3">
+                            <select asp-for="Categoria" id="slcCategoria" class="form-control shadow-sm w-50" onchange="CarregaForm()">
+                                <option value="0" style="color: gray" selected>Selecione...</option>
+                                <option value="1">Produto</option>
+                                <option value="2">Serviço</option>
+                            </select>
+                            <span asp-validation-for="Categoria" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end text-start">
+                        <label asp-for="Titulo" class="control-label text-end fw-bold" id="lblTitulo"></label><span class="text-danger">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-3">
+                            <input asp-for="Titulo" class="form-control shadow-sm w-50" />
+                            <span asp-validation-for="Titulo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end text-start">
+                        <label asp-for="Descricao" class="control-label text-end fw-bold"></label><span class="text-danger">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-3">
+                            <textarea asp-for="Descricao" class="form-control shadow-sm w-50" cols="60" rows="8"></textarea>
+                            <span asp-validation-for="Descricao" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end text-start">
+                        <label asp-for="PublicoAlvo" class="control-label text-end fw-bold"></label><span class="text-danger">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-3">
+                            <input asp-for="PublicoAlvo" class="form-control shadow-sm w-50" />
+                            <span asp-validation-for="PublicoAlvo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end text-start">
+                        <label class="control-label text-end fw-bold">Imagem</label><span class="text-danger">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-3" id="btnImg">
+                            <button class="btn-quadrado-form" style="font-size: 5em" type="button" id="btnNovoPost" onclick="EnviarImagem()">+</button>
+                            <div class="img-new-container">
+                                <img id="imgNovoPost" src="#" alt="Imagem Enviada" class="img-new" style="display: none;">
+                                <div class="img-new-overlay" id="imgContainer" onclick="RemoverImagemForm()">
+                                    <div class="texto-overlay fs-1 btn-close" id="divClose" style="display: none;"></div>
+                                </div>
+
+                            </div>
+                            <input asp-for="PostFile" onchange="ValidarArquivo()" id="fileInput" accept=".png, .jpg, .jpeg" class="form-control shadow-sm w-50 d-none" />
+                            <span asp-validation-for="PostFile" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col" id="formProduto" hidden="true">
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4 text-md-end text-start">
+                                <label asp-for="Fabricante" class="control-label text-end fw-bold"></label>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group mb-3">
+                                    <input asp-for="Fabricante" class="form-control shadow-sm w-50" />
+                                    <span asp-validation-for="Fabricante" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-md-end text-start">
+                                <label asp-for="LinkProduto" class="control-label text-end fw-bold"></label>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group mb-3">
+                                    <input asp-for="LinkProduto" class="form-control shadow-sm w-50" />
+                                    <span asp-validation-for="LinkProduto" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col" id="formServico" hidden="true">
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4 text-md-end text-start">
+                                <label asp-for="Estado" class="control-label text-end fw-bold"></label>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group mb-3">
+                                    @Html.DropDownListFor(model => model.Estado, ViewData["Estado"] as SelectList, new {@class="form-control shadow-sm w-50", @id="ddlEstado"})
+                                    <span asp-validation-for="Estado" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-md-end text-start">
+                                <label asp-for="Cidade" class="control-label text-end fw-bold">Cidade</label>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group mb-3">
+                                    <input asp-for="Cidade" class="form-control shadow-sm w-50" id="ddlCidades" aria-required="true" placeholder="Nome da cidade" />
+                                    <span asp-validation-for="Cidade" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-md-end text-start">
+                                <label asp-for="Endereco" class="control-label text-end fw-bold"></label>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group mb-3">
+                                    <input asp-for="Endereco" class="form-control shadow-sm w-50" />
+                                    <span asp-validation-for="Endereco" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-md-end text-start">
+                                <label asp-for="Contato" class="control-label text-end fw-bold"></label>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group mb-3">
+                                    <input asp-for="Contato" class="form-control shadow-sm w-50" />
+                                    <span asp-validation-for="Contato" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-5">
+                        <div class="col form-group d-flex justify-content-md-end">
+                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-preto py-3 px-5">Voltar</a>
+                        </div>
+                        <div class="col form-group d-flex justify-content-md-start ">
+                            <input type="submit" id="btnSubmit" value="Publicar" class="btn btn-laranja py-3 px-5" disabled="true" />
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group row mb-3">
-                    <label asp-for="LinkProduto" class="control-label col text-end fw-bold"></label>
-                    <input asp-for="LinkProduto" class="form-control col-lg-6 shadow-sm" />
-                    <span asp-validation-for="LinkProduto" class="text-danger"></span>
-                </div>
-            </div>
-            <div id="formServico" hidden="true">
-                <hr />
-                <div class="form-group row mb-3">
-                    <label asp-for="Estado" class="control-label col text-end fw-bold"></label>
-                    @Html.DropDownListFor(model => model.Estado, ViewData["Estado"] as SelectList, new {@class="form-control col-lg-6 shadow-sm", @id="ddlEstado"})
-                    <span asp-validation-for="Estado" class="text-danger"></span>
-                </div>
-                <div class="form-group row mb-3">
-                    <label asp-for="Cidade" class="control-label col text-end fw-bold">Cidade</label>
-                    <input asp-for="Cidade" class="form-control col-lg-6 shadow-sm" id="ddlCidades" aria-required="true" placeholder="Nome da cidade" />
-                    <span asp-validation-for="Cidade" class="text-danger"></span>
-                </div>
-                <div class="form-group row mb-3">
-                    <label asp-for="Endereco" class="control-label col text-end fw-bold"></label>
-                    <input asp-for="Endereco" class="form-control col-lg-6 shadow-sm" />
-                    <span asp-validation-for="Endereco" class="text-danger"></span>
-                </div>
-                <div class="form-group row mb-3">
-                    <label asp-for="Contato" class="control-label col text-end fw-bold"></label>
-                    <input asp-for="Contato" class="form-control col-lg-6 shadow-sm" />
-                    <span asp-validation-for="Contato" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row justify-content-between ms-6">
-                <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary col-lg-3 shadow">Voltar</a>
-                <input type="submit" id="btnSubmit" value="Publicar" class="btn btn-success col-lg-5" disabled="true" />
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 

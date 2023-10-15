@@ -71,3 +71,34 @@ function ValidarArquivo() {
 function EnviarImagem() {
     fileInput.click();
 }
+
+const fileInput = document.getElementById('fileInput');
+const uploadedImage = document.getElementById('imgNovoPost');
+
+fileInput.addEventListener('change', function () {
+    const file = fileInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            uploadedImage.src = e.target.result;
+            uploadedImage.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+        document.getElementById('btnNovoPost').style.display = 'none';
+        document.getElementById('divClose').style.display = 'inline';
+
+    } else {
+        uploadedImage.src = '#';
+        uploadedImage.style.display = 'none';
+    }
+});
+
+function RemoverImagemForm() {
+    fileInput.value = '';
+    uploadedImage.src = '';
+    uploadedImage.style.display = 'none';
+    document.getElementById('btnNovoPost').style.display = 'inline';
+    document.getElementById('divClose').style.display = 'none';
+}

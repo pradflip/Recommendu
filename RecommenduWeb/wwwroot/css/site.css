@@ -351,6 +351,67 @@ footer div {
     background-color: #191919;
 }
 
+.btn-quadrado-form {
+    height: 150px;
+    width: 150px;
+    border: 2px dashed #888888;
+    color: #888888;
+    background-color: transparent;
+}
+
+    .btn-quadrado-form:focus, .btn-quadrado-form:active {
+        border: 2px dashed #db924f;
+        color: #db924f;
+        background-color: rgb(215, 157, 65, 0.5);
+    }
+
+    .btn-quadrado-form:hover {
+        border: 2px dashed #db924f;
+        color: #db924f;
+        background-color: rgb(215, 157, 65, 0.3);
+    }
+
+.img-new-container {
+    position: relative;
+    width: 50%;
+}
+
+    .img-new-container:hover .img-new-overlay {
+        opacity: 0.5;
+    }
+
+.img-new {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    object-position: center center;
+}
+
+.img-new-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    width: 150px;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #f4f3f4;
+}
+
+.texto-overlay {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
 .btn-view-post {
     color: #fff;
     background-color: #191919;
