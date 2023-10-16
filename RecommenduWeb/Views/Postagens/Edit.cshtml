@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="form-group mb-3">
-                            <input asp-for="Categoria" class="form-control" readonly />
+                            <input asp-for="Categoria" class="form-control w-50" readonly />
                             <span asp-validation-for="Categoria" class="text-danger"></span>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="form-group mb-3">
-                                        @Html.DropDownListFor(model => model.Estado, ViewData["Estado"] as SelectList, new {@class="form-control shadow-sm w-50", @id="ddlEstado"})
+                                        <input asp-for="Estado" class="form-control w-50" readonly />
                                         <span asp-validation-for="Estado" class="text-danger"></span>
                                     </div>
                                 </div>

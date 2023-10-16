@@ -404,9 +404,9 @@ namespace RecommenduWeb.Controllers
                     }
                     else if (vm.Categoria.Equals("Serviço"))
                     {
-                        var estados = await _localidadeService.EstadoSelectListAsync();
-                        ViewData["Estado"] = estados;
-                        vm.Estado = estados.Where(p => p.Value == vm.Estado).First().Text;
+                        //var estados = await _localidadeService.EstadoSelectListAsync();
+                        //ViewData["Estado"] = estados;
+                        //vm.Estado = estados.Where(p => p.Value == vm.Estado).First().Text;
 
                         var serv = _postService.BuscarServicosPorId(id);
                         if (serv != null)
