@@ -38,11 +38,20 @@
     - Password: <senha definida na instalação do SQL Server>
   - Name = nomear a conexão (opcional)
   - Clicar em Connect
-    
 
-- Após baixar o projeto e abrir no Visual Studio, ir no menu superior esquerdo em View > Other Windows > Package Manager Console
-- Digitar no console "update-database" para gerar o banco de dados
-- Executar a aplicação
+- Baixar projeto no repositório do Github
+- Abrir o projeto executando a solution (.sln)
+
+- Após abrir no Visual Studio, ir no menu superior em Compilação > Compilar Solução
+- Em inglês: Build > Build Solution
+
+- Criar estrutura do banco de dados
+  - Ainda no Visual Studio, clique em Exibir > Outras janelas > Console do Gerenciador de Pacotes
+  - Em inglês: View > Other Windows > Package Manager Console
+  - Digitar no console "update-database" para gerar o banco de dados
+
+- Caso apareca um popup sobre o certificado SSL do IIS Express, clique em sim
+- Executar a aplicação (ctrl + shift + f5)
 
 - Para criar um perfil de administrador da aplicação, executar o comando sql no Azure Data Studio:
   select * from RecommenduWeb.dbo.AspNetUser (copie o id do seu usuário)
