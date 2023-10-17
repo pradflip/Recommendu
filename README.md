@@ -9,6 +9,16 @@
 
 
 - Instalar o SQLServer Express 2022: https://www.microsoft.com/pt-br/sql-server/sql-server-downloads
+  - Seguir com a instalação normalmente
+  - Na janela de Central de instalação do SQL Server, selecione Instalação > Nova Instalação autonoma do SQL Server...
+  - Clicar em avançar, na etapa Extensão do Azure desmarque o checkbox e prossiga.
+  - Na etapa Seleção de recursos marque a opção LocalDB.
+  - Em Configuração da Instância, deixe a Instancia nomeada "SQLExpress" e o Id "SQLEXPRESS".
+  - Em Configuração do Mecanismo de Banco de Dados, selecione o modo de autenticação misto
+  - Recomendação de senha: Tcc2023!
+  - Nesta etapa, foi configurado 2 tipos de acesso: autenticação do windows e um login sql.
+  - Com o login sql, foi configurado o usuário 'sa' e a senha que foi definida.
+  
   
 - Instalar o Azure Data Studio: https://azure.microsoft.com/pt-br/products/data-studio
 
