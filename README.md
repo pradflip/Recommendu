@@ -56,5 +56,5 @@
 
 - Para criar um perfil de administrador da aplicação, executar o comando sql no Azure Data Studio:
   select * from RecommenduWeb.dbo.AspNetUsers
-- copie o id do seu usuário
+- copie o id do seu usuário e execute o comando:
   insert into RecommenduWeb.dbo.AspNetUserRoles values ('(id do usuario)', 1);
