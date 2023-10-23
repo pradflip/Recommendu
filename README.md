@@ -52,9 +52,12 @@
 
 - Caso apareca um popup sobre o certificado SSL do IIS Express, clique em sim
 - Executar a aplicação (ctrl + shift + f5)
-- - Se aparecer a janela 'Sua conexão não é particular', clique em avançado e ir para localhost.
+ - Se aparecer a janela 'Sua conexão não é particular', clique em avançado e ir para localhost.
 
 - Para criar um perfil de administrador da aplicação, executar o comando sql no Azure Data Studio:
   select * from RecommenduWeb.dbo.AspNetUsers
 - copie o id do seu usuário e execute o comando:
   insert into RecommenduWeb.dbo.AspNetUserRoles values ('(id do usuario)', 1);
+
+- Para facilitar os testes, é possível desabilitar a confirmação de email, permitindo incluir emails inexistentes
+  - No program.cs altere a "options.SignIn.RequireConfirmedAccount = true" para false
