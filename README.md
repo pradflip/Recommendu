@@ -1,8 +1,17 @@
 # Visão geral da aplicação
 
+<br>
+
+Esse projeto consiste na criação de uma plataforma para centralizar a busca de usuário por recomendação de produtos e serviços. O intuito é recomendar boas experiências, não sendo permitido postagens para reclamação.
+No Recommendu, é possível criar postagens com título, descrição, foto, entre outras informações. O campo de descrição é avaliado pelo machine learning para detectar se seu comentário é positivo ou negativo referente à sua recomendação.
+Além disso, outros usuários podem fazer comentários e curtir suas postagens.
+Também é possível entrar no perfil do seu usuário e ver suas publicações, lista de postagens que curtiu ou acessar outros perfis.
+
+<br>
+
 https://github.com/user-attachments/assets/4b08f8f4-bc06-4a01-ad20-5f7e98a09074
 
-
+<br>
 
 # Manual de instalação
 
