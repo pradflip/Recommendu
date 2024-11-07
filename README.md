@@ -1,3 +1,9 @@
+# Visão geral da aplicação
+
+https://github.com/user-attachments/assets/4b08f8f4-bc06-4a01-ad20-5f7e98a09074
+
+
+
 # Manual de instalação
 
 - Instalar .NET 7 SDK: https://dotnet.microsoft.com/pt-br/download/visual-studio-sdks
