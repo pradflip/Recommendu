@@ -13,6 +13,13 @@ https://github.com/user-attachments/assets/4b08f8f4-bc06-4a01-ad20-5f7e98a09074
 
 <br>
 
+# Atenção: problema com o envio de e-mail
+
+O envio de e-mails utilizando o **SMTP com autenticação básica** está obsoleto, o que impede o funcionamento correto da funcionalidade de envio de e-mails na aplicação. Como a autenticação básica foi desativada em muitos servidores SMTP, como o Outlook, a aplicação não consegue autenticar e enviar e-mails usando esse método.
+
+*Por conta disso, a funcionalidade de envio de e-mail está temporariamente fora de funcionamento.*
+
+
 # Manual de instalação
 
 - Instalar .NET 7 SDK: https://dotnet.microsoft.com/pt-br/download/visual-studio-sdks
